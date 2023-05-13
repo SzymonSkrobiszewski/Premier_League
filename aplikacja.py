@@ -12,16 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-st.markdown(
-    """
-    <style>
-    .reportview-container {
-        background: white;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+st.set_theme('light')
 
 ######################### Zbiory danych #########################
 
