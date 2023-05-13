@@ -12,12 +12,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-@st.cache(allow_output_mutation=True)
-def set_theme():
-    st.set_option('theme', 'light')
-
-set_theme()  # ustawienie motywu przy starcie aplikacji
-
 ######################### Zbiory danych #########################
 
 
