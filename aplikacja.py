@@ -12,6 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
 ######################### Zbiory danych #########################
 
 
@@ -171,6 +172,41 @@ if selected_tab == "Strona główna":
 
 elif selected_tab == "Premier League":
     st.markdown('---')
+    st.header('Liczba strzelonych bramek')
+    fig5 = go.Figure()
+    season_goals = df.groupby('Season')[['FTHG', 'FTAG']].sum().sort_values(by='Season', ascending=False)
+    season_total_goals = season_goals.sum(axis=1).reset_index(name='liczba bramek')
+    fig5.add_trace(
+        go.Bar(
+            x=season_total_goals['Season'],
+            y=season_total_goals['liczba bramek'],
+            text=season_total_goals['liczba bramek'],
+            textfont=dict(size=12, color='white'),
+            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
+            hovertemplate='Liczba strzelonych bramek: <b>%{y}</b><extra></extra>'
+        )
+    )
+    fig5.update_layout(
+        xaxis_title="Sezon",
+        margin=dict(t=25),
+        yaxis=dict(
+            range=[0, 1250],
+            tickfont=dict(size=15, color='black'),
+            showgrid=True,
+            gridwidth=2,
+            gridcolor='gray'
+        ),
+        yaxis_title="Liczba strzelonych bramek",
+        yaxis_title_font=dict(size=25, color='black'),
+        xaxis_title_font=dict(size=25, color='black'),
+        height=500,
+        width=1200,
+        xaxis_tickfont=dict(size=15, color='black'),
+    )
+    fig5.update_yaxes(zeroline=False, zerolinewidth=0)
+    st.plotly_chart(fig5, use_container_width=True)
+
+
     st.header('Wartość ligi na przestrzeni lat')
     liga = st.multiselect('Wybierz ligę :', ['Ligue 1', 'Bundesliga', 'Premier league', 'La liga', 'Serie A'])
     fig0 = go.Figure()
@@ -187,6 +223,7 @@ elif selected_tab == "Premier League":
         )
     fig0.update_layout(
         xaxis_title="Sezon",
+        margin=dict(l=50, r=50, t=15, b=50),
         yaxis=dict(
             range=[0, 8000],
             tickfont=dict(size=13, color='black'),
@@ -300,9 +337,9 @@ elif selected_tab == "Premier League":
             font=dict(size=20, color='black'),
             orientation="v",
             yanchor="top",
-            y=1,
+            y=0.95,
             xanchor="right",
-            x=1.16,
+            x=1.18,
         ),
         xaxis_tickfont=dict(size=13, color='black'),
         #font=dict(size=30, color='black')
@@ -492,7 +529,7 @@ elif selected_tab == "Porównywanie statystyk":
             gridwidth=2,
             gridcolor='lightgray'
         ),
-        legend=dict(font=dict(size=16)),
+        legend=dict(font=dict(size=16), y=0.95),
         yaxis_title="Liczba rezultatów",
         yaxis_title_font=dict(size=20, color='black'),
         xaxis_title_font=dict(size=20, color='black'),
