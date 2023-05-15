@@ -217,24 +217,29 @@ elif selected_tab == "Premier League":
                 y=wartosci[lig],
                 name=lig,
                 mode='lines+markers',
-                hovertemplate='<br><b>Wartość ligi:</b> %{y}',
+                hovertemplate='<br><b>Wartość ligi:</b> %{y} mld',
                 showlegend=True
             )
         )
     fig0.update_layout(
-        xaxis_title="Sezon",
         margin=dict(l=0, r=50, t=15, b=50),
+        xaxis=dict(
+            title='Sezon',
+            title_font=dict(size=25, color='black'),
+            tickfont=dict(size=13, color='black'),
+        ),
         yaxis=dict(
-            range=[0, 8000],
+            title="Wartość ligi (mld euro)",
+            title_font=dict(size=25, color='black'),
+            range=[0, 7000],
             tickfont=dict(size=13, color='black'),
             showgrid=True,
-            gridwidth=2,
-            gridcolor='lightgray'
+            gridwidth=1,
+            gridcolor='gray',
+            zerolinewidth=1,
+            zerolinecolor='rgba(0,0,0,1)'
         ),
         hovermode='x',
-        yaxis_title="Wartość ligi (mld euro)",
-        yaxis_title_font=dict(size=25, color='black'),
-        xaxis_title_font=dict(size=25, color='black'),
         height=500,
         width=1200,
         legend=dict(
@@ -242,12 +247,10 @@ elif selected_tab == "Premier League":
             font=dict(size=20, color='black'),
             orientation="v",
             yanchor="top",
-            y=1.1,
+            y=0.95,
             xanchor="right",
             x=1.17
         ),
-        xaxis_tickfont=dict(size=13, color='black'),
-        #font=dict(size=30, color='black')
     )
     st.plotly_chart(fig0, use_container_width=True)
 
@@ -391,11 +394,22 @@ elif selected_tab == "Porównywanie statystyk":
                 )
             )
             fig2.update_layout(
-                xaxis_title='Kolejka',
-                yaxis_title='Punkty',
                 xaxis=dict(
-                    range = [-0.5, 43] if ("92/93" in selected_season or "93/94" in selected_season or "94/95" in selected_season) else [-0.5, 39]
-
+                    title='Kolejka',
+                    range = [-0.5, 43] if ("92/93" in selected_season or "93/94" in selected_season or "94/95" in selected_season) else [-0.5, 39],
+                    title_font=dict(size=20, color='black'),
+                    tickfont=dict(size=17, color='black'),
+                ),
+                yaxis=dict(
+                    title='Punkty',
+                    range=[-2, round(max_value0, -1) + 10],
+                    tickfont=dict(size=17, color='black'),
+                    title_font=dict(size=20, color='black'),
+                    showgrid=True,
+                    gridwidth=1,
+                    gridcolor='gray',
+                    zerolinewidth=1,
+                    zerolinecolor='rgba(0,0,0,1)'
                 ),
                 legend=dict(
                     title=dict(text="Drużyna", font=dict(size=25, color='black')),
@@ -408,17 +422,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ),
                 height=500,
                 width=1200,
-                yaxis_title_font=dict(size=20, color='black'),
-                xaxis_title_font=dict(size=20, color='black'),
-                xaxis_tickfont=dict(size=15, color='black'),
                 hovermode='x',
-                yaxis=dict(
-                    range=[-2, round(max_value0, -1) + 10],
-                    tickfont=dict(size=15, color='black'),
-                    showgrid=True,
-                    gridwidth=2,
-                    gridcolor='lightgray'
-                )
             )
             st.plotly_chart(fig2, use_container_width=True)
     if comparison_type == "Drużyna i sezon":
@@ -443,11 +447,23 @@ elif selected_tab == "Porównywanie statystyk":
             )
         fig3.update_layout(
                 margin=dict(t=60),
-                xaxis_title='Kolejka',
-                yaxis_title='Punkty',
                 height=500,
                 xaxis=dict(
+                    title='Kolejka',
+                    title_font=dict(size=20, color='black'),
+                    tickfont=dict(size=17, color='black'),
                     range = [-0.5, 43] if ("92/93" in selected_seasons or "93/94" in selected_seasons or "94/95" in selected_seasons) else [-0.5, 39]
+                ),
+                yaxis=dict(
+                    title='Kolejka',
+                    title_font=dict(size=20, color='black'),
+                    range=[-2, round(max(max_value1, default=0), -1) + 10],
+                    tickfont=dict(size=17, color='black'),
+                    showgrid=True,
+                    gridwidth=1,
+                    gridcolor='gray',
+                    zerolinewidth=1,
+                    zerolinecolor='rgba(0,0,0,1)'
                 ),
                 legend=dict(
                     title=dict(text="Sezon", font=dict(size=25, color='black')),
@@ -459,17 +475,7 @@ elif selected_tab == "Porównywanie statystyk":
                     x=1.1
                 ),
                 width=1200,
-                yaxis_title_font=dict(size=20, color='black'),
-                xaxis_title_font=dict(size=20, color='black'),
-                xaxis_tickfont=dict(size=15, color='black'),
                 hovermode='x',
-                yaxis=dict(
-                    range=[-2, round(max(max_value1, default=0), -1) + 10],
-                    tickfont=dict(size=15, color='black'),
-                    showgrid=True,
-                    gridwidth=2,
-                    gridcolor='lightgray'
-                )
         )
         st.plotly_chart(fig3, use_container_width=True)
     st.header('Statystyki dotyczące bezpośrednich starć drużyn')
