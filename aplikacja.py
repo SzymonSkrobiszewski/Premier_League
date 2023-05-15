@@ -82,7 +82,10 @@ def head_to_head_results(df, home_team, away_team):
 
 
 def calculate_points(df, team_name, season):
-    df = df[((df['HomeTeam'] == team_name) | (df['AwayTeam'] == team_name)) & (df['Season'] == season)].reset_index(drop=True)
+    df = df[
+        ((df["HomeTeam"] == team_name) | (df["AwayTeam"] == team_name))
+        & (df["Season"] == season)
+    ].reset_index(drop=True)
     points = 0
     points_by_matchweek = {0: 0}
     for index, row in df.iterrows():
@@ -95,7 +98,12 @@ def calculate_points(df, team_name, season):
         if row['FTR'] == 'D':
             points += 1
         points_by_matchweek[index + 1] = points
-    return pd.DataFrame({'Kolejka': list(points_by_matchweek.keys()), 'Punkty': list(points_by_matchweek.values())})
+    return pd.DataFrame(
+        {
+            "Kolejka": list(points_by_matchweek.keys()),
+            "Punkty": list(points_by_matchweek.values()),
+        }
+    )
 
 ############################################################
 
@@ -220,7 +228,11 @@ elif selected_tab == "Premier League":
 
 
     st.header('Wartość ligi na przestrzeni lat')
-    liga = st.multiselect('Wybierz ligę :', ['Ligue 1', 'Bundesliga', 'Premier league', 'La liga', 'Serie A'], default=['Premier league'])
+    liga = st.multiselect(
+        "Wybierz ligę :",
+        ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
+        default=["Premier league"],
+    )
     fig0 = go.Figure()
     colors = ['red', 'green', 'blue', 'purple', 'black']
     for i, lig in enumerate(liga):
@@ -383,9 +395,12 @@ elif selected_tab == "Premier League":
     st.header('Liczba rozegranych sezonów w podziale na przedziały')
     fig6 = go.Figure()
     seasons_count = st.selectbox("Wybierz przedział zamknięty :",
-                                ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"]                )
+                                ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"]
+    )
     x, y = map(lambda x: int(x), seasons_count.split('-'))
-    team_and_number_of_seasons = pd.DataFrame(df.groupby('Season')['AwayTeam'].unique().explode().value_counts())
+    team_and_number_of_seasons = pd.DataFrame(
+        df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
+    )
     team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
     df1 = team_and_number_of_seasons[team_and_number_of_seasons['Liczba sezonów'].between(x, y)]
     fig6.add_traces(
@@ -395,8 +410,8 @@ elif selected_tab == "Premier League":
             text=df1['Liczba sezonów'],
             marker=dict(color='purple'),
             textfont=dict(size=16, color='white'),
-            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
-            hovertemplate='Liczba rozegranych sezonów : <b>%{y}</b><extra></extra>',
+            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
+            hovertemplate='Liczba rozegranych sezonów: <b>%{y}</b><extra></extra>',
             showlegend=False
         )
     )
@@ -472,7 +487,11 @@ elif selected_tab == "Porównywanie statystyk":
                 xaxis=dict(
                     title='Kolejka',
                     showline=True,
-                    range = [-0.5, 43] if any(season in selected_season for season in ["92/93", "93/94", "94/95"]) else [-0.5, 39],
+                    range=(
+                        [-0.5, 43]
+                        if any(season in selected_season for season in ["92/93", "93/94", "94/95"])
+                        else [-0.5, 39]
+                    ),
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=17, color='black'),
                 ),
@@ -528,7 +547,15 @@ elif selected_tab == "Porównywanie statystyk":
                     title='Kolejka',
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=17, color='black'),
-                    range=[-0.5, 43] if ("92/93" in selected_seasons or "93/94" in selected_seasons or "94/95" in selected_seasons) else [-0.5, 39]
+                    range=(
+                        [-0.5, 43]
+                        if (
+                            "92/93" in selected_seasons
+                            or "93/94" in selected_seasons
+                            or "94/95" in selected_seasons
+                        )
+                        else [-0.5, 39]
+                    )
                 ),
                 yaxis=dict(
                     title='Kolejka',
