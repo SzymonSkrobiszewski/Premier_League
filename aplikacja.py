@@ -222,7 +222,6 @@ elif selected_tab == "Premier League":
             )
         )
     fig0.update_layout(
-        margin=dict(l=20),
         xaxis_title="Sezon",
         margin=dict(l=10, r=50, t=15, b=50),
         yaxis=dict(
