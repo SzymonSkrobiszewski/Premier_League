@@ -48,14 +48,14 @@ def find_common_seasons(team1, team2, df):
     return common_seasons
 
 
-def return_opponents(df, selected_team='Arsenal'):
-    opponents = df[df['HomeTeam'] == selected_team]['AwayTeam'].unique().tolist()
+def return_opponents(df, team='Arsenal'):
+    opponents = df[df['HomeTeam'] == team]['AwayTeam'].unique().tolist()
     return opponents
 
 
 def head_to_head_results(df, home_team, away_team):
 
-    subset = df[(df['HomeTeam'].isin([home_team, away_team])) & \
+    subset = df[(df['HomeTeam'].isin([home_team, away_team])) &
                 (df['AwayTeam'].isin([home_team, away_team]))]
 
     results = {home_team: 0, 'Remis': 0, away_team: 0}
@@ -98,6 +98,7 @@ def calculate_points(df, team_name, season):
     return pd.DataFrame({'Kolejka': list(points_by_matchweek.keys()), 'Punkty': list(points_by_matchweek.values())})
 
 ############################################################
+
 
 streamlit_style = """
 <style>
@@ -172,14 +173,16 @@ if selected_tab == "Strona główna":
 
 elif selected_tab == "Premier League":
     st.markdown('---')
-    st.header('Liczba strzelonych bramek')
+    st.header('Liczba zawodników w Premier league')
+    st.write('Tu coś będzie.')
+    st.header('Liczba strzelonych bramek w sezonie')
     fig5 = go.Figure()
     season_goals = df.groupby('Season')[['FTHG', 'FTAG']].sum().sort_values(by='Season', ascending=False)
     season_total_goals = season_goals.sum(axis=1).reset_index(name='liczba bramek')
     sorted_seasons = [
-    '92/93', '93/94', '94/95', '95/96', '96/97', '97/98', '98/99', '99/00', '00/01', '01/02',
-    '02/03', '03/04', '04/05', '05/06', '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
-    '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22'
+        '92/93', '93/94', '94/95', '95/96', '96/97', '97/98', '98/99', '99/00', '00/01', '01/02',
+        '02/03', '03/04', '04/05', '05/06', '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
+        '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22'
     ]
     season_total_goals['Season'] = pd.Categorical(season_total_goals['Season'], sorted_seasons)
     season_total_goals = season_total_goals.sort_values('Season')
@@ -194,7 +197,7 @@ elif selected_tab == "Premier League":
         )
     )
     fig5.update_layout(
-        margin=dict(t=25),
+        margin=dict(l=20, r=20, t=25, b=50),
         xaxis=dict(
             title='Sezon',
             tickfont=dict(size=13, color='black'),
@@ -238,7 +241,7 @@ elif selected_tab == "Premier League":
             )
         )
     fig0.update_layout(
-        margin=dict(l=20, r=50, t=15, b=50),
+        margin=dict(l=20, r=50, t=25, b=50),
         xaxis=dict(
             title='Sezon',
             range=[-0.5, 18],
@@ -271,9 +274,9 @@ elif selected_tab == "Premier League":
             font=dict(size=20, color='black'),
             orientation="v",
             yanchor="top",
-            y=0.95,
+            y=1,
             xanchor="right",
-            x=1.17
+            x=1.20
         ),
     )
     st.plotly_chart(fig0, use_container_width=True)
@@ -294,14 +297,14 @@ elif selected_tab == "Premier League":
         margin=dict(l=50, r=50, t=15, b=50),
         xaxis=dict(
             title='Nazwa drużyny',
-            title_font=dict(size=20, color='black'),
-            tickfont=dict(size=13, color='black')
+            title_font=dict(size=25, color='black'),
+            tickfont=dict(size=15, color='black')
         ),
         yaxis=dict(
             title='Liczba tytułów',
-            title_font=dict(size=20, color='black'),
+            title_font=dict(size=25, color='black'),
             range=[0, 15],
-            tickfont=dict(size=13, color='black'),
+            tickfont=dict(size=15, color='black'),
             showgrid=True,
             gridwidth=1,
             gridcolor='gray',
@@ -351,12 +354,12 @@ elif selected_tab == "Premier League":
         margin=dict(l=50, r=50, t=15, b=50),
         xaxis=dict(
             title='Nazwa drużyny',
-            title_font=dict(size=20, color='black'),
+            title_font=dict(size=25, color='black'),
             tickfont=dict(size=13, color='black')
         ),
         yaxis=dict(
             title='Liczba pucharów',
-            title_font=dict(size=20, color='black'),
+            title_font=dict(size=25, color='black'),
             range=[0, 11],
             tickfont=dict(size=13, color='black'),
             showgrid=True,
@@ -371,12 +374,55 @@ elif selected_tab == "Premier League":
             font=dict(size=20, color='black'),
             orientation="v",
             yanchor="top",
-            y=0.95,
+            y=0.98,
             xanchor="right",
             x=1.18,
         ),
     )
     st.plotly_chart(fig1, use_container_width=True)
+    st.header('Liczba rozegranych sezonów w podziale na przedziały')
+    fig6 = go.Figure()
+    seasons_count = st.selectbox("Wybierz przedział zamknięty :",
+                                ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"]                )
+    x, y = map(lambda x: int(x), seasons_count.split('-'))
+    team_and_number_of_seasons = pd.DataFrame(df.groupby('Season')['AwayTeam'].unique().explode().value_counts())
+    team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
+    df1 = team_and_number_of_seasons[team_and_number_of_seasons['Liczba sezonów'].between(x, y)]
+    fig6.add_traces(
+        go.Bar(
+            x=df1.index,
+            y=df1['Liczba sezonów'],
+            text=df1['Liczba sezonów'],
+            marker=dict(color='purple'),
+            textfont=dict(size=16, color='white'),
+            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
+            hovertemplate='Liczba rozegranych sezonów : <b>%{y}</b><extra></extra>',
+            showlegend=False
+        )
+    )
+    fig6.update_layout(
+        margin=dict(l=50, r=50, t=20, b=50),
+        xaxis=dict(
+                title='Nazwa drużyny',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=14, color='black'),
+
+        ),
+        yaxis=dict(
+            title='Liczba sezonów w Premier league',
+            title_font=dict(size=25, color='black'),
+            range=[0, y + 1.5],
+            tickfont=dict(size=14, color='black'),
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='gray',
+            zeroline=False,
+        ),
+        height=500,
+        width=1200,
+
+    )
+    st.plotly_chart(fig6, use_container_width=True)
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
@@ -422,18 +468,19 @@ elif selected_tab == "Porównywanie statystyk":
                 )
             )
             fig2.update_layout(
+                margin=dict(l=20, r=20, t=50, b=50),
                 xaxis=dict(
                     title='Kolejka',
                     showline=True,
-                    range = [-0.5, 43] if ("92/93" in selected_season or "93/94" in selected_season or "94/95" in selected_season) else [-0.5, 39],
-                    title_font=dict(size=20, color='black'),
+                    range = [-0.5, 43] if any(season in selected_season for season in ["92/93", "93/94", "94/95"]) else [-0.5, 39],
+                    title_font=dict(size=25, color='black'),
                     tickfont=dict(size=17, color='black'),
                 ),
                 yaxis=dict(
                     title='Punkty',
                     range=[-2, round(max_value0, -1) + 10],
                     tickfont=dict(size=17, color='black'),
-                    title_font=dict(size=20, color='black'),
+                    title_font=dict(size=25, color='black'),
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
@@ -444,9 +491,9 @@ elif selected_tab == "Porównywanie statystyk":
                     font=dict(size=20, color='black'),
                     orientation="v",
                     yanchor="top",
-                    y=1.1,
+                    y=0.96,
                     xanchor="right",
-                    x=1.22
+                    x=1.24
                 ),
                 height=500,
                 width=1200,
@@ -474,18 +521,18 @@ elif selected_tab == "Porównywanie statystyk":
                 )
             )
         fig3.update_layout(
-                margin=dict(t=60),
+                margin=dict(l=20, r=20, t=60, b=50),
                 height=500,
                 xaxis=dict(
                     showline=True,
                     title='Kolejka',
-                    title_font=dict(size=20, color='black'),
+                    title_font=dict(size=25, color='black'),
                     tickfont=dict(size=17, color='black'),
                     range=[-0.5, 43] if ("92/93" in selected_seasons or "93/94" in selected_seasons or "94/95" in selected_seasons) else [-0.5, 39]
                 ),
                 yaxis=dict(
                     title='Kolejka',
-                    title_font=dict(size=20, color='black'),
+                    title_font=dict(size=25, color='black'),
                     range=[-2, round(max(max_value1, default=0), -1) + 10],
                     tickfont=dict(size=17, color='black'),
                     showgrid=True,
@@ -498,9 +545,9 @@ elif selected_tab == "Porównywanie statystyk":
                     font=dict(size=20, color='black'),
                     orientation="v",
                     yanchor="top",
-                    y=1.1,
+                    y=0.96,
                     xanchor="right",
-                    x=1.1
+                    x=1.11
                 ),
                 width=1200,
                 hovermode='x',
@@ -508,7 +555,7 @@ elif selected_tab == "Porównywanie statystyk":
         st.plotly_chart(fig3, use_container_width=True)
     st.header('Statystyki dotyczące bezpośrednich starć drużyn')
     team1 = st.selectbox("Wybierz pierwszą drużynę :", unique_teams)
-    team2 = st.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, selected_team=team1))
+    team2 = st.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, team=team1))
     fig4 = go.Figure()
     wyniki = head_to_head_results(df, team1, team2)
     fig4.add_traces(
@@ -558,14 +605,14 @@ elif selected_tab == "Porównywanie statystyk":
         margin=dict(l=50, r=50, t=15, b=50),
         xaxis=dict(
             title='Wyniki starcia',
-            tickfont=dict(size=13, color='black'),
-            title_font=dict(size=20, color='black')
+            tickfont=dict(size=16, color='black'),
+            title_font=dict(size=25, color='black')
         ),
         yaxis=dict(
             title="Liczba rezultatów",
-            title_font=dict(size=20, color='black'),
+            title_font=dict(size=25, color='black'),
             range=[0, int(max(wyniki['count'])) + (2 if max(wyniki['count']) > 7 else 0)],
-            tickfont=dict(size=13, color='black'),
+            tickfont=dict(size=16, color='black'),
             showgrid=True,
             gridwidth=1,
             gridcolor='gray',
