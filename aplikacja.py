@@ -187,28 +187,30 @@ elif selected_tab == "Premier League":
         )
     )
     fig5.update_layout(
-        xaxis_title="Sezon",
         margin=dict(t=25),
+        xaxis=dict(
+            title='Sezon',
+            tickfont=dict(size=13, color='black'),
+            title_font=dict(size=25, color='black')
+        ),
         yaxis=dict(
+            title="Liczba strzelonych bramek",
+            title_font=dict(size=25, color='black'),
             range=[0, 1250],
             tickfont=dict(size=15, color='black'),
             showgrid=True,
-            gridwidth=2,
-            gridcolor='gray'
+            gridwidth=1,
+            gridcolor='gray',
+            zeroline=False,
         ),
-        yaxis_title="Liczba strzelonych bramek",
-        yaxis_title_font=dict(size=25, color='black'),
-        xaxis_title_font=dict(size=25, color='black'),
         height=500,
         width=1200,
-        xaxis_tickfont=dict(size=13, color='black'),
     )
-    fig5.update_yaxes(zeroline=False, zerolinewidth=0)
     st.plotly_chart(fig5, use_container_width=True)
 
 
     st.header('Wartość ligi na przestrzeni lat')
-    liga = st.multiselect('Wybierz ligę :', ['Ligue 1', 'Bundesliga', 'Premier league', 'La liga', 'Serie A'])
+    liga = st.multiselect('Wybierz ligę :', ['Ligue 1', 'Bundesliga', 'Premier league', 'La liga', 'Serie A'], default=['La liga'])
     fig0 = go.Figure()
     for lig in liga:
         fig0.add_trace(
@@ -226,18 +228,18 @@ elif selected_tab == "Premier League":
         xaxis=dict(
             title='Sezon',
             title_font=dict(size=25, color='black'),
-            tickfont=dict(size=13, color='black'),
+            tickfont=dict(size=15, color='black'),
+            showline=True
         ),
         yaxis=dict(
             title="Wartość ligi (mld euro)",
             title_font=dict(size=25, color='black'),
             range=[0, 7000],
-            tickfont=dict(size=13, color='black'),
+            tickfont=dict(size=15, color='black'),
             showgrid=True,
             gridwidth=1,
             gridcolor='gray',
-            zerolinewidth=1,
-            zerolinecolor='rgba(0,0,0,1)'
+            zerolinecolor='white'
         ),
         hovermode='x',
         height=500,
@@ -267,23 +269,26 @@ elif selected_tab == "Premier League":
         )
     )
     fig.update_layout(
-        xaxis_title="Nazwa drużyny",
         margin=dict(l=50, r=50, t=15, b=50),
+        xaxis=dict(
+            title='Nazwa drużyny',
+            title_font=dict(size=20, color='black'),
+            tickfont=dict(size=13, color='black')
+        ),
         yaxis=dict(
+            title='Liczba tytułów',
+            title_font=dict(size=20, color='black'),
             range=[0, 15],
             tickfont=dict(size=13, color='black'),
             showgrid=True,
-            gridwidth=2,
-            gridcolor='lightgray'
+            gridwidth=1,
+            gridcolor='gray',
+            zeroline=False,
+            zerolinewidth=0
         ),
-        yaxis_title="Liczba tytułów",
-        yaxis_title_font=dict(size=20, color='black'),
-        xaxis_title_font=dict(size=20, color='black'),
         height=500,
         width=1200,
-        xaxis_tickfont=dict(size=13, color='black'),
     )
-    fig.update_yaxes(zeroline=False, zerolinewidth=0)
     st.plotly_chart(fig, use_container_width=True)
 
     st.header('Podział pucharów krajowych.')
@@ -321,18 +326,22 @@ elif selected_tab == "Premier League":
     fig1.update_traces(selector=dict(type='bar', name='Carabao Cup'), marker_color='green')
 
     fig1.update_layout(
-        xaxis_title="Nazwa drużyny",
         margin=dict(l=50, r=50, t=15, b=50),
+        xaxis=dict(
+            title='Nazwa drużyny',
+            title_font=dict(size=20, color='black'),
+            tickfont=dict(size=13, color='black')
+        ),
         yaxis=dict(
+            title='Liczba pucharów',
+            title_font=dict(size=20, color='black'),
             range=[0, 11],
             tickfont=dict(size=13, color='black'),
             showgrid=True,
-            gridwidth=2,
-            gridcolor='lightgray'
+            gridwidth=1,
+            gridcolor='gray',
+            zeroline=False,
         ),
-        yaxis_title="Liczba pucharów",
-        yaxis_title_font=dict(size=20, color='black'),
-        xaxis_title_font=dict(size=20, color='black'),
         height=500,
         width=1200,
         legend=dict(
@@ -344,10 +353,7 @@ elif selected_tab == "Premier League":
             xanchor="right",
             x=1.18,
         ),
-        xaxis_tickfont=dict(size=13, color='black'),
-        #font=dict(size=30, color='black')
     )
-    fig1.update_yaxes(zeroline=False, zerolinewidth=0)
     st.plotly_chart(fig1, use_container_width=True)
 
 elif selected_tab == "Porównywanie statystyk":
@@ -396,6 +402,7 @@ elif selected_tab == "Porównywanie statystyk":
             fig2.update_layout(
                 xaxis=dict(
                     title='Kolejka',
+                    showline=True,
                     range = [-0.5, 43] if ("92/93" in selected_season or "93/94" in selected_season or "94/95" in selected_season) else [-0.5, 39],
                     title_font=dict(size=20, color='black'),
                     tickfont=dict(size=17, color='black'),
@@ -408,8 +415,7 @@ elif selected_tab == "Porównywanie statystyk":
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
-                    zerolinewidth=1,
-                    zerolinecolor='rgba(0,0,0,1)'
+                    zerolinecolor='white'
                 ),
                 legend=dict(
                     title=dict(text="Drużyna", font=dict(size=25, color='black')),
@@ -449,6 +455,7 @@ elif selected_tab == "Porównywanie statystyk":
                 margin=dict(t=60),
                 height=500,
                 xaxis=dict(
+                    showline=True,
                     title='Kolejka',
                     title_font=dict(size=20, color='black'),
                     tickfont=dict(size=17, color='black'),
@@ -462,8 +469,7 @@ elif selected_tab == "Porównywanie statystyk":
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
-                    zerolinewidth=1,
-                    zerolinecolor='rgba(0,0,0,1)'
+                    zerolinecolor='white'
                 ),
                 legend=dict(
                     title=dict(text="Sezon", font=dict(size=25, color='black')),
@@ -527,24 +533,26 @@ elif selected_tab == "Porównywanie statystyk":
     )
 
     fig4.update_layout(
-        xaxis_title="Wyniki starcia",
         margin=dict(l=50, r=50, t=15, b=50),
+        xaxis=dict(
+            title='Wyniki starcia',
+            tickfont=dict(size=13, color='black'),
+            title_font=dict(size=20, color='black')
+        ),
         yaxis=dict(
+            title="Liczba rezultatów",
+            title_font=dict(size=20, color='black'),
             range=[0, int(max(wyniki['count'])) + (2 if max(wyniki['count']) > 7 else 0)],
             tickfont=dict(size=13, color='black'),
             showgrid=True,
-            gridwidth=2,
-            gridcolor='lightgray'
+            gridwidth=1,
+            gridcolor='gray',
+            zeroline=False,
         ),
         legend=dict(font=dict(size=16), y=0.95),
-        yaxis_title="Liczba rezultatów",
-        yaxis_title_font=dict(size=20, color='black'),
-        xaxis_title_font=dict(size=20, color='black'),
         height=500,
         width=1200,
-        xaxis_tickfont=dict(size=13, color='black')
     )
-    fig4.update_yaxes(zeroline=False, zerolinewidth=0)
     st.plotly_chart(fig4, use_container_width=True)
 
 
