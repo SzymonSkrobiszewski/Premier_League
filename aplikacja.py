@@ -176,6 +176,13 @@ elif selected_tab == "Premier League":
     fig5 = go.Figure()
     season_goals = df.groupby('Season')[['FTHG', 'FTAG']].sum().sort_values(by='Season', ascending=False)
     season_total_goals = season_goals.sum(axis=1).reset_index(name='liczba bramek')
+    sorted_seasons = [
+    '92/93', '93/94', '94/95', '95/96', '96/97', '97/98', '98/99', '99/00', '00/01', '01/02',
+    '02/03', '03/04', '04/05', '05/06', '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
+    '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22'
+    ]
+    season_total_goals['Season'] = pd.Categorical(season_total_goals['Season'], sorted_seasons)
+    season_total_goals = season_total_goals.sort_values('Season')
     fig5.add_trace(
         go.Bar(
             x=season_total_goals['Season'],
@@ -459,7 +466,7 @@ elif selected_tab == "Porównywanie statystyk":
                     title='Kolejka',
                     title_font=dict(size=20, color='black'),
                     tickfont=dict(size=17, color='black'),
-                    range = [-0.5, 43] if ("92/93" in selected_seasons or "93/94" in selected_seasons or "94/95" in selected_seasons) else [-0.5, 39]
+                    range=[-0.5, 43] if ("92/93" in selected_seasons or "93/94" in selected_seasons or "94/95" in selected_seasons) else [-0.5, 39]
                 ),
                 yaxis=dict(
                     title='Kolejka',
