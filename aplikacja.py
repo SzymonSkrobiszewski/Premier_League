@@ -191,7 +191,7 @@ elif selected_tab == "Premier League":
         margin=dict(t=25),
         yaxis=dict(
             range=[0, 1250],
-            tickfont=dict(size=15, color='black'),
+            tickfont=dict(size=10, color='black'),
             showgrid=True,
             gridwidth=2,
             gridcolor='gray'
