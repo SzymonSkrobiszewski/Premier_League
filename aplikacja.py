@@ -110,7 +110,7 @@ body {
 css = """
     <style>
     div[data-baseweb="select"] > div:first-child {
-        font-size: 14px;
+        font-size: 15px;
     }
     </style>
 """
@@ -153,7 +153,7 @@ selected_tab = option_menu(
                         "container": {"padding": "0!important", "background-color": "green"},
                         "icon": {"color": "white", "font-size": "20px"},
                         "nav-link": {
-                            "font-size": "17px",
+                            "font-size": "16px",
                             "text-align": "left",
                             "margin": "0px",
                             "--hover-color": "red",
