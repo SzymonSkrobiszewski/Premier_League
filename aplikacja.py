@@ -132,7 +132,7 @@ st.markdown(
     """
     <style>
     .appview-container .main .block-container {
-        max-width: 1250px;
+        max-width: 1200px;
     }
     </style>
     """,
@@ -228,7 +228,7 @@ elif selected_tab == "Premier League":
             range=[0, 8000],
             tickfont=dict(size=13, color='black'),
             showgrid=True,
-            gridwidth=1,
+            gridwidth=2,
             gridcolor='lightgray'
         ),
         hovermode='x',
@@ -416,7 +416,7 @@ elif selected_tab == "Porównywanie statystyk":
                     range=[-2, round(max_value0, -1) + 10],
                     tickfont=dict(size=15, color='black'),
                     showgrid=True,
-                    gridwidth=1,
+                    gridwidth=2,
                     gridcolor='lightgray'
                 )
             )
@@ -442,6 +442,7 @@ elif selected_tab == "Porównywanie statystyk":
                 )
             )
         fig3.update_layout(
+                margin=dict(t=60),
                 xaxis_title='Kolejka',
                 yaxis_title='Punkty',
                 height=500,
@@ -473,7 +474,7 @@ elif selected_tab == "Porównywanie statystyk":
         st.plotly_chart(fig3, use_container_width=True)
     st.header('Statystyki dotyczące bezpośrednich starć drużyn')
     team1 = st.selectbox("Wybierz pierwszą drużynę :", unique_teams)
-    team2 = st.selectbox('Wybierz drugą drużynę', return_opponents(df=df, selected_team=team1))
+    team2 = st.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, selected_team=team1))
     fig4 = go.Figure()
     wyniki = head_to_head_results(df, team1, team2)
     fig4.add_traces(
