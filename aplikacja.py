@@ -181,7 +181,7 @@ elif selected_tab == "Premier League":
             x=season_total_goals['Season'],
             y=season_total_goals['liczba bramek'],
             text=season_total_goals['liczba bramek'],
-            textfont=dict(size=12, color='white'),
+            textfont=dict(size=11, color='white'),
             hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
             hovertemplate='Liczba strzelonych bramek: <b>%{y}</b><extra></extra>'
         )
@@ -191,7 +191,7 @@ elif selected_tab == "Premier League":
         margin=dict(t=25),
         yaxis=dict(
             range=[0, 1250],
-            tickfont=dict(size=10, color='black'),
+            tickfont=dict(size=15, color='black'),
             showgrid=True,
             gridwidth=2,
             gridcolor='gray'
@@ -201,7 +201,7 @@ elif selected_tab == "Premier League":
         xaxis_title_font=dict(size=25, color='black'),
         height=500,
         width=1200,
-        xaxis_tickfont=dict(size=15, color='black'),
+        xaxis_tickfont=dict(size=13, color='black'),
     )
     fig5.update_yaxes(zeroline=False, zerolinewidth=0)
     st.plotly_chart(fig5, use_container_width=True)
