@@ -8,7 +8,7 @@ import openpyxl
 # Ustawienia stylu aplikacji
 
 st.set_page_config(
-    page_title="Moja aplikacja",
+    page_title="Premier League",
     initial_sidebar_state="expanded"
 )
 
