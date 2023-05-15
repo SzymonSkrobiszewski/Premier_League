@@ -217,23 +217,31 @@ elif selected_tab == "Premier League":
 
 
     st.header('Wartość ligi na przestrzeni lat')
-    liga = st.multiselect('Wybierz ligę :', ['Ligue 1', 'Bundesliga', 'Premier league', 'La liga', 'Serie A'], default=['La liga'])
+    liga = st.multiselect('Wybierz ligę :', ['Ligue 1', 'Bundesliga', 'Premier league', 'La liga', 'Serie A'], default=['Premier league'])
     fig0 = go.Figure()
-    for lig in liga:
+    colors = ['red', 'green', 'blue', 'purple', 'black']
+    for i, lig in enumerate(liga):
         fig0.add_trace(
             go.Scatter(
                 x=wartosci['sezon'],
                 y=wartosci[lig],
                 name=lig,
                 mode='lines+markers',
-                hovertemplate='<br><b>Wartość ligi:</b> %{y} mld',
+                hovertemplate=f'<br>Wartość {lig}: <b>%{{y}} mld</b> <extra></extra>',
+                # hoverlabel=dict(
+                #     font=dict(size=15),
+                #     bgcolor=colors[i],
+                #     font_color='white',
+                # ),
+                line=dict(color=colors[i]),
                 showlegend=True
             )
         )
     fig0.update_layout(
-        margin=dict(l=0, r=50, t=15, b=50),
+        margin=dict(l=20, r=50, t=15, b=50),
         xaxis=dict(
             title='Sezon',
+            range=[-0.5, 18],
             title_font=dict(size=25, color='black'),
             tickfont=dict(size=15, color='black'),
             showline=True
@@ -241,14 +249,21 @@ elif selected_tab == "Premier League":
         yaxis=dict(
             title="Wartość ligi (mld euro)",
             title_font=dict(size=25, color='black'),
-            range=[0, 7000],
+            range=[0, 10500],
             tickfont=dict(size=15, color='black'),
             showgrid=True,
             gridwidth=1,
             gridcolor='gray',
             zerolinecolor='white'
         ),
-        hovermode='x',
+        #hovermode='x',
+        hovermode="x unified",
+        hoverlabel=dict(
+            font=dict(
+                size=13,
+                color='black'
+            )
+        ),
         height=500,
         width=1200,
         legend=dict(
