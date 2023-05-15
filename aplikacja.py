@@ -153,7 +153,7 @@ selected_tab = option_menu(
                         "container": {"padding": "0!important", "background-color": "green"},
                         "icon": {"color": "white", "font-size": "20px"},
                         "nav-link": {
-                            "font-size": "16px",
+                            "font-size": "10px",
                             "text-align": "left",
                             "margin": "0px",
                             "--hover-color": "red",
