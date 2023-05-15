@@ -110,7 +110,7 @@ body {
 css = """
     <style>
     div[data-baseweb="select"] > div:first-child {
-        font-size: 15px;
+        font-size: 14px;
     }
     </style>
 """
