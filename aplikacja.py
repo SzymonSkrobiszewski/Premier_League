@@ -230,7 +230,7 @@ elif selected_tab == "Premier League":
     st.header('Wartość ligi na przestrzeni lat')
     liga = st.multiselect(
         "Wybierz ligę :",
-        ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
+            ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
         default=["Premier league"],
     )
     fig0 = go.Figure()
@@ -242,7 +242,7 @@ elif selected_tab == "Premier League":
                 y=wartosci[lig],
                 name=lig,
                 mode='lines+markers',
-                hovertemplate=f'<br>Wartość {lig}: <b>%{{y}} mld</b> <extra></extra>',
+                hovertemplate=f'<br>Wartość {lig}: <b>%{{y}} mln</b> <extra></extra>',
                 # hoverlabel=dict(
                 #     font=dict(size=15),
                 #     bgcolor=colors[i],
@@ -262,7 +262,7 @@ elif selected_tab == "Premier League":
             showline=True
         ),
         yaxis=dict(
-            title="Wartość ligi (mld euro)",
+            title="Wartość ligi (mln euro)",
             title_font=dict(size=25, color='black'),
             range=[0, 10500],
             tickfont=dict(size=15, color='black'),
