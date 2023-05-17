@@ -18,7 +18,7 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    df = pd.read_excel(io='Premier_league_all_season.xlsx', engine='openpyxl')
+    df = pd.read_excel(io='Premier_league_all_season1.xlsx', engine='openpyxl')
     carabao_cup = pd.read_excel(io='carabao_cup.xlsx', engine='openpyxl')
     fa_cup = pd.read_excel(io='fa_cup.xlsx', engine='openpyxl')
     premier_league = pd.read_excel(io='premier_league_winners.xlsx', engine='openpyxl')
@@ -104,6 +104,15 @@ def calculate_points(df, team_name, season):
             "Punkty": list(points_by_matchweek.values()),
         }
     )
+
+def choose_color_for_teams(team1, team2):
+    team1_color = color_dictionary.get(team1, {})
+    team2_color = color_dictionary.get(team2, {})
+    color1 = list(team1_color.keys())[0]
+    color2 = next(iter(team2_color.keys()))
+    while True:
+        if color1 != color2:
+            return {team1: team1_color[color1], team2: team2_color[color2]}
 
 ############################################################
 
