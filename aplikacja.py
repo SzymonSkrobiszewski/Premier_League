@@ -235,6 +235,7 @@ elif selected_tab == "Premier League":
     )
     fig0 = go.Figure()
     colors = ['red', 'green', 'blue', 'purple', 'black']
+    replace_name = {'Bundesliga': 'Bundesligi', 'La liga': 'La ligi'}
     for i, lig in enumerate(liga):
         fig0.add_trace(
             go.Scatter(
@@ -242,7 +243,7 @@ elif selected_tab == "Premier League":
                 y=wartosci[lig],
                 name=lig,
                 mode='lines+markers',
-                hovertemplate=f'<br>Wartość {lig}: <b>%{{y}} mln</b> <extra></extra>',
+                hovertemplate=f'<br>Wartość {replace_name.get(lig, lig)}: <b>%{{y:.0f}} mln</b> <extra></extra>',
                 # hoverlabel=dict(
                 #     font=dict(size=15),
                 #     bgcolor=colors[i],
@@ -451,10 +452,13 @@ elif selected_tab == "Porównywanie statystyk":
                             default=['Manchester City', 'Manchester United']
                         )
         if len(selected_teams) == 2:
-            common_seasons = find_common_seasons(selected_teams[0], selected_teams[1], df)
-            selected_season = st.selectbox("Wybierz sezon :", common_seasons)
-            club1 = calculate_points(df, selected_teams[0], selected_season)
-            club2 = calculate_points(df, selected_teams[1], selected_season)
+            column1, column2 = st.columns(2)
+            common_season1 = find_common_seasons(selected_teams[0], selected_teams[0], df)
+            common_season2 = find_common_seasons(selected_teams[1], selected_teams[1], df)
+            selected_season1 = column1.selectbox(f"Wybierz sezon dla {selected_teams[0]} :", common_season1)
+            selected_season2 = column2.selectbox(f'Wybierz sezon: dla {selected_teams[1]} : ', common_season2)
+            club1 = calculate_points(df, selected_teams[0], selected_season1)
+            club2 = calculate_points(df, selected_teams[1], selected_season2)
             club0 = pd.concat([club1, club2])
             max_value0 = club0['Punkty'].max()
 
@@ -489,7 +493,7 @@ elif selected_tab == "Porównywanie statystyk":
                     showline=True,
                     range=(
                         [-0.5, 43]
-                        if any(season in selected_season for season in ["92/93", "93/94", "94/95"])
+                        if any(season in selected_season1 + selected_season2 for season in ["92/93", "93/94", "94/95"])
                         else [-0.5, 39]
                     ),
                     title_font=dict(size=25, color='black'),
