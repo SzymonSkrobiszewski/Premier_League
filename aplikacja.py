@@ -34,6 +34,59 @@ def load_data():
 
 df, carabao_cup, fa_cup, premier_league, wartosci, cup1, cup2, p_l, unique_teams = load_data()
 
+color_dictionary = {
+    'Arsenal': {'red': '#EF0107', 'gold': '#9C824A'},
+    'Nottingham Forest': {'red': '#DD0000'},
+    'Chelsea': {'blue': '#034694', 'gold': '#DBA111'},
+    'Coventry': {'blue': '#059DD9', 'gold': '#E54724'},
+    'Crystal Palace': {'blue': '#1B458F', 'gray': '#A7A5A6', 'red': '#C4122E'},
+    'Ipswich': {'blue': '#3a64a3', 'red': '#de2c37'},
+    'Leeds': {'yellow': '#FFCD00', 'gold': '#AC944D'},
+    'Liverpool': {'red': '#C8102E', 'green': '#00B2A9'},
+    'Manchester United': {'red': '#DA291C', 'yellow': '#FBE122'},
+    'Middlesbrough': {'blue': '#004494', 'black': '#000000'},
+    'Sheffield Wednesday': {'blue': '#4681cf', 'yellow': '#e9b008'},
+    'Manchester City': {'blue': '#6CABDD', 'gold': '#D4A12A'},
+    'Southampton': {'black': '#130C0E', 'red': '#D71920'},
+    'Tottenham': {'blue': '#132257'},
+    'Aston Villa': {'claret': '#670E36', 'blue': '#95BFE5'},
+    'Newcastle': {'black': '#241F20', 'blue': '#41B6E6'},
+    'West Ham': {'maroon': '#7A263A', 'blue': '#1BB1E7'},
+    'Swindon': {'gold': '#B48D00', 'red': '#DC161B'},
+    'Leicester': {'blue': '#003090', 'gold': '#FDBE11'},
+    'Brentford': {'orange': '#FFB400', 'red': '#D20000'},
+    'Barnsley': {'red': '#D71921', 'blue': '#00B8F1'},
+    'Birmingham': {'blue': '#0000FF', 'red': '#DC241F'},
+    'Blackburn Rovers': {'blue': '#009EE0', 'green': '#009036'},
+    'Blackpool': {'orange': '#F68712'},
+    'Bolton': {'blue': '#263C7E', 'red': '#88111E'},
+    'Bournemouth': {'black': '#000000', 'red': '#B50E12'},
+    'Brighton': {'blue': '#0057B8', 'orange': ''},
+    'Burnley': {'BURGUNDY'.lower(): '#6C1D45', 'blue': '#99D6EA'},
+    'Derby': {'black': '#000000', 'blue': '#000040'},
+    'Everton': {'blue': '#003399', 'pink': '#fa9bac'},
+    'Huddersfield': {'blue': '#0E63AD', 'yellow': '#FDE43C'},
+    'Wolves': {'black': '#231F20', 'yellow': '#FDB913'},
+    'West Brom': {'blue': '#122F67', 'green': '#149557'},
+    'Wimbledon': {'blue': '#2b4690', 'yellow': '#fff200'},
+    'Wigan': {'green': '#123d0f', 'blue': '#1d59af'},
+    'Norwich City': {'green': '#00A650', 'yellow': '#FFF200'},
+    'Swansea': {'black': '#000000'},
+    'Hull': {'orange': '#f5971d', 'black': '#101920'},
+    'Reading': {'pink': '#dd1740 ', 'blue': '#004494'},
+    'Watford': {'yellow': '#FBEE23', 'red': '#ED2127'},
+    'Cardiff': {'blue': '#0070B5', 'red': '#D11524'},
+    'QPR': {'blue': '#1d5ba4', 'pink': '#ff33cc'},
+    'Stoke': {'red': '#E03A3E', 'blue': '#1B449C'},
+    'Bradford': {'yellow': '#FFDF00','black': '#000000'},
+    'Portsmouth': {'red': '#ff0000', 'black': '#000000'},
+    'Sheffield United': {'red': '#ec2227', 'yellow': '#fcee23'},
+    'Fullham': {'black': '#000000', 'red': '#CC0000'},
+    'Charlton': {'red': '#d4021d', 'black': '#000000'},
+    'Oldham': {'cyan': '#59777d'},
+    'Sunderland': {'red': '#eb172b', 'gold': '#a68a26'}
+}
+
 
 ######################### FUNKCJE PRZETWARZAJĄCE DANE #########################
 
@@ -110,7 +163,7 @@ def choose_color_for_teams(team1, team2):
     team2_color = color_dictionary.get(team2, {})
     color1 = list(team1_color.keys())[0]
     color2 = next(iter(team2_color.keys()))
-    while True:
+    for color2 in team2_color.keys():
         if color1 != color2:
             return {team1: team1_color[color1], team2: team2_color[color2]}
 
@@ -462,24 +515,27 @@ elif selected_tab == "Porównywanie statystyk":
                         )
         if len(selected_teams) == 2:
             column1, column2 = st.columns(2)
+            color_line = choose_color_for_teams(selected_teams[0], selected_teams[1])
             common_season1 = find_common_seasons(selected_teams[0], selected_teams[0], df)
             common_season2 = find_common_seasons(selected_teams[1], selected_teams[1], df)
             selected_season1 = column1.selectbox(f"Wybierz sezon dla {selected_teams[0]} :", common_season1)
-            selected_season2 = column2.selectbox(f'Wybierz sezon: dla {selected_teams[1]} : ', common_season2)
+            selected_season2 = column2.selectbox(f'Wybierz sezon dla {selected_teams[1]} : ', common_season2)
             club1 = calculate_points(df, selected_teams[0], selected_season1)
             club2 = calculate_points(df, selected_teams[1], selected_season2)
             club0 = pd.concat([club1, club2])
             max_value0 = club0['Punkty'].max()
 
             fig2 = go.Figure()
+        
 
             fig2.add_trace(
                 go.Scatter(
                     x=club1['Kolejka'],
                     y=club1['Punkty'],
                     mode='lines+markers',
+                    marker=dict(color=color_line[selected_teams[0]]),
                     name=selected_teams[0],
-                    hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
+                    #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                     hovertext=[f"Punkty drużyny {selected_teams[0]}: <b>{points}</b>" for points in club1['Punkty']],
                     hovertemplate="%{hovertext}<extra></extra>"
                 )
@@ -490,7 +546,8 @@ elif selected_tab == "Porównywanie statystyk":
                     y=club2['Punkty'],
                     mode='lines+markers',
                     name=selected_teams[1],
-                    hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
+                    marker=dict(color=color_line[selected_teams[1]]),
+                    #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                     hovertext=[f"Punkty drużyny {selected_teams[1]}: <b>{points}</b>" for points in club2['Punkty']],
                     hovertemplate="%{hovertext}<extra></extra>"
                 )
@@ -518,6 +575,12 @@ elif selected_tab == "Porównywanie statystyk":
                     gridcolor='gray',
                     zerolinecolor='white'
                 ),
+                hoverlabel=dict(
+                    font=dict(
+                        size=15,
+                        color='black'
+                    )
+                ),
                 legend=dict(
                     title=dict(text="Drużyna", font=dict(size=25, color='black')),
                     font=dict(size=20, color='black'),
@@ -529,7 +592,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ),
                 height=500,
                 width=1200,
-                hovermode='x',
+                hovermode='x unified',
             )
             st.plotly_chart(fig2, use_container_width=True)
     if comparison_type == "Drużyna i sezon":
@@ -596,8 +659,10 @@ elif selected_tab == "Porównywanie statystyk":
     st.header('Statystyki dotyczące bezpośrednich starć drużyn')
     team1 = st.selectbox("Wybierz pierwszą drużynę :", unique_teams)
     team2 = st.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, team=team1))
+    color = choose_color_for_teams(team1, team2)
     fig4 = go.Figure()
     wyniki = head_to_head_results(df, team1, team2)
+    colors = [color[team1], '#cd7f32', color[team2]]
     fig4.add_traces(
         go.Bar(
             x=wyniki['result'],
@@ -605,11 +670,11 @@ elif selected_tab == "Porównywanie statystyk":
             text=wyniki['count'],
             textfont=dict(size=16, color='white'),
             showlegend=False,
-            marker=dict(color=['blue', '#cd7f32', 'green']),
+            marker=dict(color=colors),
             hovertemplate='Liczba rezultatów: %{y} <extra></extra>',
             hoverlabel=dict(
                 font=dict(size=14, color='white'),
-                bgcolor=['blue', '#cd7f32', 'green']
+                bgcolor=colors
             )
         )
     )
@@ -618,7 +683,7 @@ elif selected_tab == "Porównywanie statystyk":
             x=[None],
             y=[None],
             mode='markers',
-            marker=dict(color='blue', size=10),
+            marker=dict(color=color[team1], size=10),
             name=f'Ilość zwycięstw drużyny {team1}'
         )
     )
@@ -636,7 +701,7 @@ elif selected_tab == "Porównywanie statystyk":
             x=[None],
             y=[None],
             mode='markers',
-            marker=dict(color='green', size=10),
+            marker=dict(color=color[team2], size=10),
             name=f'Ilość zwycięstw drużyny {team2}'
         )
     )
