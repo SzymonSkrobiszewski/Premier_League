@@ -158,14 +158,21 @@ def calculate_points(df, team_name, season):
         }
     )
 
+
 def choose_color_for_teams(team1, team2):
-    team1_color = color_dictionary.get(team1, {})
-    team2_color = color_dictionary.get(team2, {})
-    color1 = list(team1_color.keys())[0]
-    color2 = next(iter(team2_color.keys()))
-    for color2 in team2_color.keys():
-        if color1 != color2:
-            return {team1: team1_color[color1], team2: team2_color[color2]}
+    if len(color_dictionary[team2].items()) == 1 and len(color_dictionary[team1]) != 1:
+        return {
+                    team1: list(color_dictionary[team1].values())[1],
+                    team2: list(color_dictionary[team2].values())[0]
+        }
+    else:
+        team1_color = color_dictionary.get(team1, {})
+        team2_color = color_dictionary.get(team2, {})
+        color1 = list(team1_color.keys())[0]
+        color2 = next(iter(team2_color.keys()))
+        for color2 in team2_color.keys():
+            if color1 != color2:
+                return {team1: team1_color[color1], team2: team2_color[color2]}
 
 ############################################################
 
