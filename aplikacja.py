@@ -302,10 +302,10 @@ elif selected_tab == "Premier League":
         fig0.add_trace(
             go.Scatter(
                 x=wartosci['sezon'],
-                y=wartosci[lig],
+                y=wartosci[lig]/1000,
                 name=lig,
                 mode='lines+markers',
-                hovertemplate=f'<br>Wartość {replace_name.get(lig, lig)}: <b>%{{y:.0f}} mln</b> <extra></extra>',
+                hovertemplate=f'<br>Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b> <extra></extra>',
                 # hoverlabel=dict(
                 #     font=dict(size=15),
                 #     bgcolor=colors[i],
@@ -319,16 +319,16 @@ elif selected_tab == "Premier League":
         margin=dict(l=20, r=50, t=25, b=50),
         xaxis=dict(
             title='Sezon',
-            range=[-0.5, 18],
+            range=[-0.5, 17.5],
             title_font=dict(size=25, color='black'),
-            tickfont=dict(size=15, color='black'),
+            tickfont=dict(size=16, color='black'),
             showline=True
         ),
         yaxis=dict(
-            title="Wartość ligi (mln euro)",
+            title="Wartość ligi (mld euro)",
             title_font=dict(size=25, color='black'),
-            range=[0, 10500],
-            tickfont=dict(size=15, color='black'),
+            range=[0, 11],
+            tickfont=dict(size=16, color='black'),
             showgrid=True,
             gridwidth=1,
             gridcolor='gray',
