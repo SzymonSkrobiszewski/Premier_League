@@ -544,13 +544,13 @@ elif selected_tab == "Premier League":
             title='Nazwa drużyny',
             title_font=dict(size=25, color='black'),
             #range=[0, y + 1.5],
-            tickfont=dict(size=6, color='black'),
+            tickfont=dict(size=12, color='black'),
             showgrid=False,
             gridwidth=0,
             gridcolor='gray',
             zeroline=False,
         ),
-        height=500,
+        height=800,
         width=1200,
 
     )
