@@ -312,7 +312,7 @@ elif selected_tab == "Premier League":
                 y=wartosci[lig]/1000,
                 name=lig,
                 mode='lines+markers',
-                hovertemplate=f'<br>Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b> <extra></extra>',
+                hovertemplate=f'Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b> <extra></extra>',
                 # hoverlabel=dict(
                 #     font=dict(size=15),
                 #     bgcolor=colors[i],
@@ -345,7 +345,7 @@ elif selected_tab == "Premier League":
         hovermode="x unified",
         hoverlabel=dict(
             font=dict(
-                size=13,
+                size=15,
                 color='black'
             )
         ),
@@ -475,31 +475,35 @@ elif selected_tab == "Premier League":
     df1 = team_and_number_of_seasons[team_and_number_of_seasons['Liczba sezonów'].between(x, y)]
     fig6.add_traces(
         go.Bar(
-            x=df1.index,
-            y=df1['Liczba sezonów'],
-            text=df1['Liczba sezonów'],
+            y=df1.index,
+            x=df1['Liczba sezonów'],
+            #text=df1['Liczba sezonów'],
+            orientation='h',
             marker=dict(color='purple'),
             textfont=dict(size=16, color='white'),
             hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
-            hovertemplate='Liczba rozegranych sezonów: <b>%{y}</b><extra></extra>',
+            hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
             showlegend=False
         )
     )
     fig6.update_layout(
         margin=dict(l=50, r=50, t=20, b=50),
         xaxis=dict(
-                title='Nazwa drużyny',
+                title='Liczba sezonów w Premier league',
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=14, color='black'),
 
         ),
         yaxis=dict(
-            title='Liczba sezonów w Premier league',
+            title='Nazwa drużyny',
             title_font=dict(size=25, color='black'),
-            range=[0, y + 1.5],
+            #range=[0, y + 1.5],
             tickfont=dict(size=14, color='black'),
-            showgrid=True,
-            gridwidth=1,
+            showgrid=False,
+            gridwidth=0,
             gridcolor='gray',
             zeroline=False,
         ),
@@ -508,6 +512,51 @@ elif selected_tab == "Premier League":
 
     )
     st.plotly_chart(fig6, use_container_width=True)
+
+    st.header('Coś tam')
+
+    fig10 = go.Figure()
+    fig10.add_traces(
+        go.Bar(
+            y=team_and_number_of_seasons.index,
+            x=team_and_number_of_seasons['Liczba sezonów'],
+            #text=df1['Liczba sezonów'],
+            orientation='h',
+            marker=dict(color='purple'),
+            textfont=dict(size=16, color='white'),
+            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
+            hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
+            showlegend=False
+        )
+    )
+    fig10.update_layout(
+        margin=dict(l=50, r=50, t=20, b=50),
+        xaxis=dict(
+                title='Liczba sezonów w Premier league',
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=14, color='black'),
+
+        ),
+        yaxis=dict(
+            title='Nazwa drużyny',
+            title_font=dict(size=25, color='black'),
+            #range=[0, y + 1.5],
+            tickfont=dict(size=6, color='black'),
+            showgrid=False,
+            gridwidth=0,
+            gridcolor='gray',
+            zeroline=False,
+        ),
+        height=500,
+        width=1200,
+
+    )
+    st.plotly_chart(fig10, use_container_width=True)
+
+    
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
@@ -574,7 +623,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ),
                 yaxis=dict(
                     title='Punkty',
-                    range=[-2, round(max_value0, -1) + 10],
+                    range=[-2, round(max_value0, -1) + 15],
                     tickfont=dict(size=17, color='black'),
                     title_font=dict(size=25, color='black'),
                     showgrid=True,
@@ -643,7 +692,7 @@ elif selected_tab == "Porównywanie statystyk":
                 yaxis=dict(
                     title='Kolejka',
                     title_font=dict(size=25, color='black'),
-                    range=[-2, round(max(max_value1, default=0), -1) + 10],
+                    range=[-2, round(max(max_value1, default=0), -1) + 15],
                     tickfont=dict(size=17, color='black'),
                     showgrid=True,
                     gridwidth=1,
@@ -678,9 +727,9 @@ elif selected_tab == "Porównywanie statystyk":
             textfont=dict(size=16, color='white'),
             showlegend=False,
             marker=dict(color=colors),
-            hovertemplate='Liczba rezultatów: %{y} <extra></extra>',
+            hovertemplate='Liczba rezultatów: <b>%{y}</b> <extra></extra>',
             hoverlabel=dict(
-                font=dict(size=14, color='white'),
+                font=dict(size=15, color='white'),
                 bgcolor=colors
             )
         )
