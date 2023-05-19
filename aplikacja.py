@@ -380,7 +380,7 @@ elif selected_tab == "Premier League":
     )
     st.plotly_chart(fig0, use_container_width=True)
 
-    st.header('Zwycięzcy Premier League.')
+    st.header('Zwycięzcy Premier League')
     fig = go.Figure()
     fig.add_trace(
         go.Bar(
@@ -415,7 +415,7 @@ elif selected_tab == "Premier League":
     )
     st.plotly_chart(fig, use_container_width=True)
 
-    st.header('Podział pucharów krajowych.')
+    st.header('Podział pucharów krajowych')
     puchary = st.multiselect('Wybierz puchar :', ['Fa cup', 'Carabao cup'], default=['Fa cup'])
     fig1 = go.Figure()
 
@@ -581,7 +581,7 @@ elif selected_tab == "Premier League":
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
-    st.header('Zmiany punktowe w trakcie sezonu')
+    st.header('Zmiany liczby punktów na przestrzeni sezonu')
     comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużyna i sezon"))
 
     if comparison_type == "Drużyny":
