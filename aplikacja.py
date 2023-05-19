@@ -733,7 +733,7 @@ elif selected_tab == "Porównywanie statystyk":
                 hovermode='x',
         )
         st.plotly_chart(fig3, use_container_width=True)
-    st.header('Statystyki dotyczące bezpośrednich starć drużyn')
+    st.header('Rezultaty bezpośrednich starć dwóch drużyn')
     team1 = st.selectbox("Wybierz pierwszą drużynę :", unique_teams)
     team2 = st.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, team=team1))
     color = choose_color_for_teams(team1, team2)
