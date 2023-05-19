@@ -581,7 +581,7 @@ elif selected_tab == "Premier League":
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
-    st.header('Tekst')
+    st.header('Zmiany punktowe w trakcie sezonu')
     comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużyna i sezon"))
 
     if comparison_type == "Drużyny":
@@ -748,11 +748,16 @@ elif selected_tab == "Porównywanie statystyk":
             textfont=dict(size=16, color='white'),
             showlegend=False,
             marker=dict(color=colors),
-            hovertemplate='Liczba rezultatów: <b>%{y}</b> <extra></extra>',
+            #hovertemplate='Liczba rezultatów: <b>%{y}</b> <extra></extra>',
             hoverlabel=dict(
                 font=dict(size=15, color='white'),
                 bgcolor=colors
-            )
+            ),
+            hovertemplate=[
+                f'Liczba zwycięstw drużyny {team1}: <b>%{{y}}</b> <extra></extra><br>',
+                f'Liczba remisów: <b>%{{y}}</b> <extra></extra><br>',
+                f'Liczba zwycięstw drużyny {team2}: <b>%{{y}}</b> <extra></extra>'
+            ]
         )
     )
     fig4.add_trace(
@@ -823,7 +828,7 @@ elif selected_tab == "Porównywanie statystyk":
             y=[abc['GSWPP'].iloc[0], abc['GSTWPP'].iloc[0]],
             text=[abc['GSWPP'].iloc[0], abc['GSTWPP'].iloc[0]],
             textfont=dict(size=17, color='white'),
-            hoverlabel=dict(font=dict(size=16, color='black'), bgcolor='#E3A329'),
+            hoverlabel=dict(font=dict(size=15, color='black'), bgcolor='#E3A329'),
             hovertemplate=[
                             'Liczba strzelonych bramek w pierwszej połowie: <b>%{y}</b><extra></extra>', 
                             'Liczba straconych bramek w pierwszej połowie: <b>%{y}</b><extra></extra>'
@@ -836,7 +841,7 @@ elif selected_tab == "Porównywanie statystyk":
             y=[abc['GSWDP'].iloc[0], abc['GSTWDP'].iloc[0]],
             text=[abc['GSWDP'].iloc[0], abc['GSTWDP'].iloc[0]],
             textfont=dict(size=17, color='white'),
-            hoverlabel=dict(font=dict(size=16, color='black'), bgcolor='#00CCFF'),
+            hoverlabel=dict(font=dict(size=15, color='black'), bgcolor='#00CCFF'),
             hovertemplate=[
                             'Liczba strzelonych bramek w drugiej połowie: <b>%{y}</b><extra></extra>',
                             'Liczba straconych bramek w drugiej połowie: <b>%{y}</b><extra></extra>'
