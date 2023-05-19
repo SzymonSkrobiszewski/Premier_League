@@ -534,7 +534,7 @@ elif selected_tab == "Premier League":
         df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
     )
     team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
-    st.header('Liczba rozegranych sezonów w Premier league')
+    st.header('Liczba rozegranych sezonów w Premier league według drużyn')
 
     fig10 = go.Figure()
     fig10.add_traces(
@@ -581,7 +581,7 @@ elif selected_tab == "Premier League":
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
-    st.header('Zmiany liczby punktów na przestrzeni sezonu')
+    st.header('Liczba punktów ewoluująca w trakcie sezonu')
     comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużyna i sezon"))
 
     if comparison_type == "Drużyny":
