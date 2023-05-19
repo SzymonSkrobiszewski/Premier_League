@@ -174,6 +174,23 @@ def choose_color_for_teams(team1, team2):
             if color1 != color2:
                 return {team1: team1_color[color1], team2: team2_color[color2]}
 
+def calculate_lost_goals_by_half(df, team, season):
+    first_half_goals_conceded = df[df['Season'] == season].groupby('HomeTeam')['HTAG'].sum().get(team) + \
+                                df[df['Season'] == season].groupby('AwayTeam')['HTHG'].sum().get(team)
+    second_half_goals_conceded = df[df['Season'] == season].groupby('HomeTeam')['SHTAG'].sum().get(team) + \
+                                  df[df['Season'] == season].groupby('AwayTeam')['SHTHG'].sum().get(team)
+    first_half_goals_scored = df[df['Season'] == season].groupby('HomeTeam')['HTHG'].sum().get(team) + \
+                              df[df['Season'] == season].groupby('AwayTeam')['HTAG'].sum().get(team)
+    second_half_goals_scored = df[df['Season'] == season].groupby('HomeTeam')['SHTHG'].sum().get(team) + \
+                               df[df['Season'] == season].groupby('AwayTeam')['SHTAG'].sum().get(team)
+    return pd.DataFrame(
+        {
+            'GSTWPP': [int(first_half_goals_conceded)],
+            'GSTWDP': [int(second_half_goals_conceded)],
+            'GSWPP': [int(first_half_goals_scored)],
+            'GSWDP': [int(second_half_goals_scored)]
+        } 
+    )
 ############################################################
 
 
@@ -462,58 +479,62 @@ elif selected_tab == "Premier League":
         ),
     )
     st.plotly_chart(fig1, use_container_width=True)
-    st.header('Liczba rozegranych sezonów w podziale na przedziały')
-    fig6 = go.Figure()
-    seasons_count = st.selectbox("Wybierz przedział zamknięty :",
-                                ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"]
-    )
-    x, y = map(lambda x: int(x), seasons_count.split('-'))
+    # st.header('Liczba rozegranych sezonów w podziale na przedziały')
+    # fig6 = go.Figure()
+    # seasons_count = st.selectbox("Wybierz przedział zamknięty :",
+    #                             ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"]
+    # )
+    # x, y = map(lambda x: int(x), seasons_count.split('-'))
+    # team_and_number_of_seasons = pd.DataFrame(
+    #     df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
+    # )
+    # team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
+    # df1 = team_and_number_of_seasons[team_and_number_of_seasons['Liczba sezonów'].between(x, y)]
+    # fig6.add_traces(
+    #     go.Bar(
+    #         y=df1.index,
+    #         x=df1['Liczba sezonów'],
+    #         #text=df1['Liczba sezonów'],
+    #         orientation='h',
+    #         marker=dict(color='purple'),
+    #         textfont=dict(size=16, color='white'),
+    #         hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
+    #         hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
+    #         showlegend=False
+    #     )
+    # )
+    # fig6.update_layout(
+    #     margin=dict(l=50, r=50, t=20, b=50),
+    #     xaxis=dict(
+    #             title='Liczba sezonów w Premier league',
+    #             showgrid=True,
+    #             gridwidth=1,
+    #             gridcolor='gray',
+    #             title_font=dict(size=25, color='black'),
+    #             tickfont=dict(size=14, color='black'),
+
+    #     ),
+    #     yaxis=dict(
+    #         title='Nazwa drużyny',
+    #         title_font=dict(size=25, color='black'),
+    #         #range=[0, y + 1.5],
+    #         tickfont=dict(size=14, color='black'),
+    #         showgrid=False,
+    #         gridwidth=0,
+    #         gridcolor='gray',
+    #         zeroline=False,
+    #     ),
+    #     height=500,
+    #     width=1200,
+
+    # )
+    # st.plotly_chart(fig6, use_container_width=True)
+
     team_and_number_of_seasons = pd.DataFrame(
         df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
     )
     team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
-    df1 = team_and_number_of_seasons[team_and_number_of_seasons['Liczba sezonów'].between(x, y)]
-    fig6.add_traces(
-        go.Bar(
-            y=df1.index,
-            x=df1['Liczba sezonów'],
-            #text=df1['Liczba sezonów'],
-            orientation='h',
-            marker=dict(color='purple'),
-            textfont=dict(size=16, color='white'),
-            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
-            hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
-            showlegend=False
-        )
-    )
-    fig6.update_layout(
-        margin=dict(l=50, r=50, t=20, b=50),
-        xaxis=dict(
-                title='Liczba sezonów w Premier league',
-                showgrid=True,
-                gridwidth=1,
-                gridcolor='gray',
-                title_font=dict(size=25, color='black'),
-                tickfont=dict(size=14, color='black'),
-
-        ),
-        yaxis=dict(
-            title='Nazwa drużyny',
-            title_font=dict(size=25, color='black'),
-            #range=[0, y + 1.5],
-            tickfont=dict(size=14, color='black'),
-            showgrid=False,
-            gridwidth=0,
-            gridcolor='gray',
-            zeroline=False,
-        ),
-        height=500,
-        width=1200,
-
-    )
-    st.plotly_chart(fig6, use_container_width=True)
-
-    st.header('Coś tam')
+    st.header('Liczba rozegranych sezonów w Premier league')
 
     fig10 = go.Figure()
     fig10.add_traces(
@@ -524,7 +545,7 @@ elif selected_tab == "Premier League":
             orientation='h',
             marker=dict(color='purple'),
             textfont=dict(size=16, color='white'),
-            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
+            hoverlabel=dict(font=dict(size=15, color='white'), bgcolor='purple'),
             hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
             showlegend=False
         )
@@ -784,7 +805,78 @@ elif selected_tab == "Porównywanie statystyk":
         width=1200,
     )
     st.plotly_chart(fig4, use_container_width=True)
+    
+    st.header('Porównanie bramek strzelonych i straconych względem połów')
+    column3, column4 = st.columns(2)
+    club3 = column3.selectbox("Wybierz klub", unique_teams)
+    if club3:
+        seasons = find_common_seasons(club3, club3, df)
+        excluded_seasons = ['92/93', '93/94', '94/95']
+        season3 = column4.selectbox("Wybierz sezon", [season for season in seasons if season not in excluded_seasons])
 
+    abc = calculate_lost_goals_by_half(df, club3, season3)
+    fig7 = go.Figure()
+
+    fig7.add_traces(data=[
+        go.Bar(
+            x=['Bramki strzelone', 'Bramki stracone'], 
+            y=[abc['GSWPP'].iloc[0], abc['GSTWPP'].iloc[0]],
+            text=[abc['GSWPP'].iloc[0], abc['GSTWPP'].iloc[0]],
+            textfont=dict(size=17, color='white'),
+            hoverlabel=dict(font=dict(size=16, color='black'), bgcolor='#E3A329'),
+            hovertemplate=[
+                            'Liczba strzelonych bramek w pierwszej połowie: <b>%{y}</b><extra></extra>', 
+                            'Liczba straconych bramek w pierwszej połowie: <b>%{y}</b><extra></extra>'
+                          ],
+            name='Pierwsza połowa',
+            marker=dict(color='#E3A329')
+        ),
+        go.Bar(
+            x=['Bramki strzelone', 'Bramki stracone'], 
+            y=[abc['GSWDP'].iloc[0], abc['GSTWDP'].iloc[0]],
+            text=[abc['GSWDP'].iloc[0], abc['GSTWDP'].iloc[0]],
+            textfont=dict(size=17, color='white'),
+            hoverlabel=dict(font=dict(size=16, color='black'), bgcolor='#00CCFF'),
+            hovertemplate=[
+                            'Liczba strzelonych bramek w drugiej połowie: <b>%{y}</b><extra></extra>',
+                            'Liczba straconych bramek w drugiej połowie: <b>%{y}</b><extra></extra>'
+                          ],
+            name='Druga połowa',
+            marker=dict(color='#00CCFF')
+        )
+        ]
+        
+    )
+    fig7.update_layout(
+        barmode='group',
+        margin=dict(l=50, r=50, t=50, b=50),
+        showlegend=True,
+        xaxis=dict(
+            title='Rodzaj bramki',
+            title_font=dict(size=25, color='black'),
+            tickfont=dict(size=15, color='black')
+        ),
+        yaxis=dict(
+            title='Liczba',
+            title_font=dict(size=25, color='black'),
+            tickfont=dict(size=15, color='black'),
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='gray',
+            zeroline=False,
+            zerolinewidth=0
+        ),
+        legend=dict(
+            font=dict(
+                size=17  # Rozmiar czcionki legendy
+            ),
+            y=1.02,
+            x=1
+        ),
+        height=500,
+        width=1200,
+    )
+    st.plotly_chart(fig7, use_container_width=True)
 
 elif selected_tab == "Transfery":
     st.markdown('---')
