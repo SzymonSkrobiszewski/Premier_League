@@ -658,7 +658,7 @@ elif selected_tab == "Porównywanie statystyk":
                     y=club1['Punkty'],
                     mode='lines+markers',
                     marker=dict(color=color_line[selected_teams[0]]),
-                    name=selected_teams[0],
+                    name=f'{selected_teams[0]} {selected_season1}',
                     #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                     hovertext=[f"Punkty drużyny {selected_teams[0]}: <b>{points}</b>" for points in club1['Punkty']],
                     hovertemplate="%{hovertext}<extra></extra>"
@@ -669,11 +669,11 @@ elif selected_tab == "Porównywanie statystyk":
                     x=club2['Kolejka'],
                     y=club2['Punkty'],
                     mode='lines+markers',
-                    name=selected_teams[1],
+                    name=f'{selected_teams[1]} {selected_season2}',
                     marker=dict(color=color_line[selected_teams[1]]),
                     #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                     hovertext=[f"Punkty drużyny {selected_teams[1]}: <b>{points}</b>" for points in club2['Punkty']],
-                    hovertemplate="%{hovertext}<extra></extra>"
+                    hovertemplate="%{hovertext}<extra></extra>",
                 )
             )
             fig2.update_layout(
@@ -706,13 +706,13 @@ elif selected_tab == "Porównywanie statystyk":
                     )
                 ),
                 legend=dict(
-                    title=dict(text="Drużyna", font=dict(size=25, color='black')),
+                    title=dict(font=dict(size=25, color='black')),
                     font=dict(size=20, color='black'),
                     orientation="v",
                     yanchor="top",
-                    y=0.96,
+                    y=0.98,
                     xanchor="right",
-                    x=1.24
+                    x=1.33
                 ),
                 height=500,
                 width=1200,
@@ -1077,8 +1077,3 @@ elif selected_tab == "Porównywanie statystyk":
 
 elif selected_tab == "Transfery":
     st.markdown('---')
-    rok_poczatkowy = st.slider('Wybierz rok początkowy', value=[
-        '92/93', '93/94', '94/95', '95/96', '96/97', '97/98', '98/99', '99/00', '00/01', '01/02',
-        '02/03', '03/04', '04/05', '05/06', '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
-        '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22'
-    ])
