@@ -838,7 +838,7 @@ elif selected_tab == "Porównywanie statystyk":
         fig7 = go.Figure()
         fig7.add_traces(data=[
             go.Bar(
-                x=['Pierwsza połowa', 'Druga połowa'],
+                x=['Pierwsza', 'Druga'],
                 y=[df_c5['GSWPP'].iloc[0], df_c5['GSWDP'].iloc[0]],
                 text=[df_c5['GSWPP'].iloc[0], df_c5['GSWDP'].iloc[0]],
                 textfont=dict(size=16, color='white'),
@@ -851,7 +851,7 @@ elif selected_tab == "Porównywanie statystyk":
                 name=club3
             ),
             go.Bar(
-                x=['Pierwsza połowa', 'Druga połowa'],
+                x=['Pierwsza', 'Druga'],
                 y=[df_c5['GSWPP'].iloc[1], df_c5['GSWDP'].iloc[1]],
                 text=[df_c5['GSWPP'].iloc[1], df_c5['GSWDP'].iloc[1]],
                 hovertemplate=[
@@ -877,13 +877,13 @@ elif selected_tab == "Porównywanie statystyk":
             xaxis=dict(
                 title='Połowa',
                 title_font=dict(size=25, color='black'),
-                tickfont=dict(size=16, color='black')
+                tickfont=dict(size=18, color='black')
             ),
             yaxis=dict(
                 range=[0, maksimum + 3],
                 title='Liczba bramek strzelonych',
                 title_font=dict(size=25, color='black'),
-                tickfont=dict(size=16, color='black'),
+                tickfont=dict(size=17, color='black'),
                 showgrid=True,
                 gridwidth=1,
                 gridcolor='gray',
