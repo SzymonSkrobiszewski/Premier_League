@@ -354,7 +354,7 @@ elif selected_tab == "Premier League":
             range=[-0.5, 17.5],
             title_font=dict(size=25, color='black'),
             tickfont=dict(size=16, color='black'),
-            #linewidth=0,
+            linewidth=1,
             showline=True
         ),
         yaxis=dict(
