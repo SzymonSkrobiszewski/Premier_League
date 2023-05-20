@@ -828,7 +828,7 @@ elif selected_tab == "Porównywanie statystyk":
     excluded_seasons = ['92/93', '93/94', '94/95']
     season3 = column5.selectbox("Wybierz sezon dla pierwszego zespołu :", [season for season in seasons1 if season not in excluded_seasons])
     season4 = column6.selectbox("Wybierz sezon dla drugiego zespołu :", [season for season in seasons2 if season not in excluded_seasons])
-    scored_or_conceded = st.selectbox("Wybierz interesującą Cię statystykę : ",['Bramki strzelone', 'Bramki stracone'])
+    scored_or_conceded = st.selectbox("Wybierz statystykę : ",['Bramki strzelone', 'Bramki stracone'])
     df_c3 = calculate_lost_goals_by_half(df, club3, season3)
     df_c4 = calculate_lost_goals_by_half(df, club4, season4)
     df_c5 = pd.concat([df_c3, df_c4])
