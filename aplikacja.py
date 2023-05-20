@@ -57,7 +57,7 @@ color_dictionary = {
     'Brentford': {'orange': '#FFB400', 'red': '#D20000'},
     'Barnsley': {'red': '#D71921', 'blue': '#00B8F1'},
     'Birmingham': {'blue': '#0000FF', 'red': '#DC241F'},
-    'Blackburn Rovers': {'blue': '#009EE0', 'green': '#009036'},
+    'Blackburn Rovers': {'green': '#009036', 'blue': '#009EE0'},
     'Blackpool': {'orange': '#F68712'},
     'Bolton': {'blue': '#263C7E', 'red': '#88111E'},
     'Bournemouth': {'black': '#000000', 'red': '#B50E12'},
@@ -160,18 +160,19 @@ def calculate_points(df, team_name, season):
 
 
 def choose_color_for_teams(team1, team2):
+    if team1 == team2:
+        return {team1: list(color_dictionary[team1].values())[0]}
     if len(color_dictionary[team2].items()) == 1 and len(color_dictionary[team1]) != 1:
         if list(color_dictionary[team1].values())[0] == list(color_dictionary[team2].values())[0]:
             return {
-                        team1: list(color_dictionary[team1].values())[0], 
-                        team2: list(color_dictionary[team2].values())[1]
-            }  
+                        team1: list(color_dictionary[team1].values())[1],
+                        team2: list(color_dictionary[team2].values())[0]
+            }
         else:
             return {
-                        team1: list(color_dictionary[team1].values())[0], 
+                        team1: list(color_dictionary[team1].values())[0],
                         team2: list(color_dictionary[team2].values())[0]
-            }  
-
+            }
     else:
         team1_color = color_dictionary.get(team1, {})
         team2_color = color_dictionary.get(team2, {})
@@ -179,6 +180,7 @@ def choose_color_for_teams(team1, team2):
         for color2 in team2_color.keys():
             if color1 != color2:
                 return {team1: team1_color[color1], team2: team2_color[color2]}
+
 
 def calculate_lost_goals_by_half(df, team, season):
     first_half_goals_conceded = df[df['Season'] == season].groupby('HomeTeam')['HTAG'].sum().get(team) + \
@@ -195,7 +197,7 @@ def calculate_lost_goals_by_half(df, team, season):
             'GSTWDP': [int(second_half_goals_conceded)],
             'GSWPP': [int(first_half_goals_scored)],
             'GSWDP': [int(second_half_goals_scored)]
-        } 
+        }
     )
 ############################################################
 
@@ -583,7 +585,6 @@ elif selected_tab == "Premier League":
     )
     st.plotly_chart(fig10, use_container_width=True)
 
-    
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
@@ -609,8 +610,6 @@ elif selected_tab == "Porównywanie statystyk":
             max_value0 = club0['Punkty'].max()
 
             fig2 = go.Figure()
-        
-
             fig2.add_trace(
                 go.Scatter(
                     x=club1['Kolejka'],
@@ -816,31 +815,30 @@ elif selected_tab == "Porównywanie statystyk":
         width=1200,
     )
     st.plotly_chart(fig4, use_container_width=True)
-    
     st.header('Porównanie bramek strzelonych i straconych względem połów')
-    
+    seasons_to_remove = ['92/93', '93/94', '94/95']
+    filtered_df = df[~df['Season'].isin(seasons_to_remove)]
+    unique_home_teams = filtered_df['HomeTeam'].unique().tolist()
     column3, column4 = st.columns(2)
     column5, column6 = st.columns(2)
-    club3 = column3.selectbox("Wybierz pierwszą drużynę :", unique_teams, key='x')
-    club4 = column4.selectbox("Wybierz drugą drużynę :", unique_teams, key='y', index=1)
+    club3 = column3.selectbox("Wybierz pierwszą drużynę :", unique_home_teams, key='x')
+    club4 = column4.selectbox("Wybierz drugą drużynę :", unique_home_teams, key='y', index=1)
     seasons1 = find_common_seasons(club3, club3, df)
     seasons2 = find_common_seasons(club4, club4, df)
     excluded_seasons = ['92/93', '93/94', '94/95']
     season3 = column5.selectbox("Wybierz sezon dla pierwszego zespołu :", [season for season in seasons1 if season not in excluded_seasons])
     season4 = column6.selectbox("Wybierz sezon dla drugiego zespołu :", [season for season in seasons2 if season not in excluded_seasons])
-    scored_or_conceded = st.selectbox("Wybierz interesującą Cię statystykę : ", ['Bramki strzelone', 'Bramki stracone'])
-    
+    scored_or_conceded = st.selectbox("Wybierz interesującą Cię statystykę : ",['Bramki strzelone', 'Bramki stracone'])
     df_c3 = calculate_lost_goals_by_half(df, club3, season3)
     df_c4 = calculate_lost_goals_by_half(df, club4, season4)
     df_c5 = pd.concat([df_c3, df_c4])
     color2 = choose_color_for_teams(club3, club4)
-
     if scored_or_conceded == 'Bramki strzelone':
         maksimum = max(df_c5['GSWPP'].max(), df_c5['GSWDP'].max())
         fig7 = go.Figure()
         fig7.add_traces(data=[
             go.Bar(
-                x=['Pierwsza połowa', 'Druga połowa'], 
+                x=['Pierwsza połowa', 'Druga połowa'],
                 y=[df_c5['GSWPP'].iloc[0], df_c5['GSWDP'].iloc[0]],
                 text=[df_c5['GSWPP'].iloc[0], df_c5['GSWDP'].iloc[0]],
                 textfont=dict(size=16, color='white'),
@@ -853,7 +851,7 @@ elif selected_tab == "Porównywanie statystyk":
                 name=club3
             ),
             go.Bar(
-                x=['Pierwsza połowa', 'Druga połowa'], 
+                x=['Pierwsza połowa', 'Druga połowa'],
                 y=[df_c5['GSWPP'].iloc[1], df_c5['GSWDP'].iloc[1]],
                 text=[df_c5['GSWPP'].iloc[1], df_c5['GSWDP'].iloc[1]],
                 hovertemplate=[
@@ -861,7 +859,7 @@ elif selected_tab == "Porównywanie statystyk":
                     f'Liczba strzelonych bramek drużyny {club4}: <b>%{{y}}</b><extra></extra>'
                 ],
                 textfont=dict(size=16, color='white'),
-                marker=dict(color=color2[club4]),
+                marker=dict(color=(color2[club4] if club4 != club3 else '#967bb6')),
                 name=club4
             )]
         )
@@ -914,7 +912,6 @@ elif selected_tab == "Porównywanie statystyk":
                     f'Liczba straconych bramek drużyny {club3}: <b>%{{y}}</b><extra></extra>',
                     f'Liczba straconych bramek drużyny {club3}: <b>%{{y}}</b><extra></extra>'
                 ],
-
                 marker=dict(color=color2[club3]),
                 name=club3
             ),
@@ -927,7 +924,7 @@ elif selected_tab == "Porównywanie statystyk":
                     f'Liczba straconych bramek drużyny {club4}: <b>%{{y}}</b><extra></extra>'
                 ],
                 textfont=dict(size=16, color='white'),
-                marker=dict(color=color2[club4]),
+                marker=dict(color=(color2[club4] if club3 != club4 else '#967bb6')),
                 name=club4
             )]
         )
@@ -968,26 +965,25 @@ elif selected_tab == "Porównywanie statystyk":
             width=1200
         )
     st.plotly_chart(fig7, use_container_width=True)
-    
     # abc = calculate_lost_goals_by_half(df, club3, season3)
     # fig7 = go.Figure()
 
     # fig7.add_traces(data=[
     #     go.Bar(
-    #         x=['Bramki strzelone', 'Bramki stracone'], 
+    #         x=['Bramki strzelone', 'Bramki stracone'],
     #         y=[abc['GSWPP'].iloc[0], abc['GSTWPP'].iloc[0]],
     #         text=[abc['GSWPP'].iloc[0], abc['GSTWPP'].iloc[0]],
     #         textfont=dict(size=17, color='white'),
     #         hoverlabel=dict(font=dict(size=15, color='black'), bgcolor='#E3A329'),
     #         hovertemplate=[
-    #                         'Liczba strzelonych bramek w pierwszej połowie: <b>%{y}</b><extra></extra>', 
+    #                         'Liczba strzelonych bramek w pierwszej połowie: <b>%{y}</b><extra></extra>',
     #                         'Liczba straconych bramek w pierwszej połowie: <b>%{y}</b><extra></extra>'
     #                       ],
     #         name='Pierwsza połowa',
     #         marker=dict(color='#E3A329')
     #     ),
     #     go.Bar(
-    #         x=['Bramki strzelone', 'Bramki stracone'], 
+    #         x=['Bramki strzelone', 'Bramki stracone'],
     #         y=[abc['GSWDP'].iloc[0], abc['GSTWDP'].iloc[0]],
     #         text=[abc['GSWDP'].iloc[0], abc['GSTWDP'].iloc[0]],
     #         textfont=dict(size=17, color='white'),
@@ -1000,8 +996,7 @@ elif selected_tab == "Porównywanie statystyk":
     #         marker=dict(color='#00CCFF')
     #     )
     #     ]
-        
-    # )
+           # )
     # fig7.update_layout(
     #     barmode='group',
     #     margin=dict(l=50, r=50, t=50, b=50),
