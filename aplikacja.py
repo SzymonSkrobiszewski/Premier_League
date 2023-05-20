@@ -631,7 +631,7 @@ elif selected_tab == "Premier League":
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
     st.header('Liczba punktów ewoluująca w trakcie sezonu')
-    comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużyne i sezony"))
+    comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużynę i sezony"))
 
     if comparison_type == "Drużyny":
         selected_teams = st.multiselect(
@@ -707,19 +707,19 @@ elif selected_tab == "Porównywanie statystyk":
                 ),
                 legend=dict(
                     title=dict(font=dict(size=25, color='black')),
-                    font=dict(size=20, color='black'),
+                    font=dict(size=17, color='black'),
                     orientation="v",
                     yanchor="top",
                     y=0.98,
                     xanchor="right",
-                    x=1.33
+                    x=1.28
                 ),
                 height=500,
                 width=1200,
                 hovermode='x unified',
             )
             st.plotly_chart(fig2, use_container_width=True)
-    if comparison_type == "Drużyne i sezony":
+    if comparison_type == "Drużynę i sezony":
         club = st.selectbox("Wybierz klub :", unique_teams)
         seasons = find_common_seasons(club, club, df)
         selected_seasons = st.multiselect("Wybierz sezon :", seasons, default='00/01')
@@ -769,7 +769,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ),
                 legend=dict(
                     title=dict(text="Sezon", font=dict(size=25, color='black')),
-                    font=dict(size=20, color='black'),
+                    font=dict(size=17, color='black'),
                     orientation="v",
                     yanchor="top",
                     y=0.96,
