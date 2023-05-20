@@ -537,13 +537,53 @@ elif selected_tab == "Premier League":
 
     # )
     # st.plotly_chart(fig6, use_container_width=True)
-
+    st.header('Liczba rozegranych sezonów w Premier league według drużyn')
+    season_dict = {
+        '1992': '92/93',
+        '1993': '93/94',
+        '1994': '94/95',
+        '1995': '95/96',
+        '1996': '96/97',
+        '1997': '97/98',
+        '1998': '98/99',
+        '1999': '99/00',
+        '2000': '00/01',
+        '2001': '01/02',
+        '2002': '02/03',
+        '2003': '03/04',
+        '2004': '04/05',
+        '2005': '05/06',
+        '2006': '06/07',
+        '2007': '07/08',
+        '2008': '08/09',
+        '2009': '09/10',
+        '2010': '10/11',
+        '2011': '11/12',
+        '2012': '12/13',
+        '2013': '13/14',
+        '2014': '14/15',
+        '2015': '15/16',
+        '2016': '16/17',
+        '2017': '17/18',
+        '2018': '18/19',
+        '2019': '19/20',
+        '2020': '20/21'
+    }
+    slider = st.slider('Wybierz przedział czasowy :', 1992, 2021, (1992, 2021), 1)
     team_and_number_of_seasons = pd.DataFrame(
         df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
     )
     team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
-    st.header('Liczba rozegranych sezonów w Premier league według drużyn')
-
+    sorted_option = st.selectbox('Jak chcesz posortować?', ['Malejąco liczebnościami', 'Rosnąco liczebnościami', 'Malejąco alfabetycznie', 'Rosnąco alfabetycznie'])
+    if sorted_option == 'Malejąco liczebnościami':
+        team_and_number_of_seasons = team_and_number_of_seasons.sort_values(by='Liczba sezonów', ascending=True)
+    elif sorted_option == 'Rosnąco liczebnościami':
+        team_and_number_of_seasons = team_and_number_of_seasons.sort_values(by='Liczba sezonów', ascending=False)
+    elif sorted_option == 'Malejąco alfabetycznie':
+        team_and_number_of_seasons = team_and_number_of_seasons.sort_index(ascending=True)
+    elif sorted_option == 'Rosnąco alfabetycznie':
+        team_and_number_of_seasons = team_and_number_of_seasons.sort_index(ascending=False)
+    
     fig10 = go.Figure()
     fig10.add_traces(
         go.Bar(
@@ -559,7 +599,7 @@ elif selected_tab == "Premier League":
         )
     )
     fig10.update_layout(
-        margin=dict(l=50, r=50, t=20, b=50),
+        margin=dict(l=50, r=50, t=30, b=50),
         xaxis=dict(
                 title='Liczba sezonów w Premier league',
                 showgrid=True,
@@ -579,17 +619,19 @@ elif selected_tab == "Premier League":
             gridcolor='gray',
             zeroline=False,
         ),
-        height=800,
+        height=850,
         width=1200,
 
     )
     st.plotly_chart(fig10, use_container_width=True)
-
+    st.write('Rok początkowy i końcowy odnosi się odpowiednio do początku sezonu i do końca.\
+             Przykładowo wybór przedziału 1992-2000, odnosi się do sezonów od 1992/93 do 1999/00 włącznie.'
+    )
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
     st.header('Liczba punktów ewoluująca w trakcie sezonu')
-    comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużyna i sezon"))
+    comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużyne i sezony"))
 
     if comparison_type == "Drużyny":
         selected_teams = st.multiselect(
@@ -677,7 +719,7 @@ elif selected_tab == "Porównywanie statystyk":
                 hovermode='x unified',
             )
             st.plotly_chart(fig2, use_container_width=True)
-    if comparison_type == "Drużyna i sezon":
+    if comparison_type == "Drużyne i sezony":
         club = st.selectbox("Wybierz klub :", unique_teams)
         seasons = find_common_seasons(club, club, df)
         selected_seasons = st.multiselect("Wybierz sezon :", seasons, default='00/01')
@@ -692,7 +734,7 @@ elif selected_tab == "Porównywanie statystyk":
                     mode='lines+markers',
                     name=season,
                     showlegend=True,
-                    hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
+                    #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                     hovertext=[f"Punkty drużyny {club} w sezonie {season}: <b>{points}</b>" for points in chart_season['Punkty']],
                     hovertemplate="%{hovertext}<extra></extra>"
                 )
@@ -735,7 +777,13 @@ elif selected_tab == "Porównywanie statystyk":
                     x=1.11
                 ),
                 width=1200,
-                hovermode='x',
+                hovermode='x unified',
+                hoverlabel=dict(
+                    font=dict(
+                        size=15,
+                        color='black'
+                    )
+                ),
         )
         st.plotly_chart(fig3, use_container_width=True)
     st.header('Rezultaty bezpośrednich starć dwóch drużyn')
@@ -753,7 +801,6 @@ elif selected_tab == "Porównywanie statystyk":
             textfont=dict(size=17, color='white'),
             showlegend=False,
             marker=dict(color=colors),
-            #hovertemplate='Liczba rezultatów: <b>%{y}</b> <extra></extra>',
             hoverlabel=dict(
                 font=dict(size=15, color='white'),
                 bgcolor=colors
@@ -848,7 +895,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ],
 
                 marker=dict(color=color2[club3]),
-                name=club3
+                name=f'{club3} {season3}'
             ),
             go.Bar(
                 x=['Pierwsza', 'Druga'],
@@ -860,7 +907,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ],
                 textfont=dict(size=16, color='white'),
                 marker=dict(color=(color2[club4] if club4 != club3 else '#967bb6')),
-                name=club4
+                name=f'{club4} {season4}'
             )]
         )
         fig7.update_layout(
@@ -875,9 +922,9 @@ elif selected_tab == "Porównywanie statystyk":
             showlegend=True,
             margin=dict(l=50, r=50, t=50, b=50),
             xaxis=dict(
-                title='Połowa',
+                title='Połowa meczu',
                 title_font=dict(size=25, color='black'),
-                tickfont=dict(size=18, color='black')
+                tickfont=dict(size=17, color='black')
             ),
             yaxis=dict(
                 range=[0, maksimum + 3],
@@ -1030,3 +1077,8 @@ elif selected_tab == "Porównywanie statystyk":
 
 elif selected_tab == "Transfery":
     st.markdown('---')
+    rok_poczatkowy = st.slider('Wybierz rok początkowy', value=[
+        '92/93', '93/94', '94/95', '95/96', '96/97', '97/98', '98/99', '99/00', '00/01', '01/02',
+        '02/03', '03/04', '04/05', '05/06', '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
+        '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22'
+    ])
