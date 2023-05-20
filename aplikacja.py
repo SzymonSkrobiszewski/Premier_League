@@ -163,8 +163,8 @@ def choose_color_for_teams(team1, team2):
     if len(color_dictionary[team2].items()) == 1 and len(color_dictionary[team1]) != 1:
         if list(color_dictionary[team1].values())[0] == list(color_dictionary[team2].values())[0]:
             return {
-                        team1: list(color_dictionary[team1].values())[1], 
-                        team2: list(color_dictionary[team2].values())[0]
+                        team1: list(color_dictionary[team1].values())[0], 
+                        team2: list(color_dictionary[team2].values())[1]
             }  
         else:
             return {
