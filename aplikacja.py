@@ -470,7 +470,7 @@ elif selected_tab == "Premier League":
             range=[-1, 11],
             tickfont=dict(size=13, color='black'),
             showgrid=True,
-            gridwidth=1,
+            gridwidth=0.5,
             gridcolor='gray',
             zeroline=False,
         ),
