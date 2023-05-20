@@ -365,8 +365,8 @@ elif selected_tab == "Premier League":
             showgrid=True,
             gridwidth=1,
             gridcolor='gray',
-            showline=False
-            #zerolinecolor='white'
+            showline=False,
+            color='white'
         ),
         #hovermode='x',
         hovermode="x unified",
