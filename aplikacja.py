@@ -199,6 +199,25 @@ def calculate_lost_goals_by_half(df, team, season):
             'GSWDP': [int(second_half_goals_scored)]
         }
     )
+
+def calculate_home_away_points(df, season, team):
+    result = {'Domowy': 0, 'Wyjazdowy': 0}
+    filtered_df = df[
+        (df["Season"] == season) & ((df["HomeTeam"] == team) | (df["AwayTeam"] == team))
+    ][["HomeTeam", "AwayTeam", "FTR"]]
+    for _, row in filtered_df.iterrows():
+        if row['HomeTeam'] == team:
+            if row['FTR'] == 'H':
+                result['Domowy'] += 3
+            elif row['FTR'] == 'D':
+                result['Domowy'] += 1
+        else:
+            if row['FTR'] == 'A':
+                result['Wyjazdowy'] += 3
+            elif row['FTR'] == 'D':
+                result['Wyjazdowy'] += 1
+    return result
+
 ############################################################
 
 
@@ -571,6 +590,8 @@ elif selected_tab == "Premier League":
         '2021': '21/22'
     }
     slider = st.slider('Wybierz przedział czasowy :', 1992, 2022, (1992, 2022), 1)
+    if slider[0] == slider[1]:
+        st.warning("Nie można wybrać tej samej wartości z obu stron.")
     selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1])]
     team_and_number_of_seasons = pd.DataFrame(
         df[df['Season'].astype(str).isin(selected_seasons)]
@@ -1081,6 +1102,81 @@ elif selected_tab == "Porównywanie statystyk":
     #     width=1200,
     # )
     # st.plotly_chart(fig7, use_container_width=True)
+    st.header('Punktowanie w meczach domowych i wyjazdowych')
+    fig8 = go.Figure()
+    col1, col2 = st.columns(2)
+    seasons_x = [
+        '00/01', '01/02', '02/03', '03/04', '04/05', '05/06',
+        '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
+        '12/13', '13/14', '14/15', '15/16', '16/17', '17/18',
+        '18/19', '19/20', '20/21', '21/22'
+    ]
+    unique_teams_for_calculate_points = df[df['Season'].isin(seasons_x)]
+    team1 = col1.selectbox('Wybierz drużynę :', unique_teams_for_calculate_points['HomeTeam'].unique().tolist())
+    season1 = col2.selectbox('Wybierz sezon: ', find_common_seasons(team1, team1, unique_teams_for_calculate_points))
+    data_for_graph = calculate_home_away_points(df, season1, team1)
+    
+    fig8.add_trace(
+        go.Bar(
+            x=list(data_for_graph.keys()),
+            y=list(data_for_graph.values()),
+            text=list(data_for_graph.values()),
+            textfont=dict(size=20, color='white'),
+            hoverlabel=dict(font=dict(size=15, color='white'), bgcolor=['blue', 'red']),
+            hovertemplate=[
+                            'Liczba zdobytych punktów w spotkaniach domowych: <b>%{y}</b><extra></extra>',
+                            'Liczba zdobytych punktów w spotkaniach wyjazdowych: <b>%{y}</b><extra></extra>'
+            ],
+            marker=dict(color=['blue', 'red']),
+            showlegend=False
+        )
+    )  
+    fig8.add_trace(
+        go.Scatter(
+            x=[None],
+            y=[None],
+            mode='markers',
+            marker=dict(color='blue', size=10),
+            name=f'Ilość punktów domowych'
+        )
+    )
+    fig8.add_trace(
+        go.Scatter(
+            x=[None],
+            y=[None],
+            mode='markers',
+            marker=dict(color='red', size=10),
+            name='Ilość punktów wyjazdowych'
+        )
+    )
+    fig8.update_layout(
+            margin=dict(l=50, r=50, t=50, b=50),
+            xaxis=dict(
+                title='Rodzaj meczu',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black')
+            ),
+            yaxis=dict(
+                title='Liczba zdobytych punktów',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zeroline=False,
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                font=dict(
+                    size=17  # Rozmiar czcionki legendy
+                ),
+                y=1.02,
+                x=1
+            ),
+        )
+    st.plotly_chart(fig8, use_container_width=True)
+
 
 elif selected_tab == "Transfery":
     st.markdown('---')
