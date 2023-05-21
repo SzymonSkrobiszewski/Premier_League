@@ -275,7 +275,7 @@ if selected_tab == "Strona główna":
 
 elif selected_tab == "Premier League":
     st.markdown('---')
-    st.header('Liczba zawodników w Premier league')
+    st.header('Liczba zawodników w Premier League')
     st.write('Tu coś będzie.')
     st.header('Liczba strzelonych bramek w sezonie')
     fig5 = go.Figure()
@@ -537,7 +537,7 @@ elif selected_tab == "Premier League":
 
     # )
     # st.plotly_chart(fig6, use_container_width=True)
-    st.header('Liczba rozegranych sezonów w Premier league według drużyn')
+    st.header('Liczba rozegranych sezonów w Premier League według drużyn')
     season_dict = {
         '1992': '92/93',
         '1993': '93/94',
@@ -608,7 +608,7 @@ elif selected_tab == "Premier League":
     fig10.update_layout(
         margin=dict(l=50, r=50, t=30, b=50),
         xaxis=dict(
-                title='Liczba sezonów w Premier league',
+                title='Liczba sezonów w Premier League',
                 showgrid=True,
                 gridwidth=1,
                 gridcolor='gray',
