@@ -570,7 +570,7 @@ elif selected_tab == "Premier League":
         '2020': '20/21',
         '2021': '21/22'
     }
-    slider = st.slider('Wybierz przedział czasowy :', 1992, 2021, (1992, 2021), 1)
+    slider = st.slider('Wybierz przedział czasowy :', 1992, 2022, (1992, 2022), 1)
     selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1])]
     team_and_number_of_seasons = pd.DataFrame(
         df[df['Season'].astype(str).isin(selected_seasons)]
