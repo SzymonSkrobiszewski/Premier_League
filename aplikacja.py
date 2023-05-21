@@ -567,13 +567,20 @@ elif selected_tab == "Premier League":
         '2017': '17/18',
         '2018': '18/19',
         '2019': '19/20',
-        '2020': '20/21'
+        '2020': '20/21',
+        '2021': '21/22'
     }
     slider = st.slider('Wybierz przedział czasowy :', 1992, 2021, (1992, 2021), 1)
+    selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1] + 1)]
     team_and_number_of_seasons = pd.DataFrame(
-        df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
+        df[df['Season'].astype(str).isin(selected_seasons)]
+        .groupby("Season")["AwayTeam"]
+        .unique()
+        .explode()
+        .value_counts()
     )
     team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
+    team_and_number_of_seasons = team_and_number_of_seasons.reindex(unique_teams, fill_value=0)
     sorted_option = st.selectbox('Jak chcesz posortować?', ['Malejąco liczebnościami', 'Rosnąco liczebnościami', 'Malejąco alfabetycznie', 'Rosnąco alfabetycznie'])
     if sorted_option == 'Malejąco liczebnościami':
         team_and_number_of_seasons = team_and_number_of_seasons.sort_values(by='Liczba sezonów', ascending=True)
