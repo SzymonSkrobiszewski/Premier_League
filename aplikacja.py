@@ -571,7 +571,7 @@ elif selected_tab == "Premier League":
         '2021': '21/22'
     }
     slider = st.slider('Wybierz przedział czasowy :', 1992, 2021, (1992, 2021), 1)
-    selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1] + 1)]
+    selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1])]
     team_and_number_of_seasons = pd.DataFrame(
         df[df['Season'].astype(str).isin(selected_seasons)]
         .groupby("Season")["AwayTeam"]
