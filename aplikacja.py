@@ -467,7 +467,7 @@ elif selected_tab == "Premier League":
         yaxis=dict(
             title='Liczba pucharów',
             title_font=dict(size=25, color='black'),
-            range=[-2, 10],
+            range=[0, 10],
             tickfont=dict(size=13, color='black'),
             showgrid=True,
             gridwidth=1,
