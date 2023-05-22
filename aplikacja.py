@@ -294,442 +294,464 @@ if selected_tab == "Strona główna":
 
 elif selected_tab == "Premier League":
     st.markdown('---')
-    st.header('Liczba zawodników w Premier League')
-    st.write('Tu coś będzie.')
-    st.header('Liczba sukcesów w Europejskich pucharach')
-    
-    zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
-    zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
-
-    liczebnosci_lm = [2, 2, 2]  # Liczebności dla zwycięzców LM
-    liczebnosci_le = [2, 1, 1]  # Liczebności dla zwycięzców LE
-
-    # Tworzenie figury i dodawanie danych dla słupków
-    fig9 = go.Figure()
-    fig9.add_trace(go.Bar(
-        x=zwyciezcy_lm,
-        y=liczebnosci_lm,
-        text=liczebnosci_lm,
-        textfont=dict(size=17, color='white'),
-        hovertemplate="Zwycięstwa Ligi Mistrzów: <b>%{y}</b> <extra></extra>",
-        name='Liga Mistrzów',
-        marker_color='blue'
-    ))
-    fig9.add_trace(go.Bar(
-        x=zwyciezcy_le,
-        y=liczebnosci_le,
-        text=liczebnosci_le,
-        textfont=dict(size=17, color='black'),
-        hovertemplate="Zwycięstwa Ligi Europy: <b>%{y}</b> <extra></extra>",
-        name='Liga Europy',
-        marker_color='orange'
-    ))
-
-    # Konfiguracja wykresu
-    fig9.update_layout(
-        xaxis_title='Klub',
-        hovermode='x unified',
-        yaxis_title='Liczba zwycięstw',
-        barmode='group',
-        plot_bgcolor='white'
-    )
-
-    fig9.update_layout(
-        margin=dict(l=20, r=50, t=25, b=50),
-        barmode='group',
-        xaxis=dict(
-            title='Klub',
-            title_font=dict(size=25, color='black'),
-            tickfont=dict(size=16, color='black'),
-            showline=False
-        ),
-        yaxis=dict(
-            title="Liczba zwycięstw",
-            title_font=dict(size=25, color='black'),
-            tickfont=dict(size=16, color='black'),
-            showgrid=True,
-            gridwidth=1,
-            gridcolor='gray',
-            zerolinecolor='white'
-        ),
-        hovermode="x unified",
-        hoverlabel=dict(
-            font=dict(
-                size=15,
-                color='black'
-            )
-        ),
-        height=500,
-        width=1200,
-        legend=dict(
-            title=dict(text="Turniej", font=dict(size=25, color='black')),
-            font=dict(size=20, color='black'),
-            orientation="v",
-            yanchor="top",
-            y=1,
-            xanchor="right",
-            x=1.20
-        ),
-    )
-    st.plotly_chart(fig9, use_container_width=True)
-
-    st.header('Liczba strzelonych bramek w sezonie')
-    fig5 = go.Figure()
-    season_goals = df.groupby('Season')[['FTHG', 'FTAG']].sum().sort_values(by='Season', ascending=False)
-    season_total_goals = season_goals.sum(axis=1).reset_index(name='liczba bramek')
-    sorted_seasons = [
-        '92/93', '93/94', '94/95', '95/96', '96/97', '97/98', '98/99', '99/00', '00/01', '01/02',
-        '02/03', '03/04', '04/05', '05/06', '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
-        '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22'
-    ]
-    season_total_goals['Season'] = pd.Categorical(season_total_goals['Season'], sorted_seasons)
-    season_total_goals = season_total_goals.sort_values('Season')
-    fig5.add_trace(
-        go.Bar(
-            x=season_total_goals['Season'],
-            y=season_total_goals['liczba bramek'],
-            text=season_total_goals['liczba bramek'],
-            textfont=dict(size=11, color='white'),
-            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
-            hovertemplate='Liczba strzelonych bramek: <b>%{y}</b><extra></extra>'
+    premier_league1 = option_menu(
+                        None,
+                        ['Ogólne aspekty Ligi', "Kluby angielskie na płaszczyźnie Europejskiej"],
+                        #icons=['cast', 'cast'],
+                        menu_icon="cast",
+                        default_index=0,
+                        orientation="horizontal",
+                        styles={
+                                "container": {
+                                    "padding": "0!important",
+                                    "background-color": "green", 
+                                },
+                                "icon": {"color": "white", "font-size": "20px"},
+                                "nav-link": {
+                                    "font-size": "15px",
+                                    "text-align": "left",
+                                    "margin": "0px",
+                                    "--hover-color": "red",
+                                    "color": "white"
+                                },
+                                "nav-link-selected": {"background-color": "red"},
+                        }
+                    )
+    if premier_league1 == 'Kluby angielskie na płaszczyźnie Europejskiej':
+        st.header('Wartość ligi na przestrzeni lat')
+        liga = st.multiselect(
+            "Wybierz ligę :",
+                ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
+            default=["Premier league"],
         )
-    )
-    fig5.update_layout(
-        margin=dict(l=20, r=20, t=25, b=50),
-        xaxis=dict(
-            title='Sezon',
-            tickfont=dict(size=13, color='black'),
-            title_font=dict(size=25, color='black')
-        ),
-        yaxis=dict(
-            title="Liczba strzelonych bramek",
-            title_font=dict(size=25, color='black'),
-            range=[0, 1250],
-            tickfont=dict(size=15, color='black'),
-            showgrid=True,
-            gridwidth=1,
-            gridcolor='gray',
-            zeroline=False,
-        ),
-        height=500,
-        width=1200,
-    )
-    st.plotly_chart(fig5, use_container_width=True)
-
-
-    st.header('Wartość ligi na przestrzeni lat')
-    liga = st.multiselect(
-        "Wybierz ligę :",
-            ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
-        default=["Premier league"],
-    )
-    fig0 = go.Figure()
-    colors = ['red', 'green', 'blue', 'purple', 'black']
-    replace_name = {'Bundesliga': 'Bundesligi', 'La liga': 'La ligi'}
-    for i, lig in enumerate(liga):
-        fig0.add_trace(
-            go.Scatter(
-                x=wartosci['sezon'],
-                y=wartosci[lig]/1000,
-                name=lig,
-                mode='lines+markers',
-                hovertemplate=f'Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b> <extra></extra>',
-                # hoverlabel=dict(
-                #     font=dict(size=15),
-                #     bgcolor=colors[i],
-                #     font_color='white',
-                # ),
-                line=dict(color=colors[i]),
-                showlegend=True
-            )
-        )
-    fig0.update_layout(
-        margin=dict(l=20, r=50, t=25, b=50),
-        xaxis=dict(
-            title='Sezon',
-            range=[-0.5, 17.5],
-            title_font=dict(size=25, color='black'),
-            tickfont=dict(size=16, color='black'),
-            showline=True
-        ),
-        yaxis=dict(
-            title="Wartość ligi (mld euro)",
-            title_font=dict(size=25, color='black'),
-            range=[0, 11],
-            tickfont=dict(size=16, color='black'),
-            showgrid=True,
-            gridwidth=1,
-            gridcolor='gray',
-            zerolinecolor='white'
-        ),
-        #hovermode='x',
-        hovermode="x unified",
-        hoverlabel=dict(
-            font=dict(
-                size=15,
-                color='black'
-            )
-        ),
-        height=500,
-        width=1200,
-        legend=dict(
-            title=dict(text="Liga", font=dict(size=25, color='black')),
-            font=dict(size=20, color='black'),
-            orientation="v",
-            yanchor="top",
-            y=1,
-            xanchor="right",
-            x=1.20
-        ),
-    )
-    st.plotly_chart(fig0, use_container_width=True)
-
-    st.header('Zwycięzcy Premier League')
-    fig = go.Figure()
-    fig.add_trace(
-        go.Bar(
-            x=p_l.index,
-            y=p_l['zwyciezca'],
-            text=p_l['zwyciezca'],
-            textfont=dict(size=12, color='white'),
-            hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
-            hovertemplate='Liczba tytułów: <b>%{y}</b><extra></extra>',
-        )
-    )
-    fig.update_layout(
-        margin=dict(l=50, r=50, t=15, b=50),
-        xaxis=dict(
-            title='Nazwa drużyny',
-            title_font=dict(size=25, color='black'),
-            tickfont=dict(size=15, color='black')
-        ),
-        yaxis=dict(
-            title='Liczba tytułów',
-            title_font=dict(size=25, color='black'),
-            range=[0, 15],
-            tickfont=dict(size=15, color='black'),
-            showgrid=True,
-            gridwidth=1,
-            gridcolor='gray',
-            zeroline=False,
-            zerolinewidth=0
-        ),
-        height=500,
-        width=1200,
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-    st.header('Podział pucharów krajowych')
-    puchary = st.multiselect('Wybierz puchar :', ['Fa cup', 'Carabao cup'], default=['Fa cup'])
-    fig1 = go.Figure()
-
-    for puchar in puchary:
-        if puchar == 'Fa cup':
-            fig1.add_trace(
-                go.Bar(
-                    x=cup2.index,
-                    y=cup2['Fa_cup'],
-                    name='Fa Cup',
-                    text=cup2['Fa_cup'],
-                    hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
-                    hovertemplate='Liczba tytułów FA Cup: <b>%{y}</b><extra></extra>',
-                    textfont=dict(size=15, color='white'),
+        fig0 = go.Figure()
+        colors = ['red', 'green', 'blue', 'purple', 'black']
+        replace_name = {'Bundesliga': 'Bundesligi', 'La liga': 'La ligi'}
+        for i, lig in enumerate(liga):
+            fig0.add_trace(
+                go.Scatter(
+                    x=wartosci['sezon'],
+                    y=wartosci[lig]/1000,
+                    name=lig,
+                    mode='lines+markers',
+                    hovertemplate=f'Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b> <extra></extra>',
+                    # hoverlabel=dict(
+                    #     font=dict(size=15),
+                    #     bgcolor=colors[i],
+                    #     font_color='white',
+                    # ),
+                    line=dict(color=colors[i]),
                     showlegend=True
                 )
             )
-        elif puchar == 'Carabao cup':
-            fig1.add_trace(
-                go.Bar(
-                    x=cup1.index,
-                    y=cup1['Carabao_cup'],
-                    name='Carabao Cup',
-                    text=cup1['Carabao_cup'],
-                    hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='green'),
-                    hovertemplate='Liczba tytułów Carabao Cup: <b>%{y}</b><extra></extra>',
-                    textfont=dict(size=15, color='white'),
-                    showlegend=True
-                )
-            )
-    fig1.update_traces(selector=dict(type='bar', name='Fa Cup'), marker_color='red')
-    fig1.update_traces(selector=dict(type='bar', name='Carabao Cup'), marker_color='green')
-
-    fig1.update_layout(
-        margin=dict(l=50, r=50, t=15, b=50),
-        xaxis=dict(
-            title='Nazwa drużyny',
-            title_font=dict(size=25, color='black'),
-            tickfont=dict(size=13, color='black')
-        ),
-        yaxis=dict(
-            title='Liczba pucharów',
-            title_font=dict(size=25, color='black'),
-            range=[0, 10],
-            tickfont=dict(size=13, color='black'),
-            showgrid=True,
-            gridwidth=1,
-            gridcolor='gray',
-            zeroline=False,
-        ),
-        height=500,
-        width=1200,
-        legend=dict(
-            title=dict(text="Puchar", font=dict(size=25, color='black')),
-            font=dict(size=20, color='black'),
-            orientation="v",
-            yanchor="top",
-            y=0.98,
-            xanchor="right",
-            x=1.18,
-        ),
-    )
-    st.plotly_chart(fig1, use_container_width=True)
-    # st.header('Liczba rozegranych sezonów w podziale na przedziały')
-    # fig6 = go.Figure()
-    # seasons_count = st.selectbox("Wybierz przedział zamknięty :",
-    #                             ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"]
-    # )
-    # x, y = map(lambda x: int(x), seasons_count.split('-'))
-    # team_and_number_of_seasons = pd.DataFrame(
-    #     df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
-    # )
-    # team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
-    # df1 = team_and_number_of_seasons[team_and_number_of_seasons['Liczba sezonów'].between(x, y)]
-    # fig6.add_traces(
-    #     go.Bar(
-    #         y=df1.index,
-    #         x=df1['Liczba sezonów'],
-    #         #text=df1['Liczba sezonów'],
-    #         orientation='h',
-    #         marker=dict(color='purple'),
-    #         textfont=dict(size=16, color='white'),
-    #         hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
-    #         hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
-    #         showlegend=False
-    #     )
-    # )
-    # fig6.update_layout(
-    #     margin=dict(l=50, r=50, t=20, b=50),
-    #     xaxis=dict(
-    #             title='Liczba sezonów w Premier league',
-    #             showgrid=True,
-    #             gridwidth=1,
-    #             gridcolor='gray',
-    #             title_font=dict(size=25, color='black'),
-    #             tickfont=dict(size=14, color='black'),
-
-    #     ),
-    #     yaxis=dict(
-    #         title='Nazwa drużyny',
-    #         title_font=dict(size=25, color='black'),
-    #         #range=[0, y + 1.5],
-    #         tickfont=dict(size=14, color='black'),
-    #         showgrid=False,
-    #         gridwidth=0,
-    #         gridcolor='gray',
-    #         zeroline=False,
-    #     ),
-    #     height=500,
-    #     width=1200,
-
-    # )
-    # st.plotly_chart(fig6, use_container_width=True)
-    st.header('Liczba rozegranych sezonów w Premier League według drużyn')
-    season_dict = {
-        '1992': '92/93',
-        '1993': '93/94',
-        '1994': '94/95',
-        '1995': '95/96',
-        '1996': '96/97',
-        '1997': '97/98',
-        '1998': '98/99',
-        '1999': '99/00',
-        '2000': '00/01',
-        '2001': '01/02',
-        '2002': '02/03',
-        '2003': '03/04',
-        '2004': '04/05',
-        '2005': '05/06',
-        '2006': '06/07',
-        '2007': '07/08',
-        '2008': '08/09',
-        '2009': '09/10',
-        '2010': '10/11',
-        '2011': '11/12',
-        '2012': '12/13',
-        '2013': '13/14',
-        '2014': '14/15',
-        '2015': '15/16',
-        '2016': '16/17',
-        '2017': '17/18',
-        '2018': '18/19',
-        '2019': '19/20',
-        '2020': '20/21',
-        '2021': '21/22'
-    }
-    slider = st.slider('Wybierz przedział czasowy :', 1992, 2021, (1992, 2021), 1)
-    selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1] + 1)]
-    team_and_number_of_seasons = pd.DataFrame(
-        df[df['Season'].astype(str).isin(selected_seasons)]
-        .groupby("Season")["AwayTeam"]
-        .unique()
-        .explode()
-        .value_counts()
-    )
-    team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
-    team_and_number_of_seasons = team_and_number_of_seasons.reindex(unique_teams, fill_value=0)
-    sorted_option = st.selectbox('Jak chcesz posortować?', ['Malejąco liczebnościami', 'Rosnąco liczebnościami', 'Malejąco alfabetycznie', 'Rosnąco alfabetycznie'])
-    if sorted_option == 'Malejąco liczebnościami':
-        team_and_number_of_seasons = team_and_number_of_seasons.sort_values(by='Liczba sezonów', ascending=True)
-    elif sorted_option == 'Rosnąco liczebnościami':
-        team_and_number_of_seasons = team_and_number_of_seasons.sort_values(by='Liczba sezonów', ascending=False)
-    elif sorted_option == 'Malejąco alfabetycznie':
-        team_and_number_of_seasons = team_and_number_of_seasons.sort_index(ascending=True)
-    elif sorted_option == 'Rosnąco alfabetycznie':
-        team_and_number_of_seasons = team_and_number_of_seasons.sort_index(ascending=False)
-    
-    fig10 = go.Figure()
-    fig10.add_traces(
-        go.Bar(
-            y=team_and_number_of_seasons.index,
-            x=team_and_number_of_seasons['Liczba sezonów'],
-            #text=df1['Liczba sezonów'],
-            orientation='h',
-            marker=dict(color='purple'),
-            textfont=dict(size=16, color='white'),
-            hoverlabel=dict(font=dict(size=15, color='white'), bgcolor='purple'),
-            hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
-            showlegend=False
-        )
-    )
-    fig10.update_layout(
-        margin=dict(l=50, r=50, t=30, b=50),
-        xaxis=dict(
-                title='Liczba sezonów w Premier League',
+        fig0.update_layout(
+            margin=dict(l=20, r=50, t=25, b=50),
+            xaxis=dict(
+                title='Sezon',
+                range=[-0.5, 17.5],
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showline=True
+            ),
+            yaxis=dict(
+                title="Wartość ligi (mld euro)",
+                title_font=dict(size=25, color='black'),
+                range=[0, 11],
+                tickfont=dict(size=16, color='black'),
                 showgrid=True,
                 gridwidth=1,
                 gridcolor='gray',
+                zerolinecolor='white'
+            ),
+            #hovermode='x',
+            hovermode="x unified",
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                title=dict(text="Liga", font=dict(size=25, color='black')),
+                font=dict(size=20, color='black'),
+                orientation="v",
+                yanchor="top",
+                y=1,
+                xanchor="right",
+                x=1.20
+            ),
+        )
+        st.plotly_chart(fig0, use_container_width=True)
+        st.header('Liczba sukcesów w Europejskich pucharach')
+    
+        zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
+        zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
+
+        liczebnosci_lm = [2, 2, 2]  # Liczebności dla zwycięzców LM
+        liczebnosci_le = [2, 1, 1]  # Liczebności dla zwycięzców LE
+
+        # Tworzenie figury i dodawanie danych dla słupków
+        fig9 = go.Figure()
+        fig9.add_trace(go.Bar(
+            x=zwyciezcy_lm,
+            y=liczebnosci_lm,
+            text=liczebnosci_lm,
+            textfont=dict(size=17, color='white'),
+            hovertemplate="Zwycięstwa Ligi Mistrzów: <b>%{y}</b> <extra></extra>",
+            name='Liga Mistrzów',
+            marker_color='blue'
+        ))
+        fig9.add_trace(go.Bar(
+            x=zwyciezcy_le,
+            y=liczebnosci_le,
+            text=liczebnosci_le,
+            textfont=dict(size=17, color='black'),
+            hovertemplate="Zwycięstwa Ligi Europy: <b>%{y}</b> <extra></extra>",
+            name='Liga Europy',
+            marker_color='orange'
+        ))
+
+        # Konfiguracja wykresu
+        fig9.update_layout(
+            xaxis_title='Klub',
+            hovermode='x unified',
+            yaxis_title='Liczba zwycięstw',
+            barmode='group',
+            plot_bgcolor='white'
+        )
+
+        fig9.update_layout(
+            margin=dict(l=20, r=50, t=25, b=50),
+            barmode='group',
+            xaxis=dict(
+                title='Klub',
                 title_font=dict(size=25, color='black'),
-                tickfont=dict(size=14, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showline=False
+            ),
+            yaxis=dict(
+                title="Liczba zwycięstw",
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zerolinecolor='white'
+            ),
+            hovermode="x unified",
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                title=dict(text="Turniej", font=dict(size=25, color='black')),
+                font=dict(size=20, color='black'),
+                orientation="v",
+                yanchor="top",
+                y=1,
+                xanchor="right",
+                x=1.20
+            ),
+        )
+        st.plotly_chart(fig9, use_container_width=True)
+    else:
+        st.header('Liczba zawodników w Premier League')
+        st.write('Tu coś będzie.')
+        st.header('Liczba strzelonych bramek w sezonie')
+        fig5 = go.Figure()
+        season_goals = df.groupby('Season')[['FTHG', 'FTAG']].sum().sort_values(by='Season', ascending=False)
+        season_total_goals = season_goals.sum(axis=1).reset_index(name='liczba bramek')
+        sorted_seasons = [
+            '92/93', '93/94', '94/95', '95/96', '96/97', '97/98', '98/99', '99/00', '00/01', '01/02',
+            '02/03', '03/04', '04/05', '05/06', '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
+            '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22'
+        ]
+        season_total_goals['Season'] = pd.Categorical(season_total_goals['Season'], sorted_seasons)
+        season_total_goals = season_total_goals.sort_values('Season')
+        fig5.add_trace(
+            go.Bar(
+                x=season_total_goals['Season'],
+                y=season_total_goals['liczba bramek'],
+                text=season_total_goals['liczba bramek'],
+                textfont=dict(size=11, color='white'),
+                hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
+                hovertemplate='Liczba strzelonych bramek: <b>%{y}</b><extra></extra>'
+            )
+        )
+        fig5.update_layout(
+            margin=dict(l=20, r=20, t=25, b=50),
+            xaxis=dict(
+                title='Sezon',
+                tickfont=dict(size=13, color='black'),
+                title_font=dict(size=25, color='black')
+            ),
+            yaxis=dict(
+                title="Liczba strzelonych bramek",
+                title_font=dict(size=25, color='black'),
+                range=[0, 1250],
+                tickfont=dict(size=15, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zeroline=False,
+            ),
+            height=500,
+            width=1200,
+        )
+        st.plotly_chart(fig5, use_container_width=True)
 
-        ),
-        yaxis=dict(
-            title='Nazwa drużyny',
-            title_font=dict(size=25, color='black'),
-            #range=[0, y + 1.5],
-            tickfont=dict(size=12, color='black'),
-            showgrid=False,
-            gridwidth=0,
-            gridcolor='gray',
-            zeroline=False,
-        ),
-        height=850,
-        width=1200,
+        st.header('Zwycięzcy Premier League')
+        fig = go.Figure()
+        fig.add_trace(
+            go.Bar(
+                x=p_l.index,
+                y=p_l['zwyciezca'],
+                text=p_l['zwyciezca'],
+                textfont=dict(size=12, color='white'),
+                hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
+                hovertemplate='Liczba tytułów: <b>%{y}</b><extra></extra>',
+            )
+        )
+        fig.update_layout(
+            margin=dict(l=50, r=50, t=15, b=50),
+            xaxis=dict(
+                title='Nazwa drużyny',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=15, color='black')
+            ),
+            yaxis=dict(
+                title='Liczba tytułów',
+                title_font=dict(size=25, color='black'),
+                range=[0, 15],
+                tickfont=dict(size=15, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zeroline=False,
+                zerolinewidth=0
+            ),
+            height=500,
+            width=1200,
+        )
+        st.plotly_chart(fig, use_container_width=True)
 
-    )
-    st.plotly_chart(fig10, use_container_width=True)
-    st.write('Rok początkowy i końcowy odnosi się odpowiednio do początku i końca sezonu.\
-             Przykładowo wybór przedziału 1992-2000, odpowiada sezonom od 1992/93 do 00/01 włącznie.'
-    )
+        st.header('Podział pucharów krajowych')
+        puchary = st.multiselect('Wybierz puchar :', ['Fa cup', 'Carabao cup'], default=['Fa cup'])
+        fig1 = go.Figure()
+
+        for puchar in puchary:
+            if puchar == 'Fa cup':
+                fig1.add_trace(
+                    go.Bar(
+                        x=cup2.index,
+                        y=cup2['Fa_cup'],
+                        name='Fa Cup',
+                        text=cup2['Fa_cup'],
+                        hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
+                        hovertemplate='Liczba tytułów FA Cup: <b>%{y}</b><extra></extra>',
+                        textfont=dict(size=15, color='white'),
+                        showlegend=True
+                    )
+                )
+            elif puchar == 'Carabao cup':
+                fig1.add_trace(
+                    go.Bar(
+                        x=cup1.index,
+                        y=cup1['Carabao_cup'],
+                        name='Carabao Cup',
+                        text=cup1['Carabao_cup'],
+                        hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='green'),
+                        hovertemplate='Liczba tytułów Carabao Cup: <b>%{y}</b><extra></extra>',
+                        textfont=dict(size=15, color='white'),
+                        showlegend=True
+                    )
+                )
+        fig1.update_traces(selector=dict(type='bar', name='Fa Cup'), marker_color='red')
+        fig1.update_traces(selector=dict(type='bar', name='Carabao Cup'), marker_color='green')
+
+        fig1.update_layout(
+            margin=dict(l=50, r=50, t=15, b=50),
+            xaxis=dict(
+                title='Nazwa drużyny',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=13, color='black')
+            ),
+            yaxis=dict(
+                title='Liczba pucharów',
+                title_font=dict(size=25, color='black'),
+                range=[0, 10],
+                tickfont=dict(size=13, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zeroline=False,
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                title=dict(text="Puchar", font=dict(size=25, color='black')),
+                font=dict(size=20, color='black'),
+                orientation="v",
+                yanchor="top",
+                y=0.98,
+                xanchor="right",
+                x=1.18,
+            ),
+        )
+        st.plotly_chart(fig1, use_container_width=True)
+        # st.header('Liczba rozegranych sezonów w podziale na przedziały')
+        # fig6 = go.Figure()
+        # seasons_count = st.selectbox("Wybierz przedział zamknięty :",
+        #                             ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"]
+        # )
+        # x, y = map(lambda x: int(x), seasons_count.split('-'))
+        # team_and_number_of_seasons = pd.DataFrame(
+        #     df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
+        # )
+        # team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
+        # df1 = team_and_number_of_seasons[team_and_number_of_seasons['Liczba sezonów'].between(x, y)]
+        # fig6.add_traces(
+        #     go.Bar(
+        #         y=df1.index,
+        #         x=df1['Liczba sezonów'],
+        #         #text=df1['Liczba sezonów'],
+        #         orientation='h',
+        #         marker=dict(color='purple'),
+        #         textfont=dict(size=16, color='white'),
+        #         hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
+        #         hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
+        #         showlegend=False
+        #     )
+        # )
+        # fig6.update_layout(
+        #     margin=dict(l=50, r=50, t=20, b=50),
+        #     xaxis=dict(
+        #             title='Liczba sezonów w Premier league',
+        #             showgrid=True,
+        #             gridwidth=1,
+        #             gridcolor='gray',
+        #             title_font=dict(size=25, color='black'),
+        #             tickfont=dict(size=14, color='black'),
+
+        #     ),
+        #     yaxis=dict(
+        #         title='Nazwa drużyny',
+        #         title_font=dict(size=25, color='black'),
+        #         #range=[0, y + 1.5],
+        #         tickfont=dict(size=14, color='black'),
+        #         showgrid=False,
+        #         gridwidth=0,
+        #         gridcolor='gray',
+        #         zeroline=False,
+        #     ),
+        #     height=500,
+        #     width=1200,
+
+        # )
+        # st.plotly_chart(fig6, use_container_width=True)
+        st.header('Liczba rozegranych sezonów w Premier League według drużyn')
+        season_dict = {
+            '1992': '92/93',
+            '1993': '93/94',
+            '1994': '94/95',
+            '1995': '95/96',
+            '1996': '96/97',
+            '1997': '97/98',
+            '1998': '98/99',
+            '1999': '99/00',
+            '2000': '00/01',
+            '2001': '01/02',
+            '2002': '02/03',
+            '2003': '03/04',
+            '2004': '04/05',
+            '2005': '05/06',
+            '2006': '06/07',
+            '2007': '07/08',
+            '2008': '08/09',
+            '2009': '09/10',
+            '2010': '10/11',
+            '2011': '11/12',
+            '2012': '12/13',
+            '2013': '13/14',
+            '2014': '14/15',
+            '2015': '15/16',
+            '2016': '16/17',
+            '2017': '17/18',
+            '2018': '18/19',
+            '2019': '19/20',
+            '2020': '20/21',
+            '2021': '21/22'
+        }
+        slider = st.slider('Wybierz przedział czasowy :', 1992, 2021, (1992, 2021), 1)
+        selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1] + 1)]
+        team_and_number_of_seasons = pd.DataFrame(
+            df[df['Season'].astype(str).isin(selected_seasons)]
+            .groupby("Season")["AwayTeam"]
+            .unique()
+            .explode()
+            .value_counts()
+        )
+        team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
+        team_and_number_of_seasons = team_and_number_of_seasons.reindex(unique_teams, fill_value=0)
+        sorted_option = st.selectbox('Jak chcesz posortować?', ['Malejąco liczebnościami', 'Rosnąco liczebnościami', 'Malejąco alfabetycznie', 'Rosnąco alfabetycznie'])
+        if sorted_option == 'Malejąco liczebnościami':
+            team_and_number_of_seasons = team_and_number_of_seasons.sort_values(by='Liczba sezonów', ascending=True)
+        elif sorted_option == 'Rosnąco liczebnościami':
+            team_and_number_of_seasons = team_and_number_of_seasons.sort_values(by='Liczba sezonów', ascending=False)
+        elif sorted_option == 'Malejąco alfabetycznie':
+            team_and_number_of_seasons = team_and_number_of_seasons.sort_index(ascending=True)
+        elif sorted_option == 'Rosnąco alfabetycznie':
+            team_and_number_of_seasons = team_and_number_of_seasons.sort_index(ascending=False)
+        
+        fig10 = go.Figure()
+        fig10.add_traces(
+            go.Bar(
+                y=team_and_number_of_seasons.index,
+                x=team_and_number_of_seasons['Liczba sezonów'],
+                #text=df1['Liczba sezonów'],
+                orientation='h',
+                marker=dict(color='purple'),
+                textfont=dict(size=16, color='white'),
+                hoverlabel=dict(font=dict(size=15, color='white'), bgcolor='purple'),
+                hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
+                showlegend=False
+            )
+        )
+        fig10.update_layout(
+            margin=dict(l=50, r=50, t=30, b=50),
+            xaxis=dict(
+                    title='Liczba sezonów w Premier League',
+                    showgrid=True,
+                    gridwidth=1,
+                    gridcolor='gray',
+                    title_font=dict(size=25, color='black'),
+                    tickfont=dict(size=14, color='black'),
+
+            ),
+            yaxis=dict(
+                title='Nazwa drużyny',
+                title_font=dict(size=25, color='black'),
+                #range=[0, y + 1.5],
+                tickfont=dict(size=12, color='black'),
+                showgrid=False,
+                gridwidth=0,
+                gridcolor='gray',
+                zeroline=False,
+            ),
+            height=850,
+            width=1200,
+
+        )
+        st.plotly_chart(fig10, use_container_width=True)
+        st.write('Rok początkowy i końcowy odnosi się odpowiednio do początku i końca sezonu.\
+                Przykładowo wybór przedziału 1992-2000, odpowiada sezonom od 1992/93 do 00/01 włącznie.'
+        )
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
