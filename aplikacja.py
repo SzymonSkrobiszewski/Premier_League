@@ -103,7 +103,7 @@ def find_common_seasons(team1, team2, df):
 
 def return_opponents(df, team='Arsenal'):
     opponents = df[df['HomeTeam'] == team]['AwayTeam'].unique().tolist()
-    return opponents
+    return sorted(opponents)
 
 
 def head_to_head_results(df, home_team, away_team):
@@ -296,7 +296,7 @@ elif selected_tab == "Premier League":
     st.markdown('---')
     premier_league1 = option_menu(
                         None,
-                        ['Ogólne aspekty Ligi', "Kluby angielskie na płaszczyźnie Europejskiej"],
+                        ['Ogólne statystyki ligi', "Kluby angielskie na płaszczyźnie Europejskiej"],
                         #icons=['cast', 'cast'],
                         menu_icon="cast",
                         default_index=0,
@@ -912,8 +912,9 @@ elif selected_tab == "Porównywanie statystyk":
         )
         st.plotly_chart(fig3, use_container_width=True)
     st.header('Rezultaty bezpośrednich starć dwóch drużyn')
-    team1 = st.selectbox("Wybierz pierwszą drużynę :", unique_teams)
-    team2 = st.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, team=team1))
+    col1, col2 = st.columns(2)
+    team1 = col1.selectbox("Wybierz pierwszą drużynę :", unique_teams)
+    team2 = col2.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, team=team1))
     color = choose_color_for_teams(team1, team2)
     fig4 = go.Figure()
     wyniki = head_to_head_results(df, team1, team2)
@@ -966,7 +967,7 @@ elif selected_tab == "Porównywanie statystyk":
     )
 
     fig4.update_layout(
-        margin=dict(l=50, r=50, t=15, b=50),
+        margin=dict(l=50, r=50, t=50, b=50),
         xaxis=dict(
             title='Wyniki starcia',
             tickfont=dict(size=16, color='black'),
@@ -982,7 +983,7 @@ elif selected_tab == "Porównywanie statystyk":
             gridcolor='gray',
             zeroline=False,
         ),
-        legend=dict(font=dict(size=16), y=0.95),
+        legend=dict(font=dict(size=16), y=1.03),
         height=500,
         width=1200,
     )
@@ -993,16 +994,14 @@ elif selected_tab == "Porównywanie statystyk":
     unique_home_teams = filtered_df['HomeTeam'].unique().tolist()
     column3, column4 = st.columns(2)
     column5, column6 = st.columns(2)
-    club3 = column3.selectbox("Wybierz pierwszą drużynę :", unique_home_teams, key='x')
-    club4 = column4.selectbox("Wybierz drugą drużynę :", unique_home_teams, key='y', index=1)
-    seasons1 = find_common_seasons(club3, club3, df)
-    seasons2 = find_common_seasons(club4, club4, df)
+    club3 = column3.selectbox("Wybierz pierwszą drużynę :", sorted(unique_home_teams), key='x')
+    club4 = column4.selectbox("Wybierz drugą drużynę :", return_opponents(df, club3), key='y', index=1)
+    seasons1 = find_common_seasons(club3, club4, df)
     excluded_seasons = ['92/93', '93/94', '94/95']
-    season3 = column5.selectbox("Wybierz sezon dla pierwszego zespołu :", [season for season in seasons1 if season not in excluded_seasons])
-    season4 = column6.selectbox("Wybierz sezon dla drugiego zespołu :", [season for season in seasons2 if season not in excluded_seasons])
-    scored_or_conceded = st.selectbox("Wybierz statystykę : ",['Bramki strzelone', 'Bramki stracone'])
+    season3 = column5.selectbox("Wybierz sezon :", [season for season in seasons1 if season not in excluded_seasons])
+    scored_or_conceded = column6.selectbox("Wybierz statystykę : ",['Bramki strzelone', 'Bramki stracone'])
     df_c3 = calculate_lost_goals_by_half(df, club3, season3)
-    df_c4 = calculate_lost_goals_by_half(df, club4, season4)
+    df_c4 = calculate_lost_goals_by_half(df, club4, season3)
     df_c5 = pd.concat([df_c3, df_c4])
     color2 = choose_color_for_teams(club3, club4)
     if scored_or_conceded == 'Bramki strzelone':
@@ -1020,7 +1019,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ],
 
                 marker=dict(color=color2[club3]),
-                name=f'{club3} {season3}'
+                name=club3
             ),
             go.Bar(
                 x=['Pierwsza', 'Druga'],
@@ -1032,7 +1031,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ],
                 textfont=dict(size=16, color='white'),
                 marker=dict(color=(color2[club4] if club4 != club3 else '#967bb6')),
-                name=f'{club4} {season4}'
+                name=club4
             )]
         )
         fig7.update_layout(
@@ -1063,11 +1062,12 @@ elif selected_tab == "Porównywanie statystyk":
                 zerolinewidth=0
             ),
             legend=dict(
+                title=dict(text="Drużyna", font=dict(size=25, color='black')),
                 font=dict(
                     size=17  # Rozmiar czcionki legendy
                 ),
-                y=0.98,
-                x=1
+                y=1.05,
+                x=1.02
             ),
             height=500,
             width=1200
