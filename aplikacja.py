@@ -296,6 +296,83 @@ elif selected_tab == "Premier League":
     st.markdown('---')
     st.header('Liczba zawodników w Premier League')
     st.write('Tu coś będzie.')
+    st.header('Liczba sukcesów w Europejskich pucharach')
+    
+    zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
+    zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
+
+    liczebnosci_lm = [2, 2, 2]  # Liczebności dla zwycięzców LM
+    liczebnosci_le = [2, 1, 1]  # Liczebności dla zwycięzców LE
+
+    # Tworzenie figury i dodawanie danych dla słupków
+    fig9 = go.Figure()
+    fig9.add_trace(go.Bar(
+        x=zwyciezcy_lm,
+        y=liczebnosci_lm,
+        text=liczebnosci_lm,
+        textfont=dict(size=17, color='white'),
+        hovertemplate="Zwycięstwa Ligi Mistrzów: <b>%{y}</b> <extra></extra>",
+        name='Liga Mistrzów',
+        marker_color='blue'
+    ))
+    fig9.add_trace(go.Bar(
+        x=zwyciezcy_le,
+        y=liczebnosci_le,
+        text=liczebnosci_le,
+        textfont=dict(size=17, color='black'),
+        hovertemplate="Zwycięstwa Ligi Europy: <b>%{y}</b> <extra></extra>",
+        name='Liga Europy',
+        marker_color='orange'
+    ))
+
+    # Konfiguracja wykresu
+    fig9.update_layout(
+        xaxis_title='Klub',
+        hovermode='x unified',
+        yaxis_title='Liczba zwycięstw',
+        barmode='group',
+        plot_bgcolor='white'
+    )
+
+    fig9.update_layout(
+        margin=dict(l=20, r=50, t=25, b=50),
+        barmode='group',
+        xaxis=dict(
+            title='Klub',
+            title_font=dict(size=25, color='black'),
+            tickfont=dict(size=16, color='black'),
+            showline=False
+        ),
+        yaxis=dict(
+            title="Liczba zwycięstw",
+            title_font=dict(size=25, color='black'),
+            tickfont=dict(size=16, color='black'),
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='gray',
+            zerolinecolor='white'
+        ),
+        hovermode="x unified",
+        hoverlabel=dict(
+            font=dict(
+                size=15,
+                color='black'
+            )
+        ),
+        height=500,
+        width=1200,
+        legend=dict(
+            title=dict(text="Turniej", font=dict(size=25, color='black')),
+            font=dict(size=20, color='black'),
+            orientation="v",
+            yanchor="top",
+            y=1,
+            xanchor="right",
+            x=1.20
+        ),
+    )
+    st.plotly_chart(fig9, use_container_width=True)
+
     st.header('Liczba strzelonych bramek w sezonie')
     fig5 = go.Figure()
     season_goals = df.groupby('Season')[['FTHG', 'FTAG']].sum().sort_values(by='Season', ascending=False)
