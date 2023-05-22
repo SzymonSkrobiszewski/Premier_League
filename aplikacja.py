@@ -589,10 +589,8 @@ elif selected_tab == "Premier League":
         '2020': '20/21',
         '2021': '21/22'
     }
-    slider = st.slider('Wybierz przedział czasowy :', 1992, 2022, (1992, 2022), 1)
-    if slider[0] == slider[1]:
-        st.warning("Nie można wybrać tej samej wartości z obu stron.")
-    selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1])]
+    slider = st.slider('Wybierz przedział czasowy :', 1992, 2021, (1992, 2021), 1)
+    selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1] + 1)]
     team_and_number_of_seasons = pd.DataFrame(
         df[df['Season'].astype(str).isin(selected_seasons)]
         .groupby("Season")["AwayTeam"]
@@ -652,8 +650,8 @@ elif selected_tab == "Premier League":
 
     )
     st.plotly_chart(fig10, use_container_width=True)
-    st.write('Rok początkowy i końcowy odnosi się odpowiednio do początku i końca sezonu.\
-             Przykładowo wybór przedziału 1992-2000, odpowiada sezonom od 1992/93 do 1999/00 włącznie.'
+    st.write('Rok początkowy i końcowy odnosi się odpowiednio do końców sezonów.\
+             Przykładowo wybór przedziału 1992-2000, odpowiada sezonom od 1992/93 do 01/02 włącznie.'
     )
 
 elif selected_tab == "Porównywanie statystyk":
@@ -1176,7 +1174,7 @@ elif selected_tab == "Porównywanie statystyk":
             ),
         )
     st.plotly_chart(fig8, use_container_width=True)
-
+    st.header('Porównanie ')
 
 elif selected_tab == "Transfery":
     st.markdown('---')
