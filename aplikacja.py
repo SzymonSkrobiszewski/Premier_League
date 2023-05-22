@@ -650,7 +650,7 @@ elif selected_tab == "Premier League":
 
     )
     st.plotly_chart(fig10, use_container_width=True)
-    st.write('Rok początkowy i końcowy odnosi się odpowiednio do końców sezonów.\
+    st.write('Rok początkowy i końcowy odnosi się odpowiednio do początku i końca sezonu.\
              Przykładowo wybór przedziału 1992-2000, odpowiada sezonom od 1992/93 do 00/01 włącznie.'
     )
 
