@@ -254,7 +254,7 @@ st.markdown(
     """
     <style>
     .appview-container .main .block-container {
-        max-width: 1200px;
+        max-width: 1150px;
     }
     </style>
     """,
