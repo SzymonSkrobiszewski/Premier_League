@@ -1209,51 +1209,57 @@ elif selected_tab == "Porównywanie statystyk":
     st.header('Punktowanie w meczach domowych i wyjazdowych')
     fig8 = go.Figure()
     col1, col2 = st.columns(2)
-    seasons_x = [
-        '00/01', '01/02', '02/03', '03/04', '04/05', '05/06',
-        '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
-        '12/13', '13/14', '14/15', '15/16', '16/17', '17/18',
-        '18/19', '19/20', '20/21', '21/22'
-    ]
-    unique_teams_for_calculate_points = df[df['Season'].isin(seasons_x)]
-    team1 = col1.selectbox('Wybierz drużynę :', unique_teams_for_calculate_points['HomeTeam'].unique().tolist())
-    season1 = col2.selectbox('Wybierz sezon: ', find_common_seasons(team1, team1, unique_teams_for_calculate_points))
+    # seasons_x = [
+    #     '00/01', '01/02', '02/03', '03/04', '04/05', '05/06',
+    #     '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
+    #     '12/13', '13/14', '14/15', '15/16', '16/17', '17/18',
+    #     '18/19', '19/20', '20/21', '21/22'
+    # ]
+    #unique_teams_for_calculate_points = df[df['Season'].isin(seasons_x)]
+    team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
+    team2 = col2.selectbox('Wybierz drugą drużynę', return_opponents(df, team1))
+    season1 = st.selectbox('Wybierz sezon: ', find_common_seasons(team1, team2, df))
     data_for_graph = calculate_home_away_points(df, season1, team1)
-    
+    data_for_graph1 = calculate_home_away_points(df, season1, team2)
+    color = choose_color_for_teams(team1, team2)
     fig8.add_trace(
         go.Bar(
             x=list(data_for_graph.keys()),
             y=list(data_for_graph.values()),
             text=list(data_for_graph.values()),
-            textfont=dict(size=20, color='white'),
-            hoverlabel=dict(font=dict(size=15, color='white'), bgcolor=['blue', 'red']),
+            textfont=dict(size=17, color='white'),
             hovertemplate=[
-                            'Liczba zdobytych punktów w spotkaniach domowych: <b>%{y}</b><extra></extra>',
-                            'Liczba zdobytych punktów w spotkaniach wyjazdowych: <b>%{y}</b><extra></extra>'
+                            f'Punkty domowe drużyny {team1}: <b>%{{y}}</b><extra></extra>',
+                            f'Punkty wyjazdowe drużyny {team1} : <b>%{{y}}</b><extra></extra>'
             ],
-            marker=dict(color=['blue', 'red']),
-            showlegend=False
-        )
-    )  
-    fig8.add_trace(
-        go.Scatter(
-            x=[None],
-            y=[None],
-            mode='markers',
-            marker=dict(color='blue', size=10),
-            name=f'Ilość punktów domowych'
+            marker=dict(color=color[team1]),
+            name=team1,
         )
     )
     fig8.add_trace(
-        go.Scatter(
-            x=[None],
-            y=[None],
-            mode='markers',
-            marker=dict(color='red', size=10),
-            name='Ilość punktów wyjazdowych'
+        go.Bar(
+            x=list(data_for_graph1.keys()),
+            y=list(data_for_graph1.values()),
+            text=list(data_for_graph1.values()),
+            textfont=dict(size=17, color='white'),
+            hovertemplate=[
+                            f'Punkty domowe drużyny {team2}: <b>%{{y}}</b><extra></extra>',
+                            f'Punkty wyjazdowe drużyny {team2}: <b>%{{y}}</b><extra></extra>'
+            ],
+            name=team2,
+            marker=dict(color=color[team2]),
         )
     )
     fig8.update_layout(
+            barmode='group',
+            hovermode='x unified',
+            showlegend=True,
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
+            ),
             margin=dict(l=50, r=50, t=50, b=50),
             xaxis=dict(
                 title='Rodzaj meczu',
@@ -1272,11 +1278,12 @@ elif selected_tab == "Porównywanie statystyk":
             height=500,
             width=1200,
             legend=dict(
+                title=dict(text="Drużyna", font=dict(size=25, color='black')),
                 font=dict(
                     size=17  # Rozmiar czcionki legendy
                 ),
-                y=1.02,
-                x=1
+                y=1.05,
+                x=1.02
             ),
         )
     st.plotly_chart(fig8, use_container_width=True)
