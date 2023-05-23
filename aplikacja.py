@@ -553,7 +553,7 @@ elif selected_tab == "Premier League":
                         y=cup2['Fa_cup'],
                         name='Fa Cup',
                         text=cup2['Fa_cup'],
-                        hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
+                        #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                         hovertemplate='Liczba tytułów FA Cup: <b>%{y}</b><extra></extra>',
                         textfont=dict(size=15, color='white'),
                         showlegend=True
@@ -566,7 +566,7 @@ elif selected_tab == "Premier League":
                         y=cup1['Carabao_cup'],
                         name='Carabao Cup',
                         text=cup1['Carabao_cup'],
-                        hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='green'),
+                        #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='green'),
                         hovertemplate='Liczba tytułów Carabao Cup: <b>%{y}</b><extra></extra>',
                         textfont=dict(size=15, color='white'),
                         showlegend=True
@@ -577,6 +577,13 @@ elif selected_tab == "Premier League":
 
         fig1.update_layout(
             margin=dict(l=50, r=50, t=15, b=50),
+            hovermode='x unified',
+            hoverlabel=dict(
+                    font=dict(
+                        size=15,
+                        color='black'
+                    )
+            ),
             xaxis=dict(
                 title='Nazwa drużyny',
                 title_font=dict(size=25, color='black'),
