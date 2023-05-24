@@ -218,6 +218,31 @@ def calculate_home_away_points(df, season, team):
                 result['Wyjazdowy'] += 1
     return result
 
+
+def calculate_fauls_yellow_and_red_cards(season, team, df):
+    filtered_df = df[(df['Season'] == season) & ((df['HomeTeam'] == team) | (df['AwayTeam'] == team))]
+    
+    home_fouls = filtered_df.loc[filtered_df['HomeTeam'] == team, 'HF'].sum()
+    away_fouls = filtered_df.loc[filtered_df['AwayTeam'] == team, 'AF'].sum()
+    fouls = home_fouls + away_fouls
+    
+    home_yellow_cards = filtered_df.loc[filtered_df['HomeTeam'] == team, 'HY'].sum()
+    away_yellow_cards = filtered_df.loc[filtered_df['AwayTeam'] == team, 'AY'].sum()
+    yellow_cards = home_yellow_cards + away_yellow_cards
+    
+    home_red_cards = filtered_df.loc[filtered_df['HomeTeam'] == team, 'HR'].sum()
+    away_red_cards = filtered_df.loc[filtered_df['AwayTeam'] == team, 'AR'].sum()
+    red_cards = home_red_cards + away_red_cards
+    
+    result = {
+        'Faule bez kartki': int(fouls) - int(red_cards) - int(yellow_cards),
+        'Czerwone kartki': int(red_cards),
+        'Żółte kartki': int(yellow_cards)
+    }
+    
+    return result
+
+
 ############################################################
 
 
@@ -369,7 +394,7 @@ elif selected_tab == "Premier League":
             ),
         )
         st.plotly_chart(fig0, use_container_width=True)
-        st.header('Liczba sukcesów w Europejskich pucharach')
+        st.header('Liczba triumfów w Europejskich pucharach')
         zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
         zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
         liczebnosci_lm = [2, 2, 2]
@@ -394,7 +419,6 @@ elif selected_tab == "Premier League":
             marker_color='orange'
         ))
 
-        # Konfiguracja wykresu
         fig9.update_layout(
             xaxis_title='Klub',
             hovermode='x unified',
@@ -1326,7 +1350,93 @@ elif selected_tab == "Porównywanie statystyk":
         st.plotly_chart(fig8, use_container_width=True)
 
     
-    st.header('Porównanie ')
+    st.header('Rozkład kar za faule')
+    c1, c2 = st.columns(2)
+    seasons_x = [
+        '00/01', '01/02', '02/03', '03/04', '04/05', '05/06',
+        '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
+        '12/13', '13/14', '14/15', '15/16', '16/17', '17/18',
+        '18/19', '19/20', '20/21', '21/22'
+    ]
+    df2 = df[df['Season'].isin(seasons_x)]
+    team1 = c1.selectbox('Wybierz pierwszą drużynę :', unique_teams, key='faule')
+    team2 = c2.selectbox('Wybierz drugą drużynę :', return_opponents(df2, team1), key='faule1')
+    season = st.selectbox('Wybierz sezon :', find_common_seasons(team1, team2, df2), key='faule2')
+    fauls1 = calculate_fauls_yellow_and_red_cards(season, team1, df)
+    fauls2 = calculate_fauls_yellow_and_red_cards(season, team2, df)
+    st.markdown('''
+        <div style="display: flex; align-items: center; background-color:#F0F0F0; padding:10px; border-radius:5px;">
+            <div style="flex-grow: 1;"><span style="color:black;"><b>&#9632;</b></span> Liczba fauli bez kartki</div>
+            <div style="flex-grow: 1;"><span style="color:red;"><b>&#9632;</b></span> Liczba fauli ukaranych czerwoną kartką</div>
+            <div style="flex-grow: 1;"><span style="color:yellow;"><b>&#9632;</b></span> Liczba fauli ukaranych żółtą kartką</div>
+        </div>
+    ''', unsafe_allow_html=True)
+    k1, k2 = st.columns(2)
+    labels1 = list(fauls1.keys())
+    values1 = list(fauls1.values())
+    labels2 = list(fauls2.keys())
+    values2 = list(fauls2.values())
+    with k1:
+        fig11 = go.Figure(data=[
+            go.Pie(
+                labels=labels1,
+                sort=False,
+                values=values1,
+                textinfo='value+percent',
+                marker=dict(colors=['black', 'red', 'yellow']),
+                direction='clockwise',
+                hovertemplate='<b>%{label}</b><extra></extra>',
+                hoverlabel=dict(
+                    font=dict(
+                        size=17,
+                        color='black'
+                    )
+                ),
+
+            )
+        ])
+        fig11.update_layout(
+            plot_bgcolor='white',
+            title=team1,
+            font=dict(size=18, color='Black'),
+            separators=',',
+            title_x=0.45,
+            title_y=0.96,
+            title_font=dict(size=20),
+            margin=dict(t=80, b=0, l=20, r=0),
+            showlegend=False
+        )
+        st.plotly_chart(fig11, use_container_width=True)
+    with k2:
+        fig11 = go.Figure(data=[
+            go.Pie(
+                labels=labels2,
+                sort=False,
+                values=values2,
+                textinfo='value+percent',
+                marker=dict(colors=['black', 'red', 'yellow']),
+                direction='clockwise',
+                hovertemplate='<b>%{label}</b><extra></extra>',
+                hoverlabel=dict(
+                    font=dict(
+                        size=17,
+                        color='black'
+                    )
+                ),
+            )
+        ])
+        fig11.update_layout(
+            plot_bgcolor='white',
+            title=team2,
+            font=dict(size=18, color='Black'),
+            separators=',',
+            title_x=0.45,
+            title_y=0.96,
+            title_font=dict(size=20),
+            margin=dict(t=80, b=0, l=20, r=0),
+            showlegend=False
+        )
+        st.plotly_chart(fig11, use_container_width=True)
 
 elif selected_tab == "Transfery":
     st.markdown('---')
