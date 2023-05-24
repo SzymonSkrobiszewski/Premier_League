@@ -261,9 +261,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
-# Wybór zakładki za pomocą option_menu
-
 selected_tab = option_menu(
                    None,
                    ["Strona główna", "Premier League", "Porównywanie statystyk", "Transfery"],
@@ -285,8 +282,6 @@ selected_tab = option_menu(
                    }
               )
 
-
-# Zawartość wybranej zakładki
 if selected_tab == "Strona główna":
     st.markdown('---')
     st.title("Wstęp")
@@ -297,7 +292,6 @@ elif selected_tab == "Premier League":
     premier_league1 = option_menu(
                         None,
                         ['Ogólne statystyki ligi', "Kluby angielskie na płaszczyźnie Europejskiej"],
-                        #icons=['cast', 'cast'],
                         menu_icon="cast",
                         default_index=0,
                         orientation="horizontal",
@@ -335,11 +329,6 @@ elif selected_tab == "Premier League":
                     name=lig,
                     mode='lines+markers',
                     hovertemplate=f'Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b> <extra></extra>',
-                    # hoverlabel=dict(
-                    #     font=dict(size=15),
-                    #     bgcolor=colors[i],
-                    #     font_color='white',
-                    # ),
                     line=dict(color=colors[i]),
                     showlegend=True
                 )
@@ -363,7 +352,6 @@ elif selected_tab == "Premier League":
                 gridcolor='gray',
                 zerolinecolor='white'
             ),
-            #hovermode='x',
             hovermode="x unified",
             hoverlabel=dict(
                 font=dict(
@@ -376,23 +364,16 @@ elif selected_tab == "Premier League":
             legend=dict(
                 title=dict(text="Liga", font=dict(size=25, color='black')),
                 font=dict(size=20, color='black'),
-                orientation="v",
-                yanchor="top",
-                y=1,
-                xanchor="right",
-                x=1.20
+                y=0.96,
+                x=1.02
             ),
         )
         st.plotly_chart(fig0, use_container_width=True)
         st.header('Liczba sukcesów w Europejskich pucharach')
-    
         zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
         zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
-
-        liczebnosci_lm = [2, 2, 2]  # Liczebności dla zwycięzców LM
-        liczebnosci_le = [2, 1, 1]  # Liczebności dla zwycięzców LE
-
-        # Tworzenie figury i dodawanie danych dla słupków
+        liczebnosci_lm = [2, 2, 2]
+        liczebnosci_le = [2, 1, 1]
         fig9 = go.Figure()
         fig9.add_trace(go.Bar(
             x=zwyciezcy_lm,
@@ -576,7 +557,7 @@ elif selected_tab == "Premier League":
         fig1.update_traces(selector=dict(type='bar', name='Carabao Cup'), marker_color='green')
 
         fig1.update_layout(
-            margin=dict(l=50, r=50, t=15, b=50),
+            margin=dict(l=50, r=50, t=25, b=50),
             hovermode='x unified',
             hoverlabel=dict(
                     font=dict(
@@ -592,7 +573,7 @@ elif selected_tab == "Premier League":
             yaxis=dict(
                 title='Liczba pucharów',
                 title_font=dict(size=25, color='black'),
-                range=[0, 10],
+                range=[0, 10.5],
                 tickfont=dict(size=13, color='black'),
                 showgrid=True,
                 gridwidth=1,
@@ -604,64 +585,11 @@ elif selected_tab == "Premier League":
             legend=dict(
                 title=dict(text="Puchar", font=dict(size=25, color='black')),
                 font=dict(size=20, color='black'),
-                orientation="v",
-                yanchor="top",
-                y=0.98,
-                xanchor="right",
-                x=1.18,
+                y=1,
+                x=1.02,
             ),
         )
         st.plotly_chart(fig1, use_container_width=True)
-        # st.header('Liczba rozegranych sezonów w podziale na przedziały')
-        # fig6 = go.Figure()
-        # seasons_count = st.selectbox("Wybierz przedział zamknięty :",
-        #                             ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"]
-        # )
-        # x, y = map(lambda x: int(x), seasons_count.split('-'))
-        # team_and_number_of_seasons = pd.DataFrame(
-        #     df.groupby("Season")["AwayTeam"].unique().explode().value_counts()
-        # )
-        # team_and_number_of_seasons.rename(columns={'AwayTeam': 'Liczba sezonów'}, inplace=True)
-        # df1 = team_and_number_of_seasons[team_and_number_of_seasons['Liczba sezonów'].between(x, y)]
-        # fig6.add_traces(
-        #     go.Bar(
-        #         y=df1.index,
-        #         x=df1['Liczba sezonów'],
-        #         #text=df1['Liczba sezonów'],
-        #         orientation='h',
-        #         marker=dict(color='purple'),
-        #         textfont=dict(size=16, color='white'),
-        #         hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='purple'),
-        #         hovertemplate='Liczba rozegranych sezonów: <b>%{x}</b><extra></extra>',
-        #         showlegend=False
-        #     )
-        # )
-        # fig6.update_layout(
-        #     margin=dict(l=50, r=50, t=20, b=50),
-        #     xaxis=dict(
-        #             title='Liczba sezonów w Premier league',
-        #             showgrid=True,
-        #             gridwidth=1,
-        #             gridcolor='gray',
-        #             title_font=dict(size=25, color='black'),
-        #             tickfont=dict(size=14, color='black'),
-
-        #     ),
-        #     yaxis=dict(
-        #         title='Nazwa drużyny',
-        #         title_font=dict(size=25, color='black'),
-        #         #range=[0, y + 1.5],
-        #         tickfont=dict(size=14, color='black'),
-        #         showgrid=False,
-        #         gridwidth=0,
-        #         gridcolor='gray',
-        #         zeroline=False,
-        #     ),
-        #     height=500,
-        #     width=1200,
-
-        # )
-        # st.plotly_chart(fig6, use_container_width=True)
         st.header('Liczba rozegranych sezonów w Premier League według drużyn')
         season_dict = {
             '1992': '92/93',
@@ -721,7 +649,6 @@ elif selected_tab == "Premier League":
             go.Bar(
                 y=team_and_number_of_seasons.index,
                 x=team_and_number_of_seasons['Liczba sezonów'],
-                #text=df1['Liczba sezonów'],
                 orientation='h',
                 marker=dict(color='purple'),
                 textfont=dict(size=16, color='white'),
@@ -744,7 +671,6 @@ elif selected_tab == "Premier League":
             yaxis=dict(
                 title='Nazwa drużyny',
                 title_font=dict(size=25, color='black'),
-                #range=[0, y + 1.5],
                 tickfont=dict(size=12, color='black'),
                 showgrid=False,
                 gridwidth=0,
@@ -764,22 +690,16 @@ elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
     st.header('Liczba punktów ewoluująca w trakcie sezonu')
     comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużynę i sezony"))
-
     if comparison_type == "Drużyny":
-        selected_teams = st.multiselect(
-                            "Wybierz drużyny :", unique_teams,
-                            max_selections=2,
-                            default=['Manchester City', 'Manchester United']
-                        )
-        if len(selected_teams) == 2:
-            column1, column2 = st.columns(2)
-            color_line = choose_color_for_teams(selected_teams[0], selected_teams[1])
-            common_season1 = find_common_seasons(selected_teams[0], selected_teams[0], df)
-            common_season2 = find_common_seasons(selected_teams[1], selected_teams[1], df)
-            selected_season1 = column1.selectbox(f"Wybierz sezon dla {selected_teams[0]} :", common_season1)
-            selected_season2 = column2.selectbox(f'Wybierz sezon dla {selected_teams[1]} : ', common_season2)
-            club1 = calculate_points(df, selected_teams[0], selected_season1)
-            club2 = calculate_points(df, selected_teams[1], selected_season2)
+        column1, column2 = st.columns(2)
+        team1 = column1.selectbox('Wybierz pierwszą drużynę :', unique_teams)
+        team2 = column2.selectbox('Wybierz drugą drużynę :', return_opponents(df, team1))
+        if len([team1, team2]) == 2:
+            color_line = choose_color_for_teams(team1, team2)
+            common_season1 = find_common_seasons(team1, team2, df)
+            selected_season = st.selectbox(f"Wybierz sezon :", common_season1)
+            club1 = calculate_points(df, team1, selected_season)
+            club2 = calculate_points(df, team2, selected_season)
             club0 = pd.concat([club1, club2])
             max_value0 = club0['Punkty'].max()
 
@@ -789,10 +709,9 @@ elif selected_tab == "Porównywanie statystyk":
                     x=club1['Kolejka'],
                     y=club1['Punkty'],
                     mode='lines+markers',
-                    marker=dict(color=color_line[selected_teams[0]]),
-                    name=f'{selected_teams[0]} {selected_season1}',
-                    #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
-                    hovertext=[f"Punkty drużyny {selected_teams[0]}: <b>{points}</b>" for points in club1['Punkty']],
+                    marker=dict(color=color_line[team1]),
+                    name=f'{team1}',
+                    hovertext=[f"Punkty drużyny {team1}: <b>{points}</b>" for points in club1['Punkty']],
                     hovertemplate="%{hovertext}<extra></extra>"
                 )
             )
@@ -801,23 +720,18 @@ elif selected_tab == "Porównywanie statystyk":
                     x=club2['Kolejka'],
                     y=club2['Punkty'],
                     mode='lines+markers',
-                    name=f'{selected_teams[1]} {selected_season2}',
-                    marker=dict(color=color_line[selected_teams[1]]),
-                    #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
-                    hovertext=[f"Punkty drużyny {selected_teams[1]}: <b>{points}</b>" for points in club2['Punkty']],
+                    name=f'{team2}',
+                    marker=dict(color=color_line[team2]),
+                    hovertext=[f"Punkty drużyny {team2}: <b>{points}</b>" for points in club2['Punkty']],
                     hovertemplate="%{hovertext}<extra></extra>",
                 )
             )
             fig2.update_layout(
-                margin=dict(l=20, r=20, t=50, b=50),
+                margin=dict(l=50, r=50, t=50, b=50),
+                showlegend=True,
                 xaxis=dict(
                     title='Kolejka',
                     showline=True,
-                    range=(
-                        [-0.5, 43]
-                        if any(season in selected_season1 + selected_season2 for season in ["92/93", "93/94", "94/95"])
-                        else [-0.5, 39]
-                    ),
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=17, color='black'),
                 ),
@@ -838,13 +752,10 @@ elif selected_tab == "Porównywanie statystyk":
                     )
                 ),
                 legend=dict(
-                    title=dict(font=dict(size=25, color='black')),
+                    title=dict(text='Drużyna', font=dict(size=25, color='black')),
                     font=dict(size=17, color='black'),
-                    orientation="v",
-                    yanchor="top",
-                    y=0.98,
-                    xanchor="right",
-                    x=1.28
+                    y=0.99,
+                    x=1.02
                 ),
                 height=500,
                 width=1200,
@@ -855,7 +766,7 @@ elif selected_tab == "Porównywanie statystyk":
         c1, c2 = st.columns(2)
         club = c1.selectbox("Wybierz klub :", unique_teams)
         seasons = find_common_seasons(club, club, df)
-        selected_seasons = c2.multiselect("Wybierz sezon :", seasons, default=seasons[0])
+        selected_seasons = c2.multiselect("Wybierz sezon/y :", seasons, default=seasons[0])
         fig3, max_value1 = go.Figure(), []
         for season in selected_seasons:
             chart_season = calculate_points(df, club, season)
@@ -867,7 +778,6 @@ elif selected_tab == "Porównywanie statystyk":
                     mode='lines+markers',
                     name=season,
                     showlegend=True,
-                    #hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                     hovertext=[f"Punkty drużyny {club} w sezonie {season}: <b>{points}</b>" for points in chart_season['Punkty']],
                     hovertemplate="%{hovertext}<extra></extra>"
                 )
@@ -905,7 +815,7 @@ elif selected_tab == "Porównywanie statystyk":
                     font=dict(size=17, color='black'),
                     orientation="v",
                     yanchor="top",
-                    y=0.96,
+                    y=1,
                     xanchor="right",
                     x=1.11
                 ),
@@ -921,8 +831,8 @@ elif selected_tab == "Porównywanie statystyk":
         st.plotly_chart(fig3, use_container_width=True)
     st.header('Rezultaty bezpośrednich starć dwóch drużyn')
     col1, col2 = st.columns(2)
-    team1 = col1.selectbox("Wybierz pierwszą drużynę :", unique_teams)
-    team2 = col2.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, team=team1))
+    team1 = col1.selectbox("Wybierz pierwszą drużynę :", unique_teams, key='rezultaty')
+    team2 = col2.selectbox('Wybierz drugą drużynę :', return_opponents(df=df, team=team1), key='sds')
     color = choose_color_for_teams(team1, team2)
     fig4 = go.Figure()
     wyniki = head_to_head_results(df, team1, team2)
@@ -1075,7 +985,7 @@ elif selected_tab == "Porównywanie statystyk":
                 legend=dict(
                     title=dict(text="Drużyna", font=dict(size=25, color='black')),
                     font=dict(
-                        size=17  # Rozmiar czcionki legendy
+                        size=17
                     ),
                     y=1.05,
                     x=1.02
@@ -1140,7 +1050,7 @@ elif selected_tab == "Porównywanie statystyk":
                 legend=dict(
                     title=dict(text="Drużyna", font=dict(size=25, color='black')),
                     font=dict(
-                        size=17  # Rozmiar czcionki legendy
+                        size=17
                     ),
                     y=0.98,
                     x=1
@@ -1193,7 +1103,6 @@ elif selected_tab == "Porównywanie statystyk":
                     tickfont=dict(size=17, color='black')
                 ),
                 yaxis=dict(
-                    #range=[0, maksimum + 3],
                     title='Liczba bramek strzelonych',
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=17, color='black'),
@@ -1249,7 +1158,6 @@ elif selected_tab == "Porównywanie statystyk":
                     tickfont=dict(size=17, color='black')
                 ),
                 yaxis=dict(
-                    #range=[0, maksimum + 3],
                     title='Liczba bramek straconych',
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=17, color='black'),
@@ -1270,159 +1178,13 @@ elif selected_tab == "Porównywanie statystyk":
                 height=500,
                 width=1200
             )
-            st.plotly_chart(fig7, use_container_width=True)
-
-
-        # if len(season3) == 2:
-        #     scored_or_conceded = st.selectbox("Wybierz statystykę : ",['Bramki strzelone', 'Bramki stracone'])
-        #     df_c3 = calculate_lost_goals_by_half(df, club3, season3[0])
-        #     df_c4 = calculate_lost_goals_by_half(df, club3, season3[1])
-        #     df_c5 = pd.concat([df_c3, df_c4])
-        #     if scored_or_conceded == 'Bramki strzelone':
-        #         maksimum = max(df_c5['GSWPP'].max(), df_c5['GSWDP'].max())
-        #         fig7 = go.Figure()
-        #         fig7.add_traces(data=[
-        #             go.Bar(
-        #                 x=['Pierwsza', 'Druga'],
-        #                 y=[df_c5['GSWPP'].iloc[0], df_c5['GSWDP'].iloc[0]],
-        #                 text=[df_c5['GSWPP'].iloc[0], df_c5['GSWDP'].iloc[0]],
-        #                 textfont=dict(size=16, color='black'),
-        #                 hovertemplate=[
-        #                     f'Liczba strzelonych bramek w sezonie {season3[0]}: <b>%{{y}}</b><extra></extra>',
-        #                     f'Liczba strzelonych bramek w sezonie {season3[0]}: <b>%{{y}}</b><extra></extra>'
-        #                 ],
-        #                 marker=dict(color='#FFA500'),
-        #                 name=season3[0]
-        #             ),
-        #             go.Bar(
-        #                 x=['Pierwsza', 'Druga'],
-        #                 y=[df_c5['GSWPP'].iloc[1], df_c5['GSWDP'].iloc[1]],
-        #                 text=[df_c5['GSWPP'].iloc[1], df_c5['GSWDP'].iloc[1]],
-        #                 hovertemplate=[
-        #                     f'Liczba strzelonych bramek w sezonie {season3[1]}: <b>%{{y}}</b><extra></extra>',
-        #                     f'Liczba strzelonych bramek w sezonie {season3[1]}: <b>%{{y}}</b><extra></extra>'
-        #                 ],
-        #                 textfont=dict(size=16, color='black'),
-        #                 marker=dict(color='#FFC0CB'),
-        #                 name=season3[1]
-        #             )]
-        #         )
-        #         fig7.update_layout(
-        #             barmode='group',
-        #             hovermode="x unified",
-        #             hoverlabel=dict(
-        #             font=dict(
-        #                 size=15,
-        #                 color='black'
-        #                 )
-        #             ),
-        #             showlegend=True,
-        #             margin=dict(l=50, r=50, t=50, b=50),
-        #             xaxis=dict(
-        #                 title='Połowa meczu',
-        #                 title_font=dict(size=25, color='black'),
-        #                 tickfont=dict(size=17, color='black')
-        #             ),
-        #             yaxis=dict(
-        #                 range=[0, maksimum + 3],
-        #                 title='Liczba bramek strzelonych',
-        #                 title_font=dict(size=25, color='black'),
-        #                 tickfont=dict(size=17, color='black'),
-        #                 showgrid=True,
-        #                 gridwidth=1,
-        #                 gridcolor='gray',
-        #                 zeroline=False,
-        #                 zerolinewidth=0
-        #             ),
-        #             legend=dict(
-        #                 title=dict(text="Sezon", font=dict(size=25, color='black')),
-        #                 font=dict(
-        #                     size=17  # Rozmiar czcionki legendy
-        #                 ),
-        #                 y=1.05,
-        #                 x=1.02
-        #             ),
-        #             height=500,
-        #             width=1200
-        #         )
-        #     if scored_or_conceded == 'Bramki stracone':
-        #         fig7 = go.Figure()
-        #         fig7.add_traces(data=[
-        #             go.Bar(
-        #                 x=['Pierwsza połowa', 'Druga połowa'],
-        #                 y=[df_c5['GSTWPP'].iloc[0], df_c5['GSTWDP'].iloc[0]],
-        #                 text=[df_c5['GSTWPP'].iloc[0], df_c5['GSTWDP'].iloc[0]],
-        #                 textfont=dict(size=16, color='white'),
-        #                 hovertemplate=[
-        #                     f'Liczba straconych bramek w sezonie {season3[0]}: <b>%{{y}}</b><extra></extra>',
-        #                     f'Liczba straconych bramek w sezonie {season3[0]}: <b>%{{y}}</b><extra></extra>'
-        #                 ],
-        #                 name=season3[0]
-        #             ),
-        #             go.Bar(
-        #                 x=['Pierwsza połowa', 'Druga połowa'],
-        #                 y=[df_c5['GSTWPP'].iloc[1], df_c5['GSTWDP'].iloc[1]],
-        #                 text=[df_c5['GSTWPP'].iloc[1], df_c5['GSTWDP'].iloc[1]],
-        #                 hovertemplate=[
-        #                     f'Liczba straconych bramek w sezonie {season3[1]}: <b>%{{y}}</b><extra></extra>',
-        #                     f'Liczba straconych bramek w sezonie {season3[1]}: <b>%{{y}}</b><extra></extra>'
-        #                 ],
-        #                 textfont=dict(size=16, color='white'),
-        #                 name=season3[1]
-        #             )]
-        #         )
-        #         fig7.update_layout(
-        #             barmode='group',
-        #             hovermode="x unified",
-        #             hoverlabel=dict(
-        #             font=dict(
-        #                 size=15,
-        #                 color='black'
-        #                 )
-        #             ),
-        #             showlegend=True,
-        #             margin=dict(l=50, r=50, t=50, b=50),
-        #             xaxis=dict(
-        #                 title='Połowa',
-        #                 title_font=dict(size=25, color='black'),
-        #                 tickfont=dict(size=16, color='black')
-        #             ),
-        #             yaxis=dict(
-        #                 title='Liczba bramek straconych',
-        #                 title_font=dict(size=25, color='black'),
-        #                 tickfont=dict(size=16, color='black'),
-        #                 showgrid=True,
-        #                 gridwidth=1,
-        #                 gridcolor='gray',
-        #                 zeroline=False,
-        #                 zerolinewidth=0
-        #             ),
-        #             legend=dict(
-        #                 title=dict(text="Sezon", font=dict(size=25, color='black')),
-        #                 font=dict(
-        #                     size=17  # Rozmiar czcionki legendy
-        #                 ),
-        #                 y=0.98,
-        #                 x=1
-        #             ),
-        #             height=500,
-        #             width=1200
-        #         )
-        #     st.plotly_chart(fig7, use_container_width=True)
-    
+            st.plotly_chart(fig7, use_container_width=True)    
     st.header('Punktowanie w meczach domowych i wyjazdowych')
     fig8 = go.Figure()
     col1, col2 = st.columns(2)
-    # seasons_x = [
-    #     '00/01', '01/02', '02/03', '03/04', '04/05', '05/06',
-    #     '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
-    #     '12/13', '13/14', '14/15', '15/16', '16/17', '17/18',
-    #     '18/19', '19/20', '20/21', '21/22'
-    # ]
-    #unique_teams_for_calculate_points = df[df['Season'].isin(seasons_x)]
     team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
     team2 = col2.selectbox('Wybierz drugą drużynę', return_opponents(df, team1))
-    season1 = st.selectbox('Wybierz sezon: ', find_common_seasons(team1, team2, df))
+    season1 = st.selectbox('Wybierz sezon/y: ', find_common_seasons(team1, team2, df))
     data_for_graph = calculate_home_away_points(df, season1, team1)
     data_for_graph1 = calculate_home_away_points(df, season1, team2)
     color = choose_color_for_teams(team1, team2)
@@ -1484,7 +1246,7 @@ elif selected_tab == "Porównywanie statystyk":
             legend=dict(
                 title=dict(text="Drużyna", font=dict(size=25, color='black')),
                 font=dict(
-                    size=17  # Rozmiar czcionki legendy
+                    size=17
                 ),
                 y=1.05,
                 x=1.02
