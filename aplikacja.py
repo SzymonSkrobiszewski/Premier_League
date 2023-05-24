@@ -730,6 +730,15 @@ elif selected_tab == "Porównywanie statystyk":
                 margin=dict(l=50, r=50, t=50, b=50),
                 showlegend=True,
                 xaxis=dict(
+                    range=(
+                        [-0.5, 43]
+                        if (
+                            "92/93" in selected_season
+                            or "93/94" in selected_season
+                            or "94/95" in selected_season
+                        )
+                        else [-0.5, 39]
+                    ),
                     title='Kolejka',
                     showline=True,
                     title_font=dict(size=25, color='black'),
