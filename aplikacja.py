@@ -23,7 +23,6 @@ def load_data():
     fa_cup = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Fa_cup')
     premier_league = pd.read_excel(io='premier_league_winners.xlsx', engine='openpyxl')
     wartosci = pd.read_excel(io='wartosci_pieciu_lig.xlsx', engine='openpyxl')
-
     cup1 = pd.DataFrame(carabao_cup['Carabao_cup'].value_counts())
     cup2 = pd.DataFrame(fa_cup['Fa_cup'].value_counts())
     p_l = pd.DataFrame(premier_league['zwyciezca'].value_counts())
@@ -62,7 +61,7 @@ color_dictionary = {
     'Bolton': {'blue': '#263C7E', 'red': '#88111E'},
     'Bournemouth': {'black': '#000000', 'red': '#B50E12'},
     'Brighton': {'blue': '#0057B8', 'yellow': '#FDB913'},
-    'Burnley': {'BURGUNDY'.lower(): '#6C1D45', 'blue': '#99D6EA'},
+    'Burnley': {'claret': '#6C1D45', 'blue': '#99D6EA'},
     'Derby': {'black': '#000000', 'blue': '#000040'},
     'Everton': {'blue': '#003399', 'pink': '#fa9bac'},
     'Huddersfield': {'blue': '#0E63AD', 'yellow': '#FDE43C'},
@@ -78,7 +77,7 @@ color_dictionary = {
     'Cardiff': {'blue': '#0070B5', 'red': '#D11524'},
     'QPR': {'blue': '#1d5ba4', 'pink': '#ff33cc'},
     'Stoke': {'red': '#E03A3E', 'blue': '#1B449C'},
-    'Bradford': {'yellow': '#FFDF00','black': '#000000'},
+    'Bradford': {'yellow': '#FFDF00', 'black': '#000000'},
     'Portsmouth': {'red': '#ff0000', 'black': '#000000'},
     'Sheffield United': {'red': '#ec2227', 'yellow': '#fcee23'},
     'Fullham': {'black': '#000000', 'red': '#CC0000'},
