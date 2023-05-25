@@ -19,8 +19,8 @@ st.set_page_config(
 @st.cache_data
 def load_data():
     df = pd.read_excel(io='Premier_league_all_season1.xlsx', engine='openpyxl')
-    carabao_cup = pd.read_excel(io='carabao_cup.xlsx', engine='openpyxl')
-    fa_cup = pd.read_excel(io='fa_cup.xlsx', engine='openpyxl')
+    carabao_cup = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Carabao_cup')
+    fa_cup = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Fa_cup')
     premier_league = pd.read_excel(io='premier_league_winners.xlsx', engine='openpyxl')
     wartosci = pd.read_excel(io='wartosci_pieciu_lig.xlsx', engine='openpyxl')
 
@@ -706,8 +706,8 @@ elif selected_tab == "Premier League":
 
         )
         st.plotly_chart(fig10, use_container_width=True)
-        st.write('Rok początkowy i końcowy odnosi się odpowiednio do początku i końca sezonu.\
-                Przykładowo wybór przedziału 1992-2000, odpowiada sezonom od 1992/93 do 00/01 włącznie.'
+        st.write('Przedział czasowy od x do y odnosi się do sezonów począwszy od roku x do roku y + 1.\
+                  Na przykład, wybierając przedział od 1992 do 1993, uwzględniamy sezony od 1992/93 do 1993/94 włącznie.'
         )
 
 elif selected_tab == "Porównywanie statystyk":
@@ -1437,6 +1437,6 @@ elif selected_tab == "Porównywanie statystyk":
             showlegend=False
         )
         st.plotly_chart(fig11, use_container_width=True)
-
+    st.write('Powyższy wykres przedstawia sumy rozłączne. Oznacza to, że jeśli zawodnik otrzyma drugą żółtą kartkę, co skutkuje czerwoną kartką, wartość jest dodawana tylko "czerwonych kartek". Przykładowo jeśli drużyna A dostała dwie żółte kartki, po czym jeden z wcześniej ukaranych zawodników wylatuje z boiska, to bilans kartek w meczu wynosi odpowiednio dwie zółte i jedną czerwoną kartkę.')
 elif selected_tab == "Transfery":
     st.markdown('---')
