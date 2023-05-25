@@ -205,7 +205,7 @@ def calculate_points(df, team_name, season):
 #                 }
 
 def choose_color_for_teams(team1, team2):
-    sorted_teams = sorted([team1, team2])  # Sortowanie nazw drużyn alfabetycznie
+    sorted_teams = sorted([team1, team2])
     
     if len(color_dictionary[sorted_teams[0]].items()) + len(color_dictionary[sorted_teams[1]].items()) == 2:
         return {
@@ -384,7 +384,7 @@ elif selected_tab == "Premier League":
                                 "nav-link-selected": {"background-color": "red"},
                         }
                     )
-    if premier_league1 == 'Kluby angielskie na płaszczyźnie Europejskiej':
+    if premier_league1 == "Premier League na płaszczyźnie Europejskiej":
         st.header('Wartość ligi na przestrzeni lat')
         liga = st.multiselect(
             "Wybierz ligę :",
