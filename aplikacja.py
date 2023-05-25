@@ -159,27 +159,75 @@ def calculate_points(df, team_name, season):
     )
 
 
+# def choose_color_for_teams(team1, team2):
+#     if team1 == team2:
+#         return {team1: list(color_dictionary[team1].values())[0]}
+#     if len(color_dictionary[team2].items()) == 1 and len(color_dictionary[team1]) != 1:
+#         if list(color_dictionary[team1].values())[0] == list(color_dictionary[team2].values())[0]:
+#             return {
+#                         team1: list(color_dictionary[team1].values())[1],
+#                         team2: list(color_dictionary[team2].values())[0]
+#             }
+#         else:
+#             return {
+#                         team1: list(color_dictionary[team1].values())[0],
+#                         team2: list(color_dictionary[team2].values())[0]
+#             }
+#     else:
+#         team1_color = color_dictionary.get(team1, {})
+#         team2_color = color_dictionary.get(team2, {})
+#         color1 = list(team1_color.keys())[0]
+#         for color2 in team2_color.keys():
+#             if color1 != color2:
+#                 return {team1: team1_color[color1], team2: team2_color[color2]}
+
+# def choose_color_for_teams(team1, team2):
+#     if len(color_dictionary[team1].items()) + len(color_dictionary[team2].items()) == 2:
+#         return {
+#             team1: list(color_dictionary[team1].values())[0],
+#             team2: list(color_dictionary[team2].values())[0]
+#         }
+#     elif len(color_dictionary[team1].items()) > 1:
+#         color2 = list(color_dictionary[team2].keys())[0]
+#         for color1 in color_dictionary[team1].keys():
+#             if color1 != color2:
+#                 return {
+#                     team1: color_dictionary[team1].get(color1),
+#                     team2: color_dictionary[team2].get(color2)
+#                 }
+#     elif len(color_dictionary[team2].items()) > 1:
+#         color1 = list(color_dictionary[team1].keys())[0]
+#         for color2 in color_dictionary[team2].keys():
+#             if color1 != color2:
+#                 return {
+#                     team1: color_dictionary[team1].get(color1),
+#                     team2: color_dictionary[team2].get(color2)
+#                 }
+
 def choose_color_for_teams(team1, team2):
-    if team1 == team2:
-        return {team1: list(color_dictionary[team1].values())[0]}
-    if len(color_dictionary[team2].items()) == 1 and len(color_dictionary[team1]) != 1:
-        if list(color_dictionary[team1].values())[0] == list(color_dictionary[team2].values())[0]:
-            return {
-                        team1: list(color_dictionary[team1].values())[1],
-                        team2: list(color_dictionary[team2].values())[0]
-            }
-        else:
-            return {
-                        team1: list(color_dictionary[team1].values())[0],
-                        team2: list(color_dictionary[team2].values())[0]
-            }
-    else:
-        team1_color = color_dictionary.get(team1, {})
-        team2_color = color_dictionary.get(team2, {})
-        color1 = list(team1_color.keys())[0]
-        for color2 in team2_color.keys():
+    sorted_teams = sorted([team1, team2])  # Sortowanie nazw drużyn alfabetycznie
+    
+    if len(color_dictionary[sorted_teams[0]].items()) + len(color_dictionary[sorted_teams[1]].items()) == 2:
+        return {
+            sorted_teams[0]: list(color_dictionary[sorted_teams[0]].values())[0], 
+            sorted_teams[1]: list(color_dictionary[sorted_teams[1]].values())[0]
+        }
+    elif len(color_dictionary[sorted_teams[0]].items()) > 1:
+        color2 = list(color_dictionary[sorted_teams[1]].keys())[0]
+        for color1 in color_dictionary[sorted_teams[0]].keys():
             if color1 != color2:
-                return {team1: team1_color[color1], team2: team2_color[color2]}
+                return {
+                    sorted_teams[0]: color_dictionary[sorted_teams[0]].get(color1),
+                    sorted_teams[1]: color_dictionary[sorted_teams[1]].get(color2)
+                }
+    elif len(color_dictionary[sorted_teams[1]].items()) > 1:
+        color1 = list(color_dictionary[sorted_teams[0]].keys())[0]
+        for color2 in color_dictionary[sorted_teams[1]].keys():
+            if color1 != color2:
+                return {
+                    sorted_teams[0]: color_dictionary[sorted_teams[0]].get(color1),
+                    sorted_teams[1]: color_dictionary[sorted_teams[1]].get(color2)
+                }
 
 
 def calculate_lost_goals_by_half(df, team, season):
@@ -316,7 +364,7 @@ elif selected_tab == "Premier League":
     st.markdown('---')
     premier_league1 = option_menu(
                         None,
-                        ['Ogólne statystyki ligi', "Kluby angielskie na płaszczyźnie Europejskiej"],
+                        ['Ogólne statystyki ligi', "Premier League na płaszczyźnie Europejskiej"],
                         menu_icon="cast",
                         default_index=0,
                         orientation="horizontal",
@@ -1437,6 +1485,11 @@ elif selected_tab == "Porównywanie statystyk":
             showlegend=False
         )
         st.plotly_chart(fig11, use_container_width=True)
-    st.write('Powyższy wykres przedstawia sumy rozłączne. Oznacza to, że jeśli zawodnik otrzyma drugą żółtą kartkę, co skutkuje czerwoną kartką, wartość jest dodawana tylko "czerwonych kartek". Przykładowo jeśli drużyna A dostała dwie żółte kartki, po czym jeden z wcześniej ukaranych zawodników wylatuje z boiska, to bilans kartek w meczu wynosi odpowiednio dwie zółte i jedną czerwoną kartkę.')
+    st.markdown('''
+        Powyższy wykres przedstawia sumy rozłączne. Oznacza to, że jeśli zawodnik otrzyma drugą żółtą kartkę, 
+        co skutkuje czerwoną kartką, wartość jest dodawana tylko do **"czerwonych kartek"**. 
+        Przykładowo jeśli drużyna A dostała dwie żółte kartki, po czym jeden z wcześniej ukaranych zawodników wylatuje z boiska, 
+        to bilans kartek w meczu wynosi odpowiednio dwie żółte i jedną czerwoną kartkę.
+    ''')
 elif selected_tab == "Transfery":
     st.markdown('---')
