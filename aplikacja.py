@@ -205,10 +205,9 @@ def calculate_points(df, team_name, season):
 
 def choose_color_for_teams(team1, team2):
     sorted_teams = sorted([team1, team2])
-    
     if len(color_dictionary[sorted_teams[0]].items()) + len(color_dictionary[sorted_teams[1]].items()) == 2:
         return {
-            sorted_teams[0]: list(color_dictionary[sorted_teams[0]].values())[0], 
+            sorted_teams[0]: list(color_dictionary[sorted_teams[0]].values())[0],
             sorted_teams[1]: list(color_dictionary[sorted_teams[1]].values())[0]
         }
     elif len(color_dictionary[sorted_teams[0]].items()) > 1:
@@ -268,25 +267,20 @@ def calculate_home_away_points(df, season, team):
 
 def calculate_fauls_yellow_and_red_cards(season, team, df):
     filtered_df = df[(df['Season'] == season) & ((df['HomeTeam'] == team) | (df['AwayTeam'] == team))]
-    
     home_fouls = filtered_df.loc[filtered_df['HomeTeam'] == team, 'HF'].sum()
     away_fouls = filtered_df.loc[filtered_df['AwayTeam'] == team, 'AF'].sum()
     fouls = home_fouls + away_fouls
-    
     home_yellow_cards = filtered_df.loc[filtered_df['HomeTeam'] == team, 'HY'].sum()
     away_yellow_cards = filtered_df.loc[filtered_df['AwayTeam'] == team, 'AY'].sum()
     yellow_cards = home_yellow_cards + away_yellow_cards
-    
     home_red_cards = filtered_df.loc[filtered_df['HomeTeam'] == team, 'HR'].sum()
     away_red_cards = filtered_df.loc[filtered_df['AwayTeam'] == team, 'AR'].sum()
     red_cards = home_red_cards + away_red_cards
-    
     result = {
         'Faule bez kartki': int(fouls) - int(red_cards) - int(yellow_cards),
         'Czerwone kartki': int(red_cards),
         'Żółte kartki': int(yellow_cards)
     }
-    
     return result
 
 
@@ -370,7 +364,7 @@ elif selected_tab == "Premier League":
                         styles={
                                 "container": {
                                     "padding": "0!important",
-                                    "background-color": "green", 
+                                    "background-color": "green",
                                 },
                                 "icon": {"color": "white", "font-size": "20px"},
                                 "nav-link": {
@@ -714,7 +708,6 @@ elif selected_tab == "Premier League":
             team_and_number_of_seasons = team_and_number_of_seasons.sort_index(ascending=True)
         elif sorted_option == 'Rosnąco alfabetycznie':
             team_and_number_of_seasons = team_and_number_of_seasons.sort_index(ascending=False)
-        
         fig10 = go.Figure()
         fig10.add_traces(
             go.Bar(
@@ -1139,7 +1132,6 @@ elif selected_tab == "Porównywanie statystyk":
                 width=1200
             )
         st.plotly_chart(fig7, use_container_width=True)
-    
     if comparison_type1 == 'Drużynę i sezon/y':
         colors = ['#FFA500', '#FFC0CB', '#FFFF00', '#00FFFF', '#FF00FF']
         column3, column4 = st.columns(2)
@@ -1258,10 +1250,10 @@ elif selected_tab == "Porównywanie statystyk":
                 height=500,
                 width=1200
             )
-            st.plotly_chart(fig7, use_container_width=True)    
+            st.plotly_chart(fig7, use_container_width=True)
     st.header('Punktowanie w meczach domowych i wyjazdowych')
     comparison_type2 = st.radio("Co chcesz porównać?", ("Drużyny", "Drużynę i sezon/y"), key='ct2')
-    if comparison_type2 == 'Drużyny':  
+    if comparison_type2 == 'Drużyny':
         fig8 = go.Figure()
         col1, col2 = st.columns(2)
         team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
@@ -1341,7 +1333,7 @@ elif selected_tab == "Porównywanie statystyk":
         col1, col2 = st.columns(2)
         team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
         seasons = find_common_seasons(team1, team1, df)
-        selected_seasons = col2.multiselect('Wybierz sezon/y :', seasons, default=seasons[0], max_selections=5)  
+        selected_seasons = col2.multiselect('Wybierz sezon/y :', seasons, default=seasons[0], max_selections=5)
         for i, season in enumerate(selected_seasons):
             data_for_graph = calculate_home_away_points(df, season, team1)
             fig8.add_trace(
@@ -1395,8 +1387,6 @@ elif selected_tab == "Porównywanie statystyk":
                 ),
             )
         st.plotly_chart(fig8, use_container_width=True)
-
-    
     st.header('Rozkład kar za faule')
     c1, c2 = st.columns(2)
     seasons_x = [
@@ -1485,8 +1475,8 @@ elif selected_tab == "Porównywanie statystyk":
         )
         st.plotly_chart(fig11, use_container_width=True)
     st.markdown('''
-        Powyższy wykres przedstawia sumy rozłączne. Oznacza to, że jeśli zawodnik otrzyma drugą żółtą kartkę, 
-        co skutkuje czerwoną kartką, wartość jest dodawana tylko do **"czerwonych kartek"**. 
+        Powyższy wykres przedstawia sumy rozłączne. Oznacza to, że jeśli zawodnik otrzyma drugą żółtą kartkę,
+        co skutkuje czerwoną kartką, wartość jest dodawana tylko do **"czerwonych kartek"**.
         Przykładowo jeśli drużyna A dostała dwie żółte kartki, po czym jeden z wcześniej ukaranych zawodników wylatuje z boiska, 
         to bilans kartek w meczu wynosi odpowiednio dwie żółte i jedną czerwoną kartkę.
     ''')
