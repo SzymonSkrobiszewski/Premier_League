@@ -378,7 +378,7 @@ elif selected_tab == "Premier League":
                         }
                     )
     if premier_league1 == "Premier League na płaszczyźnie Europejskiej":
-        st.header('Wartość ligi na przestrzeni lat')
+        st.header('Porównanie wartości lig piłkarskich')
         liga = st.multiselect(
             "Wybierz ligę :",
                 ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
@@ -435,7 +435,7 @@ elif selected_tab == "Premier League":
             ),
         )
         st.plotly_chart(fig0, use_container_width=True)
-        st.header('Liczba triumfów w Europejskich pucharach')
+        st.header('Liczba zwycięstw klubów z Premier League w Europejskich pucharach')
         zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
         zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
         liczebnosci_lm = [2, 2, 2]
@@ -980,7 +980,7 @@ elif selected_tab == "Porównywanie statystyk":
     )
     st.plotly_chart(fig4, use_container_width=True)
 
-    st.header('Porównanie bramek strzelonych i straconych względem połów')
+    st.header('Porównanie bramek strzelonych i straconych względem połowy meczu')
     comparison_type1 = st.radio("Co chcesz porównać?", ("Drużyny", "Drużynę i sezon/y"), key="comparison_type1")
     seasons_to_remove = ['92/93', '93/94', '94/95']
     filtered_df = df[~df['Season'].isin(seasons_to_remove)]
