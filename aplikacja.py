@@ -509,7 +509,7 @@ elif selected_tab == "Premier League":
     else:
         st.header('Liczba zawodników w Premier League')
         st.write('Tu coś będzie.')
-        st.header('Liczba strzelonych bramek w sezonie')
+        st.header('Liczba strzelonych bramek')
         fig5 = go.Figure()
         season_goals = df.groupby('Season')[['FTHG', 'FTAG']].sum().sort_values(by='Season', ascending=False)
         season_total_goals = season_goals.sum(axis=1).reset_index(name='liczba bramek')
