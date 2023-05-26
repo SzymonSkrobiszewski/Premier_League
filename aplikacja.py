@@ -158,51 +158,6 @@ def calculate_points(df, team_name, season):
     )
 
 
-# def choose_color_for_teams(team1, team2):
-#     if team1 == team2:
-#         return {team1: list(color_dictionary[team1].values())[0]}
-#     if len(color_dictionary[team2].items()) == 1 and len(color_dictionary[team1]) != 1:
-#         if list(color_dictionary[team1].values())[0] == list(color_dictionary[team2].values())[0]:
-#             return {
-#                         team1: list(color_dictionary[team1].values())[1],
-#                         team2: list(color_dictionary[team2].values())[0]
-#             }
-#         else:
-#             return {
-#                         team1: list(color_dictionary[team1].values())[0],
-#                         team2: list(color_dictionary[team2].values())[0]
-#             }
-#     else:
-#         team1_color = color_dictionary.get(team1, {})
-#         team2_color = color_dictionary.get(team2, {})
-#         color1 = list(team1_color.keys())[0]
-#         for color2 in team2_color.keys():
-#             if color1 != color2:
-#                 return {team1: team1_color[color1], team2: team2_color[color2]}
-
-# def choose_color_for_teams(team1, team2):
-#     if len(color_dictionary[team1].items()) + len(color_dictionary[team2].items()) == 2:
-#         return {
-#             team1: list(color_dictionary[team1].values())[0],
-#             team2: list(color_dictionary[team2].values())[0]
-#         }
-#     elif len(color_dictionary[team1].items()) > 1:
-#         color2 = list(color_dictionary[team2].keys())[0]
-#         for color1 in color_dictionary[team1].keys():
-#             if color1 != color2:
-#                 return {
-#                     team1: color_dictionary[team1].get(color1),
-#                     team2: color_dictionary[team2].get(color2)
-#                 }
-#     elif len(color_dictionary[team2].items()) > 1:
-#         color1 = list(color_dictionary[team1].keys())[0]
-#         for color2 in color_dictionary[team2].keys():
-#             if color1 != color2:
-#                 return {
-#                     team1: color_dictionary[team1].get(color1),
-#                     team2: color_dictionary[team2].get(color2)
-#                 }
-
 def choose_color_for_teams(team1, team2):
     sorted_teams = sorted([team1, team2])
     if len(color_dictionary[sorted_teams[0]].items()) + len(color_dictionary[sorted_teams[1]].items()) == 2:
@@ -525,13 +480,13 @@ elif selected_tab == "Premier League":
                 x=season_total_goals['Season'],
                 y=season_total_goals['liczba bramek'],
                 text=season_total_goals['liczba bramek'],
-                textfont=dict(size=11, color='white'),
+                textfont=dict(size=12, color='white'),
                 hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
                 hovertemplate='Liczba strzelonych bramek: <b>%{y}</b><extra></extra>'
             )
         )
         fig5.update_layout(
-            margin=dict(l=20, r=20, t=25, b=50),
+            margin=dict(l=0, r=0, t=25, b=0),
             xaxis=dict(
                 title='Sezon',
                 tickfont=dict(size=13, color='black'),
@@ -548,7 +503,7 @@ elif selected_tab == "Premier League":
                 zeroline=False,
             ),
             height=500,
-            width=1200,
+            width=1400,
         )
         st.plotly_chart(fig5, use_container_width=True)
 
@@ -1038,7 +993,7 @@ elif selected_tab == "Porównywanie statystyk":
                     )
                 ),
                 showlegend=True,
-                margin=dict(l=20, r=50, t=50, b=20),
+                margin=dict(l=50, r=50, t=50, b=50),
                 xaxis=dict(
                     title='Połowa meczu',
                     title_font=dict(size=25, color='black'),
@@ -1064,7 +1019,7 @@ elif selected_tab == "Porównywanie statystyk":
                     x=1.02
                 ),
                 height=500,
-                width=1500
+                width=1200
             )
         if scored_or_conceded == 'Bramki stracone':
             fig7 = go.Figure()
