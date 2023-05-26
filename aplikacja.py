@@ -241,8 +241,6 @@ def calculate_fauls_yellow_and_red_cards(season, team, df):
 
 ############################################################
 
-st.markdown(html_style, unsafe_allow_html=True)
-
 #Odległość granic od -----
 streamlit_style = """
 <style>
