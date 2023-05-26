@@ -480,7 +480,7 @@ elif selected_tab == "Premier League":
                 x=season_total_goals['Season'],
                 y=season_total_goals['liczba bramek'],
                 text=season_total_goals['liczba bramek'],
-                textfont=dict(size=12, color='white'),
+                textfont=dict(size=11.5, color='white'),
                 hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='blue'),
                 hovertemplate='Liczba strzelonych bramek: <b>%{y}</b><extra></extra>'
             )
