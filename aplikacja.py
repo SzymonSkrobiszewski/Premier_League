@@ -241,24 +241,28 @@ def calculate_fauls_yellow_and_red_cards(season, team, df):
 
 ############################################################
 
+st.markdown(html_style, unsafe_allow_html=True)
 
+#Odległość granic od -----
 streamlit_style = """
 <style>
 body {
-    font-size: 20px;
+    font-size: 25px;
 }
 </style>
 """
 
+#Zmienianie wysokości pasków wyborów.
 css = """
     <style>
     div[data-baseweb="select"] > div:first-child {
-        font-size: 15px;
+        font-size: 25px;
     }
     </style>
 """
 st.markdown(css, unsafe_allow_html=True)
 
+#Ustawienie odległości pierwszego elementu od górnej części strony
 css = """
     <style>
         .stApp {
@@ -267,9 +271,9 @@ css = """
     </style>
 """
 
-st.markdown(css, unsafe_allow_html=True)
-
 st.markdown(streamlit_style, unsafe_allow_html=True)
+
+st.markdown(css, unsafe_allow_html=True)
 
 st.markdown(
     """
@@ -306,7 +310,23 @@ selected_tab = option_menu(
 if selected_tab == "Strona główna":
     st.markdown('---')
     st.title("Wstęp")
-    st.markdown("<span style='font-size:20px'>Informacje o Premier League.</span>", unsafe_allow_html=True)
+    st.markdown('<div style="text-align: justify; font-size: 25px;"> \
+                Premier League, znana również jako English Premier League (EPL), została utworzona w 1992 roku. \
+                Jest to najwyższa klasa rozgrywkowa w angielskim systemie ligowym piłki nożnej.\
+                Skupia wiele renomowanych klubów, które mają bogatą historię i tradycję.\
+                Oprócz rywalizacji ligowej, w trakcie sezonu Premier League rozgrywane są również dwa prestiżowe puchary: \
+                Puchar Anglii (FA Cup) i Puchar Ligi Angielskiej (Carabao Cup). \
+                To unikatowa dwupucharowa tradycja, która wyróżnia Anglię spośród innych krajów europejskich.\
+                Dodatkowo, drużyny Premier League mają możliwość uczestnictwa w międzynarodowych rozgrywkach klubowych,\
+                takich jak Liga Mistrzów UEFA, Liga Europy UEFA i Liga Konferencji Europy UEFA.\
+                </div>',
+                unsafe_allow_html=True)
+    st.write('')
+    st.markdown('<div style="text-align: justify; font-size: 25px;">\
+                Aplikacja ma na celu wprowadzenie użytkownika w świat Premier League, umożliwiając mu porównywanie statystyk,\
+                poznawanie najbardziej utytułowanych klubów i wiele innych.\
+                </div>',
+                unsafe_allow_html=True)
 
 elif selected_tab == "Premier League":
     st.markdown('---')
