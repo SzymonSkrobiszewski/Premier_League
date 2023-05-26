@@ -250,11 +250,11 @@ body {
 </style>
 """
 
-#Zmienianie wysokości pasków wyborów.
+#Zmienianie wysokości pasków wyborów i rozmiar tekstu
 css = """
     <style>
     div[data-baseweb="select"] > div:first-child {
-        font-size: 25px;
+        font-size: 15px;
     }
     </style>
 """
