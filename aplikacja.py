@@ -323,6 +323,7 @@ if selected_tab == "Strona główna":
     st.markdown('<div style="text-align: justify; font-size: 25px;">\
                 Aplikacja ma na celu wprowadzenie użytkownika w świat Premier League, umożliwiając mu porównywanie statystyk,\
                 poznawanie najbardziej utytułowanych klubów i wiele innych.\
+                Dane pochodzą z wiarygodnych portali związanych z piłką m.in Transfermarkt czy oficjalna strona Premier League.\
                 </div>',
                 unsafe_allow_html=True)
 
