@@ -752,7 +752,7 @@ elif selected_tab == "Premier League":
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
-    st.header('Liczba punktów ewoluująca w trakcie sezonu')
+    st.header('Porównanie liczby punktów ewoluującej w trakcie sezonu')
     comparison_type = st.radio("Co chcesz porównać?", ("Drużyny", "Drużynę i sezon/y"))
     if comparison_type == "Drużyny":
         column1, column2 = st.columns(2)
@@ -1038,7 +1038,7 @@ elif selected_tab == "Porównywanie statystyk":
                     )
                 ),
                 showlegend=True,
-                margin=dict(l=50, r=50, t=50, b=50),
+                margin=dict(l=20, r=50, t=50, b=20),
                 xaxis=dict(
                     title='Połowa meczu',
                     title_font=dict(size=25, color='black'),
@@ -1064,7 +1064,7 @@ elif selected_tab == "Porównywanie statystyk":
                     x=1.02
                 ),
                 height=500,
-                width=1200
+                width=1500
             )
         if scored_or_conceded == 'Bramki stracone':
             fig7 = go.Figure()
@@ -1434,12 +1434,14 @@ elif selected_tab == "Porównywanie statystyk":
         ])
         fig11.update_layout(
             plot_bgcolor='white',
-            title=team1,
+            title=dict(
+                text=f'Drużyna - {team1}',
+                font=dict(size=22),
+                xanchor='left',
+                yanchor='top',
+            ),
             font=dict(size=18, color='Black'),
             separators=',',
-            title_x=0.45,
-            title_y=0.96,
-            title_font=dict(size=20),
             margin=dict(t=80, b=0, l=20, r=0),
             showlegend=False
         )
@@ -1464,12 +1466,14 @@ elif selected_tab == "Porównywanie statystyk":
         ])
         fig11.update_layout(
             plot_bgcolor='white',
-            title=team2,
+            title=dict(
+                text=f'Drużyna - {team2}',
+                font=dict(size=22),
+                xanchor='left',
+                yanchor='top',
+            ),
             font=dict(size=18, color='Black'),
             separators=',',
-            title_x=0.45,
-            title_y=0.96,
-            title_font=dict(size=20),
             margin=dict(t=80, b=0, l=20, r=0),
             showlegend=False
         )
