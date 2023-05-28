@@ -696,7 +696,7 @@ elif selected_tab == "Premier League":
             )
         )
         fig10.update_layout(
-            margin=dict(l=50, r=50, t=30, b=50),
+            margin=dict(l=50, r=50, t=50, b=50),
             xaxis=dict(
                     title='Liczba sezonów w Premier League',
                     showgrid=True,
