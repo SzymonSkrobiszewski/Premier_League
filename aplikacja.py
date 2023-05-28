@@ -12,7 +12,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-
 ######################### Zbiory danych #########################
 
 
@@ -21,7 +20,7 @@ def load_data():
     df = pd.read_excel(io='Premier_league_all_season1.xlsx', engine='openpyxl')
     carabao_cup = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Carabao_cup')
     fa_cup = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Fa_cup')
-    premier_league = pd.read_excel(io='premier_league_winners.xlsx', engine='openpyxl')
+    premier_league = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Premier_league')
     wartosci = pd.read_excel(io='wartosci_pieciu_lig.xlsx', engine='openpyxl')
     cup1 = pd.DataFrame(carabao_cup['Carabao_cup'].value_counts())
     cup2 = pd.DataFrame(fa_cup['Fa_cup'].value_counts())
@@ -85,10 +84,7 @@ color_dictionary = {
     'Oldham': {'cyan': '#59777d'},
     'Sunderland': {'red': '#eb172b', 'gold': '#a68a26'}
 }
-
-
 ######################### FUNKCJE PRZETWARZAJĄCE DANE #########################
-
 
 def find_common_seasons(team1, team2, df):
     common_seasons = []
@@ -326,6 +322,11 @@ if selected_tab == "Strona główna":
                 Dane pochodzą z wiarygodnych portali związanych z piłką m.in Transfermarkt czy oficjalna strona Premier League.\
                 </div>',
                 unsafe_allow_html=True)
+    # from PIL import Image
+    # image = Image.open("3791c2fc0fbe5936bf117b20823ae888.jpg")
+
+    # # Wyświetlenie obrazka na stronie
+    # st.image(image)
 
 elif selected_tab == "Premier League":
     st.markdown('---')
@@ -696,7 +697,7 @@ elif selected_tab == "Premier League":
             )
         )
         fig10.update_layout(
-            margin=dict(l=50, r=50, t=50, b=50),
+            margin=dict(l=50, r=0, t=50, b=0),
             xaxis=dict(
                     title='Liczba sezonów w Premier League',
                     showgrid=True,
