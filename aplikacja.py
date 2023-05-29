@@ -727,9 +727,11 @@ elif selected_tab == "Premier League":
 
         )
         st.plotly_chart(fig10, use_container_width=True)
-        st.write('Przedział czasowy od x do y odnosi się do sezonów począwszy od roku x do roku y + 1.\
-                  Na przykład, wybierając przedział od 1992 do 1993, uwzględniamy sezony od 1992/93 do 1993/94 włącznie.'
+        st.write('Wybrany przedział lat odnosi się do początku sezonu. \
+                 Na przykład, jeśli wybierzesz przedział od 1992 do 1994,\
+                obejmie to sezony począwszy od 1992/93 do 1994/95 (włącznie).'
         )
+
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
