@@ -17,7 +17,8 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    df = pd.read_excel(io='Premier_league_all_season1.xlsx', engine='openpyxl')
+    #df = pd.read_excel(io='Premier_league_all_season1.xlsx', engine='openpyxl')
+    df = pd.read_excel(io='Premier_league_with2223.xlsx', sheet_name='pl', engine='openpyxl')
     carabao_cup = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Carabao_cup')
     fa_cup = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Fa_cup')
     premier_league = pd.read_excel(io='puchary.xlsx', engine='openpyxl', sheet_name='Premier_league')
@@ -491,7 +492,7 @@ elif selected_tab == "Premier League":
         sorted_seasons = [
             '92/93', '93/94', '94/95', '95/96', '96/97', '97/98', '98/99', '99/00', '00/01', '01/02',
             '02/03', '03/04', '04/05', '05/06', '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
-            '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22'
+            '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18/19', '19/20', '20/21', '21/22', '22/23'
         ]
         season_total_goals['Season'] = pd.Categorical(season_total_goals['Season'], sorted_seasons)
         season_total_goals = season_total_goals.sort_values('Season')
@@ -661,9 +662,10 @@ elif selected_tab == "Premier League":
             '2018': '18/19',
             '2019': '19/20',
             '2020': '20/21',
-            '2021': '21/22'
+            '2021': '21/22',
+            '2022': '22/23'
         }
-        slider = st.slider('Wybierz przedział czasowy :', 1992, 2021, (1992, 2021), 1)
+        slider = st.slider('Wybierz przedział czasowy :', 1992, 2022, (1992, 2022), 1)
         selected_seasons = [season_dict[str(year)] for year in range(slider[0], slider[1] + 1)]
         team_and_number_of_seasons = pd.DataFrame(
             df[df['Season'].astype(str).isin(selected_seasons)]
@@ -1368,7 +1370,7 @@ elif selected_tab == "Porównywanie statystyk":
         '00/01', '01/02', '02/03', '03/04', '04/05', '05/06',
         '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
         '12/13', '13/14', '14/15', '15/16', '16/17', '17/18',
-        '18/19', '19/20', '20/21', '21/22'
+        '18/19', '19/20', '20/21', '21/22', '22/23'
     ]
     df2 = df[df['Season'].isin(seasons_x)]
     team1 = c1.selectbox('Wybierz pierwszą drużynę :', unique_teams, key='faule')
