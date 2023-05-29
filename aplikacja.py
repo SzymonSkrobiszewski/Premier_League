@@ -80,7 +80,7 @@ color_dictionary = {
     'Bradford': {'yellow': '#FFDF00', 'black': '#000000'},
     'Portsmouth': {'red': '#ff0000', 'black': '#000000'},
     'Sheffield United': {'red': '#ec2227', 'yellow': '#fcee23'},
-    'Fullham': {'black': '#000000', 'red': '#CC0000'},
+    'Fulham': {'black': '#000000', 'red': '#CC0000'},
     'Charlton': {'red': '#d4021d', 'black': '#000000'},
     'Oldham': {'cyan': '#59777d'},
     'Sunderland': {'red': '#eb172b', 'gold': '#a68a26'}
