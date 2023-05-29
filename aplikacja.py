@@ -310,7 +310,7 @@ if selected_tab == "Strona główna":
                 Jest to najwyższa klasa rozgrywkowa w angielskim systemie ligowym piłki nożnej.\
                 Skupia wiele renomowanych klubów, które mają bogatą historię i tradycję.\
                 Początkowo, po utworzeniu w 1992 roku, Premier League miała 22 drużyny rywalizujące między sobą. \
-                Jednak w sezonie 1995/1996 zredukowano liczbę drużyn do obecnych 20, co obowiązuje do dzisiaj.\
+                Jednak w sezonie 1995/1996 zredukowano liczbę drużyn do 20, co obowiązuje do dzisiaj.\
                 Ta zmiana miała na celu zwiększenie konkurencji i atrakcyjności ligi, \
                 umożliwiając drużynom częstsze mecze z wyżej notowanymi rywalami.\
                 Oprócz rywalizacji ligowej, w trakcie sezonu Premier League rozgrywane są również dwa prestiżowe puchary: \
