@@ -1330,7 +1330,7 @@ elif selected_tab == "Porównywanie statystyk":
                             f'Liczba strzelonych bramek w sezonie {season}: <b>%{{y}}</b>'
                             + '<extra></extra>'
                         ],
-                        marker=dict(color=colors[i]),
+                        marker=dict(color=colors2[i]),
                         name=season
                     )]
                 )
