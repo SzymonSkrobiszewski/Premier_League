@@ -1227,7 +1227,7 @@ elif selected_tab == "Porównywanie statystyk":
             fig7 = go.Figure()
             fig7.add_traces(data=[
                 go.Bar(
-                    x=['Pierwsza połowa', 'Druga połowa'],
+                    x=['Pierwsza', 'Druga'],
                     y=[df_c5['GSTWPP'].iloc[0], df_c5['GSTWDP'].iloc[0]],
                     text=[df_c5['GSTWPP'].iloc[0], df_c5['GSTWDP'].iloc[0]],
                     textfont=dict(size=18, color='white'),
@@ -1241,7 +1241,7 @@ elif selected_tab == "Porównywanie statystyk":
                     name=club3
                 ),
                 go.Bar(
-                    x=['Pierwsza połowa', 'Druga połowa'],
+                    x=['Pierwsza', 'Druga'],
                     y=[df_c5['GSTWPP'].iloc[1], df_c5['GSTWDP'].iloc[1]],
                     text=[df_c5['GSTWPP'].iloc[1], df_c5['GSTWDP'].iloc[1]],
                     hovertemplate=[
@@ -1378,7 +1378,7 @@ elif selected_tab == "Porównywanie statystyk":
                 df_c3 = calculate_lost_goals_by_half(df, club3, season)
                 fig7.add_traces(data=[
                     go.Bar(
-                        x=['Pierwsza połowa', 'Druga połowa'],
+                        x=['Pierwsza', 'Druga'],
                         y=[df_c3['GSTWPP'].iloc[0], df_c3['GSTWDP'].iloc[0]],
                         text=[df_c3['GSTWPP'].iloc[0], df_c3['GSTWDP'].iloc[0]],
                         textfont=dict(size=18, color='black'),
