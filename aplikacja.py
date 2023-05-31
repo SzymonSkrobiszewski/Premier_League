@@ -444,7 +444,7 @@ elif selected_tab == "Premier League":
                 title_font=dict(size=25, color='black'),
                 range=[0, 11],
                 tickfont=dict(size=16, color='black'),
-                showgrid=True,
+                showgrid=False,
                 gridwidth=0.5,
                 gridcolor='gray',
                 zerolinecolor='white'
