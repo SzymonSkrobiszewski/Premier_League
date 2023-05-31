@@ -437,15 +437,15 @@ elif selected_tab == "Premier League":
                 range=[-0.5, 17.5],
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=16, color='black'),
-                showline=True
+                #showline=True
             ),
             yaxis=dict(
                 title="Wartość ligi (mld euro)",
                 title_font=dict(size=25, color='black'),
                 range=[0, 11],
                 tickfont=dict(size=16, color='black'),
-                showgrid=False,
-                gridwidth=0.5,
+                showgrid=True,
+                gridwidth=1,
                 gridcolor='gray',
                 zerolinecolor='white'
             ),
