@@ -407,65 +407,65 @@ elif selected_tab == "Premier League":
         },
     )
     if premier_league1 == "Premier League na płaszczyźnie Europejskiej":
-        # st.header('Porównanie wartości lig piłkarskich')
-        # liga = st.multiselect(
-        #     "Wybierz ligę :",
-        #     ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
-        #     default=["Premier league"],
-        # )
-        # fig0 = go.Figure()
-        # colors = ['red', 'green', 'blue', 'purple', 'black']
-        # replace_name = {'Bundesliga': 'Bundesligi', 'La liga': 'La ligi'}
-        # for i, lig in enumerate(liga):
-        #     fig0.add_trace(
-        #         go.Scatter(
-        #             x=wartosci['sezon'],
-        #             y=wartosci[lig]/1000,
-        #             name=lig,
-        #             mode='lines+markers',
-        #             hovertemplate=f"Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b>"
-        #             + "<extra></extra>",
-        #             line=dict(color=colors[i]),
-        #             showlegend=True
-        #         )
-        #     )
-        # fig0.update_layout(
-        #     margin=dict(l=20, r=50, t=25, b=50),
-        #     separators=',',
-        #     xaxis=dict(
-        #         title='Sezon',
-        #         range=[-0.5, 17.5],
-        #         title_font=dict(size=25, color='black'),
-        #         tickfont=dict(size=16, color='black'),
-        #         showline=True
-        #     ),
-        #     yaxis=dict(
-        #         title="Wartość ligi (mld euro)",
-        #         title_font=dict(size=25, color='black'),
-        #         range=[0, 11],
-        #         tickfont=dict(size=16, color='black'),
-        #         showgrid=True,
-        #         gridwidth=1,
-        #         gridcolor='gray',
-        #         zerolinecolor='white'
-        #     ),
-        #     hovermode="x unified",
-        #     hoverlabel=dict(
-        #         font=dict(
-        #             size=15,
-        #             color='black'
-        #         )
-        #     ),
-        #     height=500,
-        #     width=1200,
-        #     legend=dict(
-        #         title=dict(text="Liga", font=dict(size=25, color='black')),
-        #         font=dict(size=20, color='black'),
-        #         y=0.96,
-        #         x=1.02
-        #     ),
-        # )
-        # st.plotly_chart(fig0, use_container_width=True)
+        st.header('Porównanie wartości lig piłkarskich')
+        liga = st.multiselect(
+            "Wybierz ligę :",
+            ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
+            default=["Premier league"],
+        )
+        fig0 = go.Figure()
+        colors = ['red', 'green', 'blue', 'purple', 'black']
+        replace_name = {'Bundesliga': 'Bundesligi', 'La liga': 'La ligi'}
+        for i, lig in enumerate(liga):
+            fig0.add_trace(
+                go.Scatter(
+                    x=wartosci['sezon'],
+                    y=wartosci[lig]/1000,
+                    name=lig,
+                    mode='lines+markers',
+                    hovertemplate=f"Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b>"
+                    + "<extra></extra>",
+                    line=dict(color=colors[i]),
+                    showlegend=True
+                )
+            )
+        fig0.update_layout(
+            margin=dict(l=20, r=50, t=25, b=50),
+            separators=',',
+            xaxis=dict(
+                title='Sezon',
+                range=[-0.5, 17.5],
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showline=True
+            ),
+            yaxis=dict(
+                title="Wartość ligi (mld euro)",
+                title_font=dict(size=25, color='black'),
+                range=[0, 11],
+                tickfont=dict(size=16, color='black'),
+                showgrid=True,
+                gridwidth=0.5,
+                gridcolor='gray',
+                zerolinecolor='white'
+            ),
+            hovermode="x unified",
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                title=dict(text="Liga", font=dict(size=25, color='black')),
+                font=dict(size=20, color='black'),
+                y=0.96,
+                x=1.02
+            ),
+        )
+        st.plotly_chart(fig0, use_container_width=True)
         st.header(
             'Liczba zwycięstw klubów z Premier League \
                 w Europejskich pucharach'
@@ -1684,62 +1684,3 @@ elif selected_tab == "Porównywanie statystyk":
     ''')
 elif selected_tab == "Transfery":
     st.markdown('---')
-    st.header('Porównanie wartości lig piłkarskich')
-    liga = st.multiselect(
-        "Wybierz ligę :",
-        ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
-        default=["Premier league"],
-    )
-    fig0 = go.Figure()
-    colors = ['red', 'green', 'blue', 'purple', 'black']
-    replace_name = {'Bundesliga': 'Bundesligi', 'La liga': 'La ligi'}
-    for i, lig in enumerate(liga):
-        fig0.add_trace(
-            go.Scatter(
-                x=wartosci['sezon'],
-                y=wartosci[lig]/1000,
-                name=lig,
-                mode='lines+markers',
-                hovertemplate=f"Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b>"
-                + "<extra></extra>",
-                line=dict(color=colors[i]),
-                showlegend=True
-            )
-        )
-    fig0.update_layout(
-        margin=dict(l=20, r=50, t=25, b=50),
-        separators=',',
-        xaxis=dict(
-            title='Sezon',
-            range=[-0.5, 17.5],
-            title_font=dict(size=25, color='black'),
-            tickfont=dict(size=16, color='black'),
-            showline=True
-        ),
-        yaxis=dict(
-            title="Wartość ligi (mld euro)",
-            title_font=dict(size=25, color='black'),
-            range=[0, 11],
-            tickfont=dict(size=16, color='black'),
-            showgrid=True,
-            gridwidth=1,
-            gridcolor='gray',
-            zerolinecolor='white'
-        ),
-        hovermode="x unified",
-        hoverlabel=dict(
-            font=dict(
-                size=15,
-                color='black'
-            )
-        ),
-        height=500,
-        width=1200,
-        legend=dict(
-            title=dict(text="Liga", font=dict(size=25, color='black')),
-            font=dict(size=20, color='black'),
-            y=0.96,
-            x=1.02
-        ),
-    )
-    st.plotly_chart(fig0, use_container_width=True)
