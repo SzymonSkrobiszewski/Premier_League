@@ -925,7 +925,7 @@ elif selected_tab == "Porównywanie statystyk":
                     title_font=dict(size=25, color='black'),
                     showgrid=True,
                     gridwidth=1,
-                    gridcolor='gray',
+                    gridcolor='black',
                     zerolinecolor='white'
                 ),
                 hoverlabel=dict(
@@ -999,7 +999,7 @@ elif selected_tab == "Porównywanie statystyk":
                     tickfont=dict(size=17, color='black'),
                     showgrid=True,
                     gridwidth=1,
-                    gridcolor='gray',
+                    gridcolor='black',
                     zerolinecolor='white'
                 ),
                 legend=dict(
