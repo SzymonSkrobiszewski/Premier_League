@@ -446,7 +446,7 @@ elif selected_tab == "Premier League":
                 tickfont=dict(size=16, color='black'),
                 showgrid=True,
                 gridwidth=1,
-                gridcolor='gray',
+                gridcolor='black',
                 zerolinecolor='black'
             ),
             hovermode="x unified",
