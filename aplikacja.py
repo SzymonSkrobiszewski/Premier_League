@@ -440,6 +440,7 @@ elif selected_tab == "Premier League":
                 #showline=True
             ),
             yaxis=dict(
+                #position=0,
                 title="Wartość ligi (mld euro)",
                 title_font=dict(size=25, color='black'),
                 range=[0, 11],
