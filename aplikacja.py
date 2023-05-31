@@ -447,7 +447,7 @@ elif selected_tab == "Premier League":
                 showgrid=True,
                 gridwidth=1,
                 gridcolor='gray',
-                zerolinecolor='white'
+                #zerolinecolor='white'
             ),
             hovermode="x unified",
             hoverlabel=dict(
