@@ -440,7 +440,7 @@ elif selected_tab == "Premier League":
                 range=[-0.5, 17.5],
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=16, color='black'),
-                showline=True
+                showline=True,
             ),
             yaxis=dict(
                 #position=0,
@@ -546,6 +546,58 @@ elif selected_tab == "Premier League":
             ),
         )
         st.plotly_chart(fig9, use_container_width=True)
+        st.header('Liczba edycji zagranych w Europejskich pucharach przez drużyny angielskie')
+        wystepy_UCL = {
+            "Manchester United": 24,
+            "Arsenal": 19,
+            "Chelsea": 19,
+            "Liverpool": 15,
+            "Manchester City": 12,
+            "Tottenham": 6,
+            "Newcastle": 2,
+            "Blackburn Rovers": 1,
+            "Leeds": 1,
+            "Leicester": 1
+        }
+        fig6 = go.Figure()
+        tournament = st.selectbox('Wybór turnieju :', ['Liga Mistrzów', 'Liga Europy'])
+        if tournament == 'Liga Mistrzów':
+            fig6.add_trace(
+                go.Bar(
+                    x=list(wystepy_UCL.keys()),
+                    y=list(wystepy_UCL.values()),
+                    text=list(wystepy_UCL.values()),
+                    textfont=dict(size=11, color='white'),
+                    hoverlabel=dict(
+                        font=dict(size=14, color='white'),
+                        bgcolor='blue'
+                    ),
+                    hovertemplate="Liczba rozegranych edycji Ligi Mistrzów: <b>%{y}</b>"
+                    + "<extra></extra>"
+                )
+            )
+            fig6.update_layout(
+                margin=dict(l=0, r=25, t=25, b=0),
+                xaxis=dict(
+                    title='Drużyna',
+                    tickfont=dict(size=13, color='black'),
+                    title_font=dict(size=25, color='black')
+                ),
+                yaxis=dict(
+                    title="Liczba zagranych edycji",
+                    title_font=dict(size=25, color='black'),
+                    range=[0, 25],
+                    tickfont=dict(size=15, color='black'),
+                    showgrid=True,
+                    gridwidth=1,
+                    gridcolor='gray',
+                    zeroline=False,
+                ),
+                height=500,
+                width=1200,
+            )
+            st.plotly_chart(fig6, use_container_width=True)
+
     else:
         st.header('Liczba zawodników w Premier League')
         st.write('Tu coś będzie.')
