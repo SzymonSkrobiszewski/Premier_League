@@ -436,6 +436,7 @@ elif selected_tab == "Premier League":
                 title='Sezon',
                 ticks="outside",
                 ticklen=4,
+                showlinecolor='black',
                 tickcolor='black',
                 range=[-0.5, 17.5],
                 title_font=dict(size=25, color='black'),
