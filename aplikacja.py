@@ -40,7 +40,7 @@ def load_data():
     cup2 = pd.DataFrame(fa_cup['Fa_cup'].value_counts())
     p_l = pd.DataFrame(premier_league['zwyciezca'].value_counts())
     unique_teams = df['HomeTeam'].unique().tolist()
-
+    uefa_ranking = pd.read_excel(io='UEFA.xlsx', engine='openpyxl', index_col=False)
     return (
         df,
         carabao_cup,
@@ -50,7 +50,8 @@ def load_data():
         cup1,
         cup2,
         p_l,
-        unique_teams
+        unique_teams,
+        uefa_ranking
     )
 
 
@@ -64,6 +65,7 @@ def load_data():
     cup2,
     p_l,
     unique_teams,
+    uefa_ranking
 ) = load_data()
 
 color_dictionary = {
@@ -300,6 +302,34 @@ def calculate_fauls_yellow_and_red_cards(season, team, df):
     return result
 
 
+def get_top_10_by_season(data, season):
+    filtered_data = data[data['season'] == season]
+    sorted_data = filtered_data.sort_values(by='ranking', ascending=False)
+    mapping = {
+        'France': 'Francuska',
+        'Czech Republic': 'Czeska',
+        'Turkey': 'Turecka',
+        'Belgium': 'Belgijska',
+        'Norway': 'Norweska',
+        'Germany': 'Niemiecka',
+        'Romania': 'Rumuńska',
+        'Russia': 'Rosyjska',
+        'Greece': 'Grecka',
+        'England': 'Angielska',
+        'Portugal': 'Portugalska',
+        'Spain': 'Hiszpańska',
+        'Austria': 'Austriacka',
+        'Italy': 'Włoska',
+        'Ukraine': 'Ukraińska',
+        'Scotland': 'Szkocka',
+        'Netherlands': 'Holenderska'
+    }
+    # Wybierz top 10 wyników
+    top_10 = sorted_data.head(10).reset_index(drop=True)
+    top_10.loc[:, 'country'] = top_10['country'].map(mapping)
+    return top_10
+
+
 # Odległość granic od -----
 streamlit_style = """
 <style>
@@ -443,7 +473,7 @@ elif selected_tab == "Premier League":
                 showline=True,
             ),
             yaxis=dict(
-                #position=0,
+                # position=0,
                 title="Wartość ligi (mld euro)",
                 title_font=dict(size=25, color='black'),
                 range=[0, 11.5],
@@ -470,31 +500,63 @@ elif selected_tab == "Premier League":
             ),
         )
         st.plotly_chart(fig0, use_container_width=True)
-        st.header('Ranking UEFA')
-        mapping = {
-            'France': 'Francuska',
-            'Czech Republic': 'Czeska',
-            'Turkey': 'Turecka',
-            'Belgium': 'Belgijska',
-            'Norway': 'Norweska',
-            'Germany': 'Niemiecka',
-            'Romania': 'Rumuńska',
-            'Russia': 'Rosyjska',
-            'Greece': 'Grecka',
-            'England': 'Angielska',
-            'Portugal': 'Portugalska',
-            'Spain': 'Hiszpańska',
-            'Austria': 'Austriacka',
-            'Italy': 'Włoska',
-            'Ukraine': 'Ukraińska',
-            'Scotland': 'Szkocka',
-            'Netherlands': 'Holenderska'
-        }
+        st.header('10 najlepszych lig według UEFA')
         year_of_uefa_ranking = st.selectbox('Wybierz rok :', range(1997, 2023))
         fig12 = go.Figure()
-        
-        st.write('Rok odnosi się do końca sezonu, wybór roku 2020 odpowiada wybraniu rankingu z końca sezonu 2019/2020.')
-
+        uefa_rank = get_top_10_by_season(
+            data=uefa_ranking,
+            season=year_of_uefa_ranking
+        )
+        fig12.add_traces(
+            go.Bar(
+                x=uefa_rank['country'],
+                y=uefa_rank['ranking'],
+                text=uefa_rank['ranking'].apply(
+                    lambda x: str(x).replace('.', ',')
+                ),
+                textfont=dict(size=17, color='white'),
+                hovertemplate="Liczba punktów w rankingu UEFA: <b>%{y}</b>"
+                + "<extra></extra>",
+                name='Liga Mistrzów',
+                hoverlabel=dict(
+                    font=dict(size=14, color='white'),
+                    bgcolor='blue'
+                ),
+                marker_color='blue'
+            )
+        )
+        fig12.update_layout(
+                separators=',',
+                margin=dict(l=50, r=50, t=50, b=0),
+                xaxis=dict(
+                    title='Liga',
+                    tickfont=dict(size=16, color='black'),
+                    zeroline=False,
+                    title_font=dict(size=25, color='black')
+                ),
+                yaxis=dict(
+                    title="Liczba punktów UEFA",
+                    title_font=dict(size=25, color='black'),
+                    showgrid=True,
+                    gridwidth=1,
+                    gridcolor='gray',
+                    tickfont=dict(size=15, color='black'),
+                ),
+                height=500,
+                width=1200,
+            )
+        st.plotly_chart(fig12, use_container_width=True)
+        st.write('Rok odnosi się do końca sezonu, wybór roku 2020 odpowiada\
+                  wybraniu rankingu z końca sezonu 2019/2020.')
+        st.write('Ranking UEFA odgrywa kluczową rolę w piłce nożnej. \
+                 Im wyższa pozycja w rankingu, tym więcej drużyn\
+                  z danej ligi może powalczyć o udział w prestiżowych i dochodowych turniejach \
+                 europejskich. Udział w tych turniejach przyciąga uwagę kibiców i\
+                  generuje znaczące przychody. Dlatego ranking UEFA ma istotne \
+                 znaczenie dla rozwoju i reputacji drużyn oraz lig.\
+                 Dla zainteresowanych umieszczam link do oficjalnej strony UEFA \
+                 [link](https://www.uefa.com/nationalassociations/uefarankings/country/about/).'
+        )
         st.header(
             'Liczba zwycięstw klubów z Premier League \
                 w Europejskich pucharach'
@@ -619,7 +681,7 @@ elif selected_tab == "Premier League":
                 yaxis=dict(
                     title="Drużyna",
                     title_font=dict(size=25, color='black'),
-                    #range=[0, 25],
+                    # range=[0, 25],
                     tickfont=dict(size=15, color='black'),
                 ),
                 height=500,
