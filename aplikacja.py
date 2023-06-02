@@ -470,6 +470,31 @@ elif selected_tab == "Premier League":
             ),
         )
         st.plotly_chart(fig0, use_container_width=True)
+        st.header('Ranking UEFA')
+        mapping = {
+            'France': 'Francuska',
+            'Czech Republic': 'Czeska',
+            'Turkey': 'Turecka',
+            'Belgium': 'Belgijska',
+            'Norway': 'Norweska',
+            'Germany': 'Niemiecka',
+            'Romania': 'Rumuńska',
+            'Russia': 'Rosyjska',
+            'Greece': 'Grecka',
+            'England': 'Angielska',
+            'Portugal': 'Portugalska',
+            'Spain': 'Hiszpańska',
+            'Austria': 'Austriacka',
+            'Italy': 'Włoska',
+            'Ukraine': 'Ukraińska',
+            'Scotland': 'Szkocka',
+            'Netherlands': 'Holenderska'
+        }
+        year_of_uefa_ranking = st.selectbox('Wybierz rok :', range(1997, 2023))
+        fig12 = go.Figure()
+        
+        st.write('Rok odnosi się do końca sezonu, wybór roku 2020 odpowiada wybraniu rankingu z końca sezonu 2019/2020.')
+
         st.header(
             'Liczba zwycięstw klubów z Premier League \
                 w Europejskich pucharach'
@@ -564,34 +589,38 @@ elif selected_tab == "Premier League":
         if tournament == 'Liga Mistrzów':
             fig6.add_trace(
                 go.Bar(
-                    x=list(wystepy_UCL.keys()),
-                    y=list(wystepy_UCL.values()),
+                    orientation='h',
+                    y=list(wystepy_UCL.keys()),
+                    x=list(wystepy_UCL.values()),
                     text=list(wystepy_UCL.values()),
-                    textfont=dict(size=11, color='white'),
+                    textfont=dict(size=15, color='white'),
+                    textposition='inside',
+                    #insidetextanchor='middle',
                     hoverlabel=dict(
                         font=dict(size=14, color='white'),
                         bgcolor='blue'
                     ),
-                    hovertemplate="Liczba rozegranych edycji Ligi Mistrzów: <b>%{y}</b>"
+                    hovertemplate="Liczba rozegranych edycji Ligi Mistrzów: <b>%{x}</b>"
                     + "<extra></extra>"
                 )
             )
             fig6.update_layout(
                 margin=dict(l=0, r=25, t=25, b=0),
                 xaxis=dict(
-                    title='Drużyna',
-                    tickfont=dict(size=13, color='black'),
-                    title_font=dict(size=25, color='black')
-                ),
-                yaxis=dict(
-                    title="Liczba zagranych edycji",
-                    title_font=dict(size=25, color='black'),
-                    range=[0, 25],
-                    tickfont=dict(size=15, color='black'),
+                    range=[0, 26],
+                    title='Liczba zagranych edycji',
+                    tickfont=dict(size=16, color='black'),
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
                     zeroline=False,
+                    title_font=dict(size=25, color='black')
+                ),
+                yaxis=dict(
+                    title="Drużyna",
+                    title_font=dict(size=25, color='black'),
+                    #range=[0, 25],
+                    tickfont=dict(size=15, color='black'),
                 ),
                 height=500,
                 width=1200,
