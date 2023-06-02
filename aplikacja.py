@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
 import plotly.graph_objects as go
+import re
 
 # Ustawienia stylu aplikacji
 
@@ -394,20 +395,50 @@ selected_tab = option_menu(
     },
 )
 
+# if selected_tab == "Strona główna":
+#     st.markdown('---')
+#     st.title("Wstęp")
+#     with open('strona_glowna.txt', 'r', encoding='utf-8') as file:
+#         file_content = file.read().split('\n')
+#     formatted_text = (
+#         f'<div style="text-align: justify; font-size: 25px;"> {file_content[0]} </div>'
+#     )
+#     formatted_text1 = (
+#         f'<div style="text-align: justify; font-size: 25px;"> {file_content[1]} </div>'
+#     )
+#     st.markdown(formatted_text, unsafe_allow_html=True)
+#     st.markdown(" ")
+#     st.markdown(formatted_text1, unsafe_allow_html=True)
+
 if selected_tab == "Strona główna":
     st.markdown('---')
-    st.title("Wstęp")
+    st.title("Bliżej nieokreślony tytuł.")
     with open('strona_glowna.txt', 'r', encoding='utf-8') as file:
         file_content = file.read().split('\n')
-    formatted_text = (
-        f'<div style="text-align: justify; font-size: 25px;"> {file_content[0]} </div>'
+
+    formatted_text = re.sub(
+        r'\[([^]]+)\]\(([^)]+)\)',
+        r'<a href="\2">\1</a>',
+        file_content[0]
     )
-    formatted_text1 = (
-        f'<div style="text-align: justify; font-size: 25px;"> {file_content[1]} </div>'
+    formatted_text1 = re.sub(
+        r'\[([^]]+)\]\(([^)]+)\)',
+        r'<a href="\2">\1</a>',
+        file_content[1]
     )
-    st.markdown(formatted_text, unsafe_allow_html=True)
+
+    st.markdown(
+        f'<div style="text-align: justify; font-size: 25px;">{formatted_text}</div>',
+        unsafe_allow_html=True
+    )
     st.markdown(" ")
-    st.markdown(formatted_text1, unsafe_allow_html=True)
+    st.markdown(
+        f'<div style="text-align: justify; font-size: 25px;">{formatted_text1}</div>',
+        unsafe_allow_html=True
+    )
+
+
+
 
 elif selected_tab == "Premier League":
     st.markdown('---')
@@ -554,8 +585,9 @@ elif selected_tab == "Premier League":
                  europejskich. Udział w tych turniejach przyciąga uwagę kibiców i\
                   generuje znaczące przychody. Dlatego ranking UEFA ma istotne \
                  znaczenie dla rozwoju i reputacji drużyn oraz lig.\
-                 Dla zainteresowanych umieszczam link do oficjalnej strony UEFA \
-                 [link](https://www.uefa.com/nationalassociations/uefarankings/country/about/).'
+                 Dla zainteresowanych umieszczam \
+                [link](https://www.uefa.com/nationalassociations/uefarankings/country/about/)\
+                do oficjalnej strony UEFA.'
         )
         st.header(
             'Liczba zwycięstw klubów z Premier League \
