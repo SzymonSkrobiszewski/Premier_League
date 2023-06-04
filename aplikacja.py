@@ -42,6 +42,7 @@ def load_data():
     p_l = pd.DataFrame(premier_league['zwyciezca'].value_counts())
     unique_teams = df['HomeTeam'].unique().tolist()
     uefa_ranking = pd.read_excel(io='UEFA.xlsx', engine='openpyxl', index_col=False)
+    transfers = pd.read_excel(io='Premier_league_transfers.xlsx', engine='openpyxl')
     return (
         df,
         carabao_cup,
@@ -52,7 +53,8 @@ def load_data():
         cup2,
         p_l,
         unique_teams,
-        uefa_ranking
+        uefa_ranking,
+        transfers
     )
 
 
@@ -66,7 +68,8 @@ def load_data():
     cup2,
     p_l,
     unique_teams,
-    uefa_ranking
+    uefa_ranking,
+    transfers
 ) = load_data()
 
 color_dictionary = {
@@ -377,7 +380,7 @@ st.markdown(
 selected_tab = option_menu(
     None,
     ["Strona główna", "Premier League", "Porównywanie statystyk", "Transfery"],
-    icons=["house-fill", "bar-chart-fill", "house-fill", "cash-stack"],
+    icons=["house-fill", "bar-chart-fill", "bar-chart-fill", "cash-stack"],
     menu_icon="cast",
     default_index=0,
     orientation="horizontal",
@@ -1869,3 +1872,75 @@ elif selected_tab == "Porównywanie statystyk":
     ''')
 elif selected_tab == "Transfery":
     st.markdown('---')
+    season_mapping = {}
+    transfers['fee_cleaned'] = pd.to_numeric(transfers['fee_cleaned'], errors='coerce')
+    season_transfers = transfers.groupby('season')['fee_cleaned'].sum()
+    season_transfers = transfers.groupby(['season', 'transfer_movement'])['fee_cleaned'].sum()
+    season_transfers = season_transfers.unstack().fillna(0)
+    for season in season_transfers.index:
+        year_parts = season.split('/')
+        season_short = year_parts[0][-2:] + '/' + year_parts[1][-2:]
+        season_mapping[season] = season_short
+    season_transfers.reset_index(inplace=True)
+    season_transfers['season'] = season_transfers['season'].map(season_mapping)
+    st.header('Informacje dotyczące transferów')
+    fig13 = go.Figure(data=[
+        go.Scatter(
+            x=season_transfers.season,
+            y=season_transfers['in'],
+            mode='lines+markers',
+            hovertemplate=f"Transferowe wydatki klubów: <b>%{{y:.2f}} mln</b>"
+            + "<extra></extra>",
+            marker=dict(color='green'),
+            name='Przychodzący'
+        ),
+        go.Scatter(
+            x=season_transfers.season,
+            hovertemplate=f"Transferowe przychody klubów: <b>%{{y:.2f}} mln</b>"
+            + "<extra></extra>",
+            y=season_transfers['out'],
+            mode='lines+markers',
+            marker=dict(color='red'),
+            name='Odchodzący'
+        )
+    ])
+    fig13.update_layout(
+        margin=dict(l=0, r=0, t=50, b=0),
+        hovermode='x unified',
+        hoverlabel=dict(
+            font=dict(
+            size=15,
+            color='black'
+            )
+        ),
+        xaxis=dict(
+            range=[-0.5, 30.5],
+            title='Sezon',
+            title_font=dict(size=25, color='black'),
+            tickfont=dict(size=12, color='black'),
+            ticks="outside",
+            ticklen=4,
+            tickcolor='black',
+            showline=True,
+            tickangle=30
+        ),
+        yaxis=dict(
+            range=[0, 3150],
+            title='Bilans transferowy (mln)',
+            title_font=dict(size=25, color='black'),
+            tickfont=dict(size=16, color='black'),
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='gray',
+            zerolinecolor='white',
+        ),
+        height=500,
+        width=1200,
+        legend=dict(
+            title=dict(text="Zawodnicy", font=dict(size=20, color='black')),
+            font=dict(size=18, color='black'),
+            y=1.01,
+            x=1.02
+        ),
+    )
+    st.plotly_chart(fig13, use_container_width=True)
