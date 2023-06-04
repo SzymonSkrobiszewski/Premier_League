@@ -1800,7 +1800,8 @@ elif selected_tab == "Porównywanie statystyk":
                 ),
             )
         st.plotly_chart(fig8, use_container_width=True)
-    st.header('Porównanie rozkładu kar za faule')
+    st.header('Porównanie drużyn pod względem kartek\
+               czerwonych, żółtych i liczby fauli')
     c1, c2 = st.columns(2)
     seasons_x = [
         '00/01', '01/02', '02/03', '03/04', '04/05', '05/06',
