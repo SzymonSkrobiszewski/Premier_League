@@ -715,7 +715,7 @@ elif selected_tab == "Premier League":
                     text=list(wystepy_UCL.values()),
                     textfont=dict(size=15, color='white'),
                     textposition='inside',
-                    #insidetextanchor='middle',
+                    # insidetextanchor='middle',
                     hoverlabel=dict(
                         font=dict(size=14, color='white'),
                         bgcolor='blue'
@@ -1800,7 +1800,7 @@ elif selected_tab == "Porównywanie statystyk":
                 ),
             )
         st.plotly_chart(fig8, use_container_width=True)
-    st.header('Rozkład kar za faule')
+    st.header('Porównanie rozkładu kar za faule')
     c1, c2 = st.columns(2)
     seasons_x = [
         '00/01', '01/02', '02/03', '03/04', '04/05', '05/06',
