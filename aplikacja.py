@@ -1894,7 +1894,7 @@ elif selected_tab == "Porównywanie statystyk":
         to bilans kartek w meczu wynosi odpowiednio dwie żółte i \
         jedną czerwoną kartkę.
     ''')
-    st.header('Porównanie w obrębie strzałów')
+    st.header('Porównanie efektywności strzałów')
     comparison_type3 = st.radio(
         "Co chcesz porównać?",
         ("Drużyny", "Drużynę i sezon/y"),
