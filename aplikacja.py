@@ -313,6 +313,24 @@ def calculate_fauls_yellow_and_red_cards(season, team, df):
     return result
 
 
+def calculate_shots_stats(season, team, df):
+    filtered_df = df.query(
+        "Season == @season and (HomeTeam == @team or AwayTeam == @team)"
+    )
+    home_shots = filtered_df.query('HomeTeam == @team')['HS'].sum()
+    away_shots = filtered_df.query('AwayTeam == @team')['AS'].sum()
+    shots = home_shots + away_shots
+    home_shots_on_target = filtered_df.query('HomeTeam == @team')['HST'].sum()
+    away_shots_on_target = filtered_df.query('AwayTeam == @team')['AST'].sum()
+    shots_on_target = home_shots_on_target + away_shots_on_target
+    shots_off_target = shots - shots_on_target
+    result = {
+        'Strzały celne': int(shots_on_target),
+        'Strzały niecelne': int(shots_off_target)
+    }
+    return result
+
+
 def get_top_10_by_season(data, season):
     filtered_data = data[data['season'] == season]
     sorted_data = filtered_data.sort_values(by='ranking', ascending=False)
@@ -1791,8 +1809,10 @@ elif selected_tab == "Porównywanie statystyk":
         '18/19', '19/20', '20/21', '21/22', '22/23'
     ]
     df2 = df[df['Season'].isin(seasons_x)]
+    st.write(len(df2['HomeTeam'].unique().tolist()))
     team1 = c1.selectbox(
-        'Wybierz pierwszą drużynę :', unique_teams,
+        'Wybierz pierwszą drużynę :',
+        df2['HomeTeam'].unique().tolist(),
         key='faule'
     )
     team2 = c2.selectbox(
@@ -1875,6 +1895,26 @@ elif selected_tab == "Porównywanie statystyk":
         to bilans kartek w meczu wynosi odpowiednio dwie żółte i \
         jedną czerwoną kartkę.
     ''')
+    st.header('Porównanie w obrębie strzałów')
+    col8, col9 = st.columns(2)
+    team10 = col8.selectbox(
+        'Wybierz pierwszą drużynę :',
+        df2['HomeTeam'].unique().tolist(),
+        key='shoot'
+    )
+    team11 = col9.selectbox(
+        'Wybierz drugą drużynę :',
+        return_opponents(df2, team10),
+        key='shoot1'
+    )
+    season10 = st.selectbox(
+        'Wybierz sezon :',
+        find_common_seasons(team10, team11, df2),
+        key='shoot2'
+    )
+    fig14 = go.Figure()
+    shoot1 = calculate_shots_stats(season10, team10, df)
+    shoot2 = calculate_shots_stats(season10, team11, df)
 elif selected_tab == "Transfery":
     st.markdown('---')
     season_mapping = {}
