@@ -1812,7 +1812,7 @@ elif selected_tab == "Porównywanie statystyk":
     df2 = df[df['Season'].isin(seasons_x)]
     team1 = c1.selectbox(
         'Wybierz pierwszą drużynę :',
-        df2['HomeTeam'].unique().tolist(),
+        sorted(df2['HomeTeam'].unique().tolist()),
         key='faule'
     )
     team2 = c2.selectbox(
@@ -1905,7 +1905,7 @@ elif selected_tab == "Porównywanie statystyk":
         col8, col9 = st.columns(2)
         team10 = col8.selectbox(
             'Wybierz pierwszą drużynę :',
-            df2['HomeTeam'].unique().tolist(),
+            sorted(df2['HomeTeam'].unique().tolist()),
             key='shoot'
         )
         team11 = col9.selectbox(
