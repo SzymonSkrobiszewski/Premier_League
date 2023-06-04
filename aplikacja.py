@@ -41,8 +41,15 @@ def load_data():
     cup2 = pd.DataFrame(fa_cup['Fa_cup'].value_counts())
     p_l = pd.DataFrame(premier_league['zwyciezca'].value_counts())
     unique_teams = df['HomeTeam'].unique().tolist()
-    uefa_ranking = pd.read_excel(io='UEFA.xlsx', engine='openpyxl', index_col=False)
-    transfers = pd.read_excel(io='Premier_league_transfers.xlsx', engine='openpyxl')
+    uefa_ranking = pd.read_excel(
+        io='UEFA.xlsx',
+        engine='openpyxl',
+        index_col=False
+    )
+    transfers = pd.read_excel(
+        io='Premier_league_transfers.xlsx',
+        engine='openpyxl'
+    )
     return (
         df,
         carabao_cup,
@@ -439,8 +446,6 @@ if selected_tab == "Strona główna":
         f'<div style="text-align: justify; font-size: 25px;">{formatted_text1}</div>',
         unsafe_allow_html=True
     )
-
-
 
 
 elif selected_tab == "Premier League":
@@ -1891,7 +1896,7 @@ elif selected_tab == "Transfery":
             mode='lines+markers',
             hovertemplate=f"Transferowe wydatki klubów: <b>%{{y:.2f}} mln</b>"
             + "<extra></extra>",
-            marker=dict(color='green'),
+            marker=dict(color='red'),
             name='Przychodzący'
         ),
         go.Scatter(
@@ -1900,7 +1905,7 @@ elif selected_tab == "Transfery":
             + "<extra></extra>",
             y=season_transfers['out'],
             mode='lines+markers',
-            marker=dict(color='red'),
+            marker=dict(color='green'),
             name='Odchodzący'
         )
     ])
@@ -1909,8 +1914,8 @@ elif selected_tab == "Transfery":
         hovermode='x unified',
         hoverlabel=dict(
             font=dict(
-            size=15,
-            color='black'
+                size=15,
+                color='black'
             )
         ),
         xaxis=dict(
