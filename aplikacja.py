@@ -1856,7 +1856,7 @@ elif selected_tab == "Porównywanie statystyk":
                 marker=dict(colors=["black", "red", "yellow"]),
                 direction="clockwise",
                 hovertemplate="<b>%{label}</b><extra></extra>",
-                hoverlabel=dict(font=dict(size=17, color="black")),
+                hoverlabel=dict(font=dict(size=15, color="black")),
             )
         )
         fig11.update_layout(
@@ -2099,21 +2099,13 @@ elif selected_tab == "Porównywanie statystyk":
     )
     df4 = clubstats.query('team == @team5 and season == @season5')
     labels = [
-        'Główką',
+        'Głową',
         'Z rzutu karnego',
         'Z rzutu wolnego',
         'Z pola karnego',
         'Spoza pola karnego',
         'Z kontrataku'
     ]
-    # values = [
-    #     df4['att_hd_goal'].iloc[0],
-    #     df4['att_pen_goal'].iloc[0],
-    #     df4['att_freekick_goal'].iloc[0],
-    #     df4['att_ibox_goal'].iloc[0],
-    #     df4['att_obox_goal'].iloc[0],
-    #     df4['goal_fastbreak'].iloc[0]
-    # ]
     values_row = df4.iloc[:, 9:15].values.tolist()[0]
     values = list(np.array(values_row).flatten())
     fig15 = go.Figure(
@@ -2121,26 +2113,29 @@ elif selected_tab == "Porównywanie statystyk":
             labels=labels,
             values=values,
             sort=False,
-            hole=0.6,
             textinfo="value+percent",
-            marker=dict(colors=["black", "red", "yellow"]),
+            # marker=dict(colors=["black", "red", "yellow"]),
             direction="clockwise",
             hovertemplate="<b>%{label}</b><extra></extra>",
-            hoverlabel=dict(font=dict(size=17, color="black")),
+            hoverlabel=dict(font=dict(size=15, color="black")),
         )
     )
     fig15.update_layout(
-        height=500,
-        width=1200
+        font=dict(size=15, color='black'),
+        margin=dict(t=50, l=200),
+        legend=dict(
+            title=dict(
+                text="Rodzaj strzelonej bramki",
+                font=dict(size=20, color='black')
+            ),
+            font=dict(size=20, color='black'),
+            y=1.01,
+            x=1.02
+        ),
+        height=550,
+        width=1100
     )
     st.plotly_chart(fig15, use_container_width=True)
-    # fig15 = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0.4)])
-
-    # fig15.update_traces(textposition='inside', textinfo='percent+label')
-    # fig15.update_layout(title='Procentowy udział typów bramek')
-    # st.plotly_chart(fig15, use_container_width=True)
-        
-
 elif selected_tab == "Transfery":
     st.markdown('---')
     season_mapping = {}
