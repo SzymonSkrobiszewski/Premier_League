@@ -3,6 +3,7 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 import plotly.graph_objects as go
 import re
+import numpy as np
 
 # Ustawienia stylu aplikacji
 
@@ -339,7 +340,7 @@ def calculate_shots_stats(season, team, df):
     total_shots = filtered_df['total_scoring_att'].sum()
     off_target_shots = total_shots - on_target_shots
     statistics = {
-        'Strzały celne': on_target_shots, 
+        'Strzały celne': on_target_shots,
         'Strzały niecelne': off_target_shots
     }
     return statistics
@@ -2084,6 +2085,62 @@ elif selected_tab == "Porównywanie statystyk":
             ),
         )
         st.plotly_chart(fig14, use_container_width=True)
+    st.header('Proporcje bramek według rodzaju strzałów')
+    col4, col5 = st.columns(2)
+    team5 = col4.selectbox(
+        'Wybierz drużynę :',
+        sorted(set(clubstats['team'])),
+        key='rodzaj1'
+    )
+    season5 = col5.selectbox(
+        'Wybierz sezon :',
+        find_common_seasons(team5, team5, df[df['Season'].isin(clubstats['season'].unique())]),
+        key='rodzaj2'
+    )
+    df4 = clubstats.query('team == @team5 and season == @season5')
+    labels = [
+        'Główką',
+        'Z rzutu karnego',
+        'Z rzutu wolnego',
+        'Z pola karnego',
+        'Spoza pola karnego',
+        'Z kontrataku'
+    ]
+    # values = [
+    #     df4['att_hd_goal'].iloc[0],
+    #     df4['att_pen_goal'].iloc[0],
+    #     df4['att_freekick_goal'].iloc[0],
+    #     df4['att_ibox_goal'].iloc[0],
+    #     df4['att_obox_goal'].iloc[0],
+    #     df4['goal_fastbreak'].iloc[0]
+    # ]
+    values_row = df4.iloc[:, 9:15].values.tolist()[0]
+    values = list(np.array(values_row).flatten())
+    fig15 = go.Figure(
+        go.Pie(
+            labels=labels,
+            values=values,
+            sort=False,
+            hole=0.6,
+            textinfo="value+percent",
+            marker=dict(colors=["black", "red", "yellow"]),
+            direction="clockwise",
+            hovertemplate="<b>%{label}</b><extra></extra>",
+            hoverlabel=dict(font=dict(size=17, color="black")),
+        )
+    )
+    fig15.update_layout(
+        height=500,
+        width=1200
+    )
+    st.plotly_chart(fig15, use_container_width=True)
+    # fig15 = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0.4)])
+
+    # fig15.update_traces(textposition='inside', textinfo='percent+label')
+    # fig15.update_layout(title='Procentowy udział typów bramek')
+    # st.plotly_chart(fig15, use_container_width=True)
+        
+
 elif selected_tab == "Transfery":
     st.markdown('---')
     season_mapping = {}
