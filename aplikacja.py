@@ -1997,7 +1997,7 @@ elif selected_tab == "Porównywanie statystyk":
         col10, col11 = st.columns(2)
         team13 = col10.selectbox(
             'Wybierz drużynę :',
-            df2['HomeTeam'].unique().tolist(),
+            sorted(df2['HomeTeam'].unique().tolist()),
             key='shoot'
         )
         seasons13 = col11.multiselect(
