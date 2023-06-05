@@ -50,6 +50,7 @@ def load_data():
         io='Premier_league_transfers.xlsx',
         engine='openpyxl'
     )
+    stats = pd.read_excel(io='StatsOfClubs.xlsx', engine='openpyxl')
     return (
         df,
         carabao_cup,
@@ -61,7 +62,8 @@ def load_data():
         p_l,
         unique_teams,
         uefa_ranking,
-        transfers
+        transfers,
+        stats
     )
 
 
@@ -76,7 +78,8 @@ def load_data():
     p_l,
     unique_teams,
     uefa_ranking,
-    transfers
+    transfers,
+    clubstats
 ) = load_data()
 
 color_dictionary = {
@@ -313,22 +316,33 @@ def calculate_fauls_yellow_and_red_cards(season, team, df):
     return result
 
 
+# def calculate_shots_stats(season, team, df):
+#     filtered_df = df.query(
+#         "Season == @season and (HomeTeam == @team or AwayTeam == @team)"
+#     )
+#     home_shots = filtered_df.query('HomeTeam == @team')['HS'].sum()
+#     away_shots = filtered_df.query('AwayTeam == @team')['AS'].sum()
+#     shots = home_shots + away_shots
+#     home_shots_on_target = filtered_df.query('HomeTeam == @team')['HST'].sum()
+#     away_shots_on_target = filtered_df.query('AwayTeam == @team')['AST'].sum()
+#     shots_on_target = home_shots_on_target + away_shots_on_target
+#     shots_off_target = shots - shots_on_target
+#     result = {
+#         'Strzały celne': int(shots_on_target),
+#         'Strzały niecelne': int(shots_off_target)
+#     }
+#     return result
+
 def calculate_shots_stats(season, team, df):
-    filtered_df = df.query(
-        "Season == @season and (HomeTeam == @team or AwayTeam == @team)"
-    )
-    home_shots = filtered_df.query('HomeTeam == @team')['HS'].sum()
-    away_shots = filtered_df.query('AwayTeam == @team')['AS'].sum()
-    shots = home_shots + away_shots
-    home_shots_on_target = filtered_df.query('HomeTeam == @team')['HST'].sum()
-    away_shots_on_target = filtered_df.query('AwayTeam == @team')['AST'].sum()
-    shots_on_target = home_shots_on_target + away_shots_on_target
-    shots_off_target = shots - shots_on_target
-    result = {
-        'Strzały celne': int(shots_on_target),
-        'Strzały niecelne': int(shots_off_target)
+    filtered_df = df.query("season == @season and team == @team")
+    on_target_shots = filtered_df['ontarget_scoring_att'].sum()
+    total_shots = filtered_df['total_scoring_att'].sum()
+    off_target_shots = total_shots - on_target_shots
+    statistics = {
+        'Strzały celne': on_target_shots, 
+        'Strzały niecelne': off_target_shots
     }
-    return result
+    return statistics
 
 
 def get_top_10_by_season(data, season):
@@ -1896,6 +1910,12 @@ elif selected_tab == "Porównywanie statystyk":
         jedną czerwoną kartkę.
     ''')
     st.header('Porównanie efektywności strzałów')
+    seasons_y = [
+        '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
+        '12/13', '13/14', '14/15', '15/16', '16/17', '17/18',
+        '18/19', '19/20', '20/21', '21/22', '22/23'
+    ]
+    df3 = df[df['Season'].isin(seasons_y)]
     comparison_type3 = st.radio(
         "Co chcesz porównać?",
         ("Drużyny", "Drużynę i sezon/y"),
@@ -1905,22 +1925,22 @@ elif selected_tab == "Porównywanie statystyk":
         col8, col9 = st.columns(2)
         team10 = col8.selectbox(
             'Wybierz pierwszą drużynę :',
-            sorted(df2['HomeTeam'].unique().tolist()),
+            sorted(df3['HomeTeam'].unique().tolist()),
             key='shoot'
         )
         team11 = col9.selectbox(
             'Wybierz drugą drużynę :',
-            return_opponents(df2, team10),
+            return_opponents(df3, team10),
             key='shoot1'
         )
         season10 = st.selectbox(
             'Wybierz sezon :',
-            find_common_seasons(team10, team11, df2),
+            find_common_seasons(team10, team11, df3),
             key='shoot2'
         )
         fig14 = go.Figure()
-        shoot1 = calculate_shots_stats(season10, team10, df)
-        shoot2 = calculate_shots_stats(season10, team11, df)
+        shoot1 = calculate_shots_stats(season10, team10, clubstats)
+        shoot2 = calculate_shots_stats(season10, team11, clubstats)
         color10 = choose_color_for_teams(team10, team11)
         fig14.add_trace(
                 go.Bar(
@@ -1997,19 +2017,19 @@ elif selected_tab == "Porównywanie statystyk":
         col10, col11 = st.columns(2)
         team13 = col10.selectbox(
             'Wybierz drużynę :',
-            sorted(df2['HomeTeam'].unique().tolist()),
+            sorted(df3['HomeTeam'].unique().tolist()),
             key='shoot'
         )
         seasons13 = col11.multiselect(
             'Wybierz sezony :',
-            find_common_seasons(team13, team13, df2),
+            find_common_seasons(team13, team13, df3),
             key='shootteam',
-            default=find_common_seasons(team13, team13, df2)[:2],
+            default=find_common_seasons(team13, team13, df3)[:2],
             max_selections=5
         )
         fig14 = go.Figure()
         for i, season in enumerate(seasons13):
-            shoot5 = calculate_shots_stats(season, team13, df)
+            shoot5 = calculate_shots_stats(season, team13, clubstats)
             fig14.add_trace(
                 go.Bar(
                     x=list(shoot5.keys()),
