@@ -1950,7 +1950,7 @@ elif selected_tab == "Porównywanie statystyk":
                     f'Strzały niecelne drużyny {team11}: <b>%{{y}}'
                     + '</b><extra></extra>'
                 ],
-                name=team2,
+                name=team11,
                 marker=dict(color=color10[team11]),
             )
         )
