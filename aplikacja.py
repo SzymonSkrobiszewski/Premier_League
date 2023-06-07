@@ -739,57 +739,129 @@ elif selected_tab == "Premier League":
         st.plotly_chart(fig9, use_container_width=True)
         st.header('Liczba edycji zagranych w Europejskich pucharach przez drużyny angielskie')
         wystepy_UCL = {
-            "Manchester United": 24,
-            "Arsenal": 19,
-            "Chelsea": 19,
-            "Liverpool": 15,
-            "Manchester City": 12,
-            "Tottenham": 6,
-            "Newcastle": 2,
-            "Blackburn Rovers": 1,
-            "Leeds": 1,
-            "Leicester": 1
+            'Manchester United': 25,
+            'Arsenal': 19,
+            'Chelsea': 19,
+            'Liverpool': 15,
+            'Manchester City': 11,
+            'Tottenham': 6,
+            'Newcastle United': 3,
+            'Leeds': 2,
+            'Blackburn Rovers': 1,
+            'Everton': 1,
+            'Leicester': 1
         }
+        wystepy_ul = {
+            'Liverpool': 11,
+            'Tottenham': 11,
+            'Aston Villa': 9,
+            'Manchester United': 8,
+            'Arsenal': 8,
+            'Newcastle United': 7,
+            'Everton': 6,
+            'Blackburn Rovers': 6,
+            'Leeds': 5,
+            'West Ham': 5,
+            'Chelsea': 5,
+            'Manchester City': 4,
+            'Leicester': 4,
+            'Southampton': 3,
+            'Fulham': 3,
+            'Ipswich': 2,
+            'Middlesbrough': 2,
+            'Bolton': 2,
+            'Sheffield Wednesday': 1,
+            'Millwall': 1,
+            'Norwich City': 1,
+            'Portsmouth': 1,
+            'Birmingham': 1,
+            'Stoke': 1,
+            'Nottingham Forest': 1,
+            'Wigan': 1,
+            'Swansea': 1,
+            'Hull City': 1,
+            'Burnley': 1,
+            'Wolves': 1
+        }    
         fig6 = go.Figure()
         tournament = st.selectbox('Wybór turnieju :', ['Liga Mistrzów', 'Liga Europy'])
         if tournament == 'Liga Mistrzów':
             fig6.add_trace(
                 go.Bar(
-                    orientation='h',
-                    y=list(wystepy_UCL.keys()),
-                    x=list(wystepy_UCL.values()),
+                    x=list(wystepy_UCL.keys()),
+                    y=list(wystepy_UCL.values()),
                     text=list(wystepy_UCL.values()),
                     textfont=dict(size=15, color='white'),
                     textposition='inside',
+                    textangle=0,
                     # insidetextanchor='middle',
                     hoverlabel=dict(
                         font=dict(size=14, color='white'),
                         bgcolor='blue'
                     ),
-                    hovertemplate="Liczba rozegranych edycji Ligi Mistrzów: <b>%{x}</b>"
+                    hovertemplate="Liczba rozegranych edycji Ligi Mistrzów: <b>%{y}</b>"
                     + "<extra></extra>"
                 )
             )
             fig6.update_layout(
                 margin=dict(l=0, r=25, t=25, b=0),
                 xaxis=dict(
-                    range=[0, 26],
-                    title='Liczba zagranych edycji',
-                    tickfont=dict(size=16, color='black'),
+                    title='Drużyna',
+                    tickfont=dict(size=14, color='black'),
+                    title_font=dict(size=25, color='black')
+                ),
+                yaxis=dict(
+                    title="Liczba zagranych edycji",
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
                     zeroline=False,
-                    title_font=dict(size=25, color='black')
-                ),
-                yaxis=dict(
-                    title="Drużyna",
                     title_font=dict(size=25, color='black'),
                     # range=[0, 25],
                     tickfont=dict(size=15, color='black'),
                 ),
-                height=500,
+                height=550,
                 width=1200,
+            )
+            st.plotly_chart(fig6, use_container_width=True)
+        elif tournament == 'Liga Europy':
+            fig6.add_trace(
+                go.Bar(
+                    #orientation='h',
+                    x=list(wystepy_ul.keys()),
+                    y=list(wystepy_ul.values()),
+                    text=list(wystepy_ul.values()),
+                    textfont=dict(size=13, color='white'),
+                    textposition='inside',
+                    marker=dict(color='orange'),
+                    # insidetextanchor='middle',
+                    hoverlabel=dict(
+                        font=dict(size=14, color='black'),
+                        bgcolor='orange'
+                    ),
+                    hovertemplate="Liczba rozegranych edycji Ligi Europy: <b>%{y}</b>"
+                    + "<extra></extra>"
+                )
+            )
+            fig6.update_layout(
+                margin=dict(l=0, r=0, t=25, b=0),
+                xaxis=dict(
+                    title='Drużyna',
+                    tickfont=dict(size=12.5, color='black'),
+                    title_font=dict(size=25, color='black')
+                ),
+                yaxis=dict(
+                    title="Liczba zagranych edycji",
+                    showgrid=True,
+                    gridwidth=1,
+                    gridcolor='gray',
+                    zeroline=False,
+                    title_font=dict(size=25, color='black'),
+                    # range=[0, 25],
+                    tickfont=dict(size=15, color='black'),
+                ),
+                height=550,
+                width=1300,
             )
             st.plotly_chart(fig6, use_container_width=True)
 
@@ -963,7 +1035,8 @@ elif selected_tab == "Premier League":
                 x=p_l.index,
                 y=p_l['zwyciezca'],
                 text=p_l['zwyciezca'],
-                textfont=dict(size=12, color='white'),
+                textfont=dict(size=15, color='white'),
+                textangle=0,
                 hoverlabel=dict(
                     font=dict(size=14, color='white'),
                     bgcolor='blue'
@@ -2250,7 +2323,11 @@ elif selected_tab == "Porównywanie statystyk":
             values=values,
             sort=False,
             textinfo="value+percent",
-            # marker=dict(colors=["black", "red", "yellow"]),
+            marker=dict(
+                colors=[
+                    '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'
+                ]
+            ),
             direction="clockwise",
             hovertemplate="<b>%{label}</b><extra></extra>",
             hoverlabel=dict(font=dict(size=15, color="black")),
@@ -2396,7 +2473,7 @@ elif selected_tab == "Transfery":
             )
         )
         fig17.update_layout(
-            margin=dict(l=50, r=50, t=15, b=50),
+            margin=dict(l=25, r=0, t=15, b=0),
             yaxis=dict(
                 title='Nazwa pozycji',
                 title_font=dict(size=25, color='black'),
@@ -2424,7 +2501,7 @@ elif selected_tab == "Transfery":
                 y=positions_and_numbers.position,
                 x=positions_and_numbers['count'],
                 text=positions_and_numbers['count'].astype(str),
-                textfont=dict(size=13, color='white'),
+                textfont=dict(size=12.5, color='white'),
                 hovertemplate="Liczba trasnferów: <b>%{x}</b>"
                 + "<extra></extra>",
                 hoverlabel=dict(
@@ -2451,8 +2528,9 @@ elif selected_tab == "Transfery":
                 zeroline=False,
                 zerolinewidth=0
             ),
-            height=550,
+            height=570,
             width=1200,
         )
         st.plotly_chart(fig17, use_container_width=True)
-
+    st.write('Transfery dotyczą zarówno sprzedaży/kupna gracza jak i wypożyczeń graczy.')
+    st.header('Najpopularniejsze kierunki transferowe')
