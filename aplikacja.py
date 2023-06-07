@@ -2384,9 +2384,13 @@ elif selected_tab == "Transfery":
                 y=positions_and_numbers.position,
                 x=positions_and_numbers['count'],
                 text=positions_and_numbers['count'].astype(str),
-                textfont=dict(size=15, color='white'),
-                hovertemplate="Liczba trasnferów: <b>%{y}</b>"
+                textfont=dict(size=13, color='white'),
+                hovertemplate="Liczba trasnferów: <b>%{x}</b>"
                 + "<extra></extra>",
+                hoverlabel=dict(
+                    font=dict(size=14, color='white'),
+                    bgcolor='blue'
+                ),
                 #name='Liga Mistrzów',
                 marker_color='blue'
             )
@@ -2396,10 +2400,49 @@ elif selected_tab == "Transfery":
             yaxis=dict(
                 title='Nazwa pozycji',
                 title_font=dict(size=25, color='black'),
-                tickfont=dict(size=14, color='black')
+                tickfont=dict(size=15, color='black')
             ),
             xaxis=dict(
                 title='Liczba transferów przychodzących',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=15, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zeroline=False,
+                zerolinewidth=0
+            ),
+            height=550,
+            width=1200,
+        )
+        st.plotly_chart(fig17, use_container_width=True)
+    elif choose_in_out == 'Odchodzący':
+        positions_and_numbers = count_position('out', season6, transfers)
+        fig17.add_traces(
+            go.Bar(
+                orientation='h',
+                y=positions_and_numbers.position,
+                x=positions_and_numbers['count'],
+                text=positions_and_numbers['count'].astype(str),
+                textfont=dict(size=13, color='white'),
+                hovertemplate="Liczba trasnferów: <b>%{x}</b>"
+                + "<extra></extra>",
+                hoverlabel=dict(
+                    font=dict(size=14, color='white'),
+                    bgcolor='blue'
+                ),
+                marker_color='blue'
+            )
+        )
+        fig17.update_layout(
+            margin=dict(l=50, r=50, t=15, b=50),
+            yaxis=dict(
+                title='Nazwa pozycji',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=15, color='black')
+            ),
+            xaxis=dict(
+                title='Liczba transferów odchodzących',
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=15, color='black'),
                 showgrid=True,
