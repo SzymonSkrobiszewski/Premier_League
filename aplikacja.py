@@ -52,6 +52,7 @@ def load_data():
         engine='openpyxl'
     )
     stats = pd.read_excel(io='StatsOfClubs.xlsx', engine='openpyxl')
+    players = pd.read_excel(io='players.xlsx', engine='openpyxl')
     return (
         df,
         carabao_cup,
@@ -64,7 +65,8 @@ def load_data():
         unique_teams,
         uefa_ranking,
         transfers,
-        stats
+        stats,
+        players
     )
 
 
@@ -80,7 +82,8 @@ def load_data():
     unique_teams,
     uefa_ranking,
     transfers,
-    clubstats
+    clubstats,
+    players
 ) = load_data()
 
 color_dictionary = {
@@ -236,6 +239,34 @@ def choose_color_for_teams(team1, team2):
                     sorted_teams[1]: color_dictionary[sorted_teams[1]]
                     .get(color2),
                 }
+
+
+def count_position(category, season, df):
+    position_mapping = {
+        'Left Winger': 'Lewy skrzydłowy',
+        'defence': 'Obrońca',
+        'Right-Back': 'Prawy obrońca',
+        'Goalkeeper': 'Bramkarz',
+        'Centre-Back': 'Środkowy obrońca',
+        'Right Winger': 'Prawy skrzydłowy',
+        'Centre-Forward': 'Środkowy napastnik',
+        'attack': 'Napastnik',
+        'Defensive Midfield': 'Defensywny pomocnik',
+        'Left Midfield': 'Lewy pomocnik',
+        'Attacking Midfield': 'Ofensywny pomocnik',
+        'Central Midfield': 'Środkowy pomocnik',
+        'midfield': 'Pomocnik',
+        'Right Midfield': 'Prawy pomocnik',
+        'Left-Back': 'Lewy obrońca',
+        'Second Striker': 'Drugi napastnik'
+    }
+    position_counts = df.query("season == @season and transfer_movement == @category")[
+        "position"
+    ].value_counts()
+    position_counts = position_counts.rename(position_mapping)
+    position_df = position_counts.to_frame().reset_index()
+    position_df.columns = ['position', 'count']
+    return position_df
 
 
 def calculate_lost_goals_by_half(df, team, season):
@@ -763,8 +794,109 @@ elif selected_tab == "Premier League":
             st.plotly_chart(fig6, use_container_width=True)
 
     else:
+        upper_limit = 550
         st.header('Liczba zawodników w Premier League')
-        st.write('Tu coś będzie.')
+        choose_kind_of_players = st.multiselect(
+            "Wybierz :",
+            [
+                'Liczba zawodników',
+                'Liczba Anglików',
+                'Liczba cudzoziemców'
+            ],
+            default='Liczba Anglików'
+        )
+        fig16 = go.Figure()
+        for category in choose_kind_of_players:
+            if category == 'Liczba Anglików':
+                fig16.add_trace(
+                        go.Scatter(
+                            x=players['season'],
+                            y=players['england'],
+                            mode='lines+markers',
+                            marker=dict(color='green'),
+                            name='Anglicy',
+                            hovertemplate="Liczba Anglików: <b>%{y}</b>"
+                            + "<extra></extra>"
+                        )
+                )
+            elif category == 'Liczba cudzoziemców':
+                fig16.add_trace(
+                    go.Scatter(
+                            x=players['season'],
+                            y=players['foreigners'],
+                            mode='lines+markers',
+                            marker=dict(color='red'),
+                            name='Cudzoziemcy',
+                            hovertemplate="Liczba cudzoziemców: <b>%{y}</b>"
+                            + "<extra></extra>"
+                        )
+                )
+            elif category == 'Liczba zawodników':
+                fig16.add_trace(
+                    go.Scatter(
+                            x=players['season'],
+                            y=players['squad'],
+                            mode='lines+markers',
+                            marker=dict(color='orange'),
+                            name='Wszyscy',
+                            hovertemplate="Liczba zawodników: <b>%{y}</b>"
+                            + "<extra></extra>"
+                        )
+                )
+                upper_limit = 850
+        fig16.update_layout(
+            margin=dict(l=50, r=50, t=50, b=0),
+            showlegend=True,
+            xaxis=dict(
+                tickangle=30,
+                ticks="outside",
+                range=[-0.5, 30.5],
+                ticklen=4,
+                tickcolor='black',
+                title='Sezon',
+                showline=True,
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=12, color='black'),
+            ),
+            yaxis=dict(
+                range=[0, upper_limit],
+                title='Liczba zawodników',
+                tickfont=dict(size=17, color='black'),
+                title_font=dict(size=25, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='black',
+                zerolinecolor='white'
+            ),
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
+            ),
+            legend=dict(
+                title=dict(
+                    text='Rodzaj narodowości',
+                    font=dict(size=25, color='black')
+                ),
+                font=dict(size=17, color='black'),
+                y=0.99,
+                x=1.02
+            ),
+            height=500,
+            width=1200,
+            hovermode='x unified',
+        )
+        st.plotly_chart(fig16, use_container_width=True)
+        st.markdown(
+            """
+            Piłkarz jest kwalifikowany jako zawodnik jeśli spełnia jeden z poniższych warunków:
+            1. Jest związany kontraktem z drużyną.
+            2. Rozegrał przynajmniej jeden mecz w drużynie (np. w pucharze).
+            """
+        )
+        st.write('Dwie uwagi: miała Pani się zastonowić czy wykres jest adekwantny (coś tam z GUSem).\
+             Sezon 22/23 wstawię po zakończeniu wszystkich rozgrywek, ale to chyba nie przeszkadza aktualnie')
         st.header('Liczba strzelonych bramek')
         fig5 = go.Figure()
         season_goals = (
@@ -2085,7 +2217,7 @@ elif selected_tab == "Porównywanie statystyk":
             ),
         )
         st.plotly_chart(fig14, use_container_width=True)
-    st.header('Proporcje bramek według rodzaju strzałów')
+    st.header('Rozkład bramek według rodzaju strzałów')
     col4, col5 = st.columns(2)
     team5 = col4.selectbox(
         'Wybierz drużynę :',
@@ -2094,7 +2226,11 @@ elif selected_tab == "Porównywanie statystyk":
     )
     season5 = col5.selectbox(
         'Wybierz sezon :',
-        find_common_seasons(team5, team5, df[df['Season'].isin(clubstats['season'].unique())]),
+        find_common_seasons(
+            team5,
+            team5,
+            df[df['Season'].isin(clubstats['season'].unique())]
+        ),
         key='rodzaj2'
     )
     df4 = clubstats.query('team == @team5 and season == @season5')
@@ -2138,17 +2274,39 @@ elif selected_tab == "Porównywanie statystyk":
     st.plotly_chart(fig15, use_container_width=True)
 elif selected_tab == "Transfery":
     st.markdown('---')
+    transfers['season'] = transfers['season'].apply(
+        lambda x: '/'.join(map(lambda y: y[2:], x.split('/')))
+    )
     season_mapping = {}
-    transfers['fee_cleaned'] = pd.to_numeric(transfers['fee_cleaned'], errors='coerce')
+    transfers['fee_cleaned'] = pd.to_numeric(
+        transfers['fee_cleaned'],
+        errors='coerce'
+    )
     season_transfers = transfers.groupby('season')['fee_cleaned'].sum()
-    season_transfers = transfers.groupby(['season', 'transfer_movement'])['fee_cleaned'].sum()
+    season_transfers = transfers.groupby(["season", "transfer_movement"])[
+        "fee_cleaned"
+    ].sum()
     season_transfers = season_transfers.unstack().fillna(0)
-    for season in season_transfers.index:
-        year_parts = season.split('/')
-        season_short = year_parts[0][-2:] + '/' + year_parts[1][-2:]
-        season_mapping[season] = season_short
+    # for season in season_transfers.index:
+    #     year_parts = season.split('/')
+    #     season_short = year_parts[0][-2:] + '/' + year_parts[1][-2:]
+    #     season_mapping[season] = season_short
     season_transfers.reset_index(inplace=True)
-    season_transfers['season'] = season_transfers['season'].map(season_mapping)
+    sorted_seasons = [
+        '92/93', '93/94', '94/95', '95/96', '96/97',
+        '97/98', '98/99', '99/00', '00/01', '01/02',
+        '02/03', '03/04', '04/05', '05/06', '06/07',
+        '07/08', '08/09', '09/10', '10/11', '11/12',
+        '12/13', '13/14', '14/15', '15/16', '16/17',
+        '17/18', '18/19', '19/20', '20/21', '21/22',
+        '22/23'
+    ]
+    season_transfers['temp_sort'] = season_transfers['season'].map(
+        dict(zip(sorted_seasons, range(len(sorted_seasons))))
+    )
+    season_transfers = season_transfers.sort_values(by='temp_sort')
+    season_transfers.drop('temp_sort', axis=1, inplace=True)
+    # season_transfers['season'] = season_transfers['season'].map(season_mapping)
     st.header('Informacje dotyczące transferów')
     fig13 = go.Figure(data=[
         go.Scatter(
@@ -2158,7 +2316,7 @@ elif selected_tab == "Transfery":
             hovertemplate=f"Transferowe wydatki klubów: <b>%{{y:.2f}} mln</b>"
             + "<extra></extra>",
             marker=dict(color='red'),
-            name='Przychodzący'
+            name='Wydatki'
         ),
         go.Scatter(
             x=season_transfers.season,
@@ -2167,7 +2325,7 @@ elif selected_tab == "Transfery":
             y=season_transfers['out'],
             mode='lines+markers',
             marker=dict(color='green'),
-            name='Odchodzący'
+            name='Przychody'
         )
     ])
     fig13.update_layout(
@@ -2203,10 +2361,55 @@ elif selected_tab == "Transfery":
         height=500,
         width=1200,
         legend=dict(
-            title=dict(text="Zawodnicy", font=dict(size=20, color='black')),
+            title=dict(text="Kategoria", font=dict(size=20, color='black')),
             font=dict(size=18, color='black'),
             y=1.01,
             x=1.02
         ),
     )
     st.plotly_chart(fig13, use_container_width=True)
+    st.header('Zestawienie transferów według pozycji')
+    col6, col7 = st.columns(2)
+    choose_in_out = col6.selectbox(
+        'Wybierz rodzaj transferów :',
+        ['Przychodzący', 'Odchodzący']
+    )
+    season6 = col7.selectbox('Wybierz sezon', sorted_seasons)
+    fig17 = go.Figure()
+    if choose_in_out == 'Przychodzący':
+        positions_and_numbers = count_position('in', season6, transfers)
+        fig17.add_traces(
+            go.Bar(
+                orientation='h',
+                y=positions_and_numbers.position,
+                x=positions_and_numbers['count'],
+                text=positions_and_numbers['count'].astype(str),
+                textfont=dict(size=15, color='white'),
+                hovertemplate="Liczba trasnferów: <b>%{y}</b>"
+                + "<extra></extra>",
+                #name='Liga Mistrzów',
+                marker_color='blue'
+            )
+        )
+        fig17.update_layout(
+            margin=dict(l=50, r=50, t=15, b=50),
+            yaxis=dict(
+                title='Nazwa pozycji',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=14, color='black')
+            ),
+            xaxis=dict(
+                title='Liczba transferów przychodzących',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=15, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zeroline=False,
+                zerolinewidth=0
+            ),
+            height=550,
+            width=1200,
+        )
+        st.plotly_chart(fig17, use_container_width=True)
+
