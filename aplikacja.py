@@ -814,6 +814,7 @@ elif selected_tab == "Premier League":
                         font=dict(size=14, color='white'),
                         bgcolor='blue'
                     ),
+                    marker_color='blue',
                     hovertemplate="Liczba rozegranych edycji Ligi Mistrzów: <b>%{y}</b>"
                     + "<extra></extra>"
                 )
@@ -1017,6 +1018,7 @@ elif selected_tab == "Premier League":
                     font=dict(size=14, color='white'),
                     bgcolor='blue'
                 ),
+                marker_color='blue',
                 hovertemplate="Liczba strzelonych bramek: <b>%{y}</b>"
                 + "<extra></extra>"
             )
@@ -1056,6 +1058,7 @@ elif selected_tab == "Premier League":
                     font=dict(size=14, color='white'),
                     bgcolor='blue'
                 ),
+                marker_color='blue',
                 hovertemplate='Liczba tytułów: <b>%{y}</b><extra></extra>',
             )
         )
