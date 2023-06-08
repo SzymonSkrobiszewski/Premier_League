@@ -880,7 +880,7 @@ elif selected_tab == "Premier League":
                 width=1300,
             )
             st.plotly_chart(fig6, use_container_width=True)
-        st.write('Może wzbudzać pewne niepokoje fakt, że suma udziałów niektórych \
+        st.write('Może wzbudzać pewnien niepokój fakt, że suma udziałów niektórych \
                  drużyn w turniejach przekracza liczbę sezonów, które miały miejsce \
                  od początku rozgrywek Premier League (31). \
                  Od pewnego czasu drużyny, które spadają z Ligi Mistrzów, mają \
