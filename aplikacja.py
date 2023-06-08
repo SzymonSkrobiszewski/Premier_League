@@ -880,7 +880,9 @@ elif selected_tab == "Premier League":
                 width=1300,
             )
             st.plotly_chart(fig6, use_container_width=True)
-
+        st.write('Niepokój może budzić fakt, że suma udziałów w turniejach niektorych drużyn\
+                 jest większa od liczby sezonów. Od jakiegoś czasu drużyny, które spadają z \
+                 Ligi Mistrzów mogą kontynuować swoją przygodę w "niższych" rozgrywkach')
     else:
         upper_limit = 550
         st.header('Liczba zawodników w Premier League')
