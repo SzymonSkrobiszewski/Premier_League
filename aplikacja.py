@@ -2475,7 +2475,7 @@ elif selected_tab == "Transfery":
                 orientation='h',
                 y=positions_and_numbers.position,
                 x=positions_and_numbers['count'],
-                text=positions_and_numbers['count'].astype(str),
+                text=positions_and_numbers['count'].astype(str),f
                 textfont=dict(size=13, color='white'),
                 hovertemplate="Liczba trasnferów: <b>%{x}</b>"
                 + "<extra></extra>",
@@ -2689,7 +2689,7 @@ elif selected_tab == "Transfery":
                 y=transfer_directions['in'],
                 text=transfer_directions['in'],
                 textfont=dict(size=17, color='white'),
-                hovertemplate="Ilość transferów: <b>%{y} mln</b>"
+                hovertemplate="Ilość transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
                 hoverlabel=dict(
@@ -2727,7 +2727,7 @@ elif selected_tab == "Transfery":
                 y=transfer_directions['out'],
                 text=transfer_directions['out'],
                 textfont=dict(size=17, color='white'),
-                hovertemplate="Ilość transferów: <b>%{y} mln</b>"
+                hovertemplate="Ilość transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
                 hoverlabel=dict(
