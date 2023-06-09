@@ -2765,5 +2765,6 @@ elif selected_tab == "Transfery":
                 width=1200,
         )
         fig19.update_layout(xaxis={'categoryorder': 'total ascending'})
+        fig19.update_traces(textposition='auto')
         st.plotly_chart(fig19, use_container_width=True)
     st.write('Naturalnym jest, że w przypadku Premier League liczba pozostaje taka sama.')
