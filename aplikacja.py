@@ -2762,9 +2762,8 @@ elif selected_tab == "Transfery":
                     tickfont=dict(size=15, color='black'),
                 ),
                 height=500,
-                width=1200,
+                width=1250,
         )
         fig19.update_layout(xaxis={'categoryorder': 'total ascending'})
-        fig19.update_traces(textposition='auto')
         st.plotly_chart(fig19, use_container_width=True)
     st.write('Naturalnym jest, że w przypadku Premier League liczba pozostaje taka sama.')
