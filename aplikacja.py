@@ -2761,8 +2761,8 @@ elif selected_tab == "Transfery":
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=15, color='black'),
                 ),
-                height=500,
-                width=1250,
+                height=550,
+                width=1150,
         )
         fig19.update_layout(xaxis={'categoryorder': 'total ascending'})
         st.plotly_chart(fig19, use_container_width=True)
