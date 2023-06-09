@@ -2734,7 +2734,7 @@ elif selected_tab == "Transfery":
                 x=transfer_directions['liga'],
                 y=transfer_directions['out'],
                 text=transfer_directions['out'],
-                textfont=dict(size=17, color='white'),
+                textfont=dict(size=16, color='white'),
                 hovertemplate="Ilość transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
