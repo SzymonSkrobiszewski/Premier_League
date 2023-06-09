@@ -2734,7 +2734,7 @@ elif selected_tab == "Transfery":
                 x=transfer_directions['liga'],
                 y=transfer_directions['out'],
                 text=transfer_directions['out'],
-                textfont=dict(size=15, color='white'),
+                textfont=dict(size=14.5, color='white'),
                 hovertemplate="Ilość transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
@@ -2761,7 +2761,7 @@ elif selected_tab == "Transfery":
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=15, color='black'),
                 ),
-                height=550,
+                height=510,
                 width=1200,
         )
         fig19.update_layout(xaxis={'categoryorder': 'total ascending'})
