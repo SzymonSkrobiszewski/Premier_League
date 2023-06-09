@@ -2745,7 +2745,7 @@ elif selected_tab == "Transfery":
             )
         )
         fig19.update_layout(
-                margin=dict(l=50, r=50, t=50, b=50),
+                margin=dict(l=50, r=50, t=25, b=50),
                 separators=',',
                 xaxis=dict(
                     title='Liga',
