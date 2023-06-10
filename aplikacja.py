@@ -680,9 +680,9 @@ elif selected_tab == "Premier League":
             'Liczba zwycięstw klubów z Premier League \
                 w Europejskich pucharach'
         )
-        zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
+        zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea', 'Manchester City']
         zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
-        liczebnosci_lm = [2, 2, 2]
+        liczebnosci_lm = [2, 2, 2, 1]
         liczebnosci_le = [2, 1, 1]
         fig9 = go.Figure()
         fig9.add_trace(go.Bar(
