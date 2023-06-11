@@ -680,9 +680,9 @@ elif selected_tab == "Premier League":
             'Liczba zwycięstw klubów z Premier League \
                 w Europejskich pucharach'
         )
-        zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea', 'Manchester City']
+        zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
         zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
-        liczebnosci_lm = [2, 2, 2, 1]
+        liczebnosci_lm = [2, 2, 2]
         liczebnosci_le = [2, 1, 1]
         fig9 = go.Figure()
         fig9.add_trace(go.Bar(
@@ -758,7 +758,7 @@ elif selected_tab == "Premier League":
             'Arsenal': 19,
             'Chelsea': 19,
             'Liverpool': 15,
-            'Manchester City': 11,
+            'Manchester City': 12,
             'Tottenham': 6,
             'Newcastle United': 3,
             'Leeds': 2,
@@ -1977,7 +1977,7 @@ elif selected_tab == "Porównywanie statystyk":
             )
         st.plotly_chart(fig8, use_container_width=True)
     if comparison_type2 == 'Drużynę i sezon/y':
-        colors3 = ['#ea03ff', "#ADD8E6", "#90EE90", "#FFA500", "#FF0000"]
+        kolory = ['#ea03ff', "#ADD8E6", "#90EE90", "#FFA500", "#FF0000"]
         fig8 = go.Figure()
         col1, col2 = st.columns(2)
         team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
@@ -2002,7 +2002,7 @@ elif selected_tab == "Porównywanie statystyk":
                         + '<extra></extra>'
                     ],
                     name=season,
-                    marker=dict(color=colors3[i])
+                    marker=dict(color=kolory[i])
                 )
             )
         fig8.update_layout(
@@ -2696,7 +2696,7 @@ elif selected_tab == "Transfery":
                 x=transfer_directions['liga'],
                 y=transfer_directions['in'],
                 text=transfer_directions['in'],
-                textfont=dict(size=16, color='white'),
+                textfont=dict(size=15, color='white'),
                 hovertemplate="Ilość transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
@@ -2707,7 +2707,7 @@ elif selected_tab == "Transfery":
             )
         )
         fig19.update_layout(
-                margin=dict(l=50, r=50, t=50, b=50),
+                margin=dict(l=25, r=25, t=25, b=25),
                 separators=',',
                 xaxis=dict(
                     title='Liga',
@@ -2723,9 +2723,9 @@ elif selected_tab == "Transfery":
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=15, color='black'),
                 ),
-                height=500,
-                width=1200,
-        )   
+                height=530,
+                width=1210,
+        )
         fig19.update_layout(xaxis={'categoryorder': 'total ascending'})
         st.plotly_chart(fig19, use_container_width=True)
     elif direction == 'Transfery odchodzące':
@@ -2734,7 +2734,7 @@ elif selected_tab == "Transfery":
                 x=transfer_directions['liga'],
                 y=transfer_directions['out'],
                 text=transfer_directions['out'],
-                textfont=dict(size=16, color='white'),
+                textfont=dict(size=14.5, color='white'),
                 hovertemplate="Ilość transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
@@ -2745,7 +2745,7 @@ elif selected_tab == "Transfery":
             )
         )
         fig19.update_layout(
-                margin=dict(l=50, r=50, t=25, b=50),
+                margin=dict(l=25, r=25, t=25, b=25),
                 separators=',',
                 xaxis=dict(
                     title='Liga',
@@ -2761,8 +2761,8 @@ elif selected_tab == "Transfery":
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=15, color='black'),
                 ),
-                height=500,
-                width=1200,
+                height=530,
+                width=1210,
         )
         fig19.update_layout(xaxis={'categoryorder': 'total ascending'})
         st.plotly_chart(fig19, use_container_width=True)
