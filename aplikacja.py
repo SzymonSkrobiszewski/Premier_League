@@ -1977,7 +1977,7 @@ elif selected_tab == "Porównywanie statystyk":
             )
         st.plotly_chart(fig8, use_container_width=True)
     if comparison_type2 == 'Drużynę i sezon/y':
-        kolory = ['#ea03ff', "#ADD8E6", "#90EE90", "#FFA500", "#FF0000"]
+        colors3 = ['#ea03ff', "#ADD8E6", "#90EE90", "#FFA500", "#FF0000"]
         fig8 = go.Figure()
         col1, col2 = st.columns(2)
         team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
@@ -2002,7 +2002,7 @@ elif selected_tab == "Porównywanie statystyk":
                         + '<extra></extra>'
                     ],
                     name=season,
-                    marker=dict(color=kolory[i])
+                    marker=dict(color=colors3[i])
                 )
             )
         fig8.update_layout(
