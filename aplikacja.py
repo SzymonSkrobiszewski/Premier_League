@@ -752,7 +752,7 @@ elif selected_tab == "Premier League":
             ),
         )
         st.plotly_chart(fig9, use_container_width=True)
-        st.header('Liczba edycji zagranych w Europejskich pucharach przez drużyny angielskie')
+        st.header('Liczba zagranych edycji w Europejskich pucharach przez drużyny angielskie')
         wystepy_UCL = {
             'Manchester United': 25,
             'Arsenal': 19,
