@@ -619,7 +619,7 @@ elif selected_tab == "Premier League":
         )
         st.plotly_chart(fig0, use_container_width=True)
         st.header('10 najlepszych lig według UEFA')
-        year_of_uefa_ranking = st.selectbox('Wybierz rok :', range(1997, 2023))
+        year_of_uefa_ranking = st.selectbox('Wybierz rok :', range(1997, 2024))
         fig12 = go.Figure()
         uefa_rank = get_top_10_by_season(
             data=uefa_ranking,
