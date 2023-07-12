@@ -1053,12 +1053,12 @@ elif selected_tab == "Premier League":
         fig = go.Figure()
         fig.add_trace(
             go.Bar(
-                # x=p_l.index,
-                # y=p_l['zwyciezca'],
-                # text=p_l['zwyciezca'],
                 x=p_l.index,
-                y=p_l['count'],
-                text=p_l['count'],
+                y=p_l['zwyciezca'],
+                text=p_l['zwyciezca'],
+                # x=p_l.index,
+                # y=p_l['count'],
+                # text=p_l['count'],
                 textfont=dict(size=15, color='white'),
                 textangle=0,
                 hoverlabel=dict(
