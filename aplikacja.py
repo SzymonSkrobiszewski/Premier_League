@@ -156,6 +156,8 @@ def find_common_seasons(team1, team2, df):
     )["Season"].unique()
     return common_seasons
 
+def return_teams_for_season(season, df):
+    return sorted(set(df[df['Season'] == season]['HomeTeam']))
 
 def return_opponents(df, team='Arsenal'):
     opponents = df[df['HomeTeam'] == team]['AwayTeam'].unique().tolist()
@@ -411,6 +413,8 @@ def get_top_10_by_season(data, season):
     top_10.loc[:, 'country'] = top_10['country'].map(mapping)
     return top_10
 
+def get_seasons(df):
+    return df['Season'].unique()
 
 def return_most_valuable_transfers_for_position(category, position, df):
     df_filtered = df.query('position == @position and transfer_movement == @category')
@@ -501,7 +505,7 @@ selected_tab = option_menu(
 
 if selected_tab == "Strona główna":
     st.markdown('---')
-    st.title("Bliżej nieokreślony tytuł.")
+    st.title("Statystyki Premier League")
     with open('strona_glowna.txt', 'r', encoding='utf-8') as file:
         file_content = file.read().split('\n')
 
@@ -533,7 +537,7 @@ elif selected_tab == "Premier League":
         None,
         [
             "Ogólne statystyki ligi",
-            "Premier League na płaszczyźnie Europejskiej"
+            "Premier League na płaszczyźnie europejskiej"
         ],
         menu_icon="cast",
         default_index=0,
@@ -554,16 +558,16 @@ elif selected_tab == "Premier League":
             "nav-link-selected": {"background-color": "red"},
         },
     )
-    if premier_league1 == "Premier League na płaszczyźnie Europejskiej":
-        st.header('Porównanie wartości lig piłkarskich')
+    if premier_league1 == "Premier League na płaszczyźnie europejskiej":
+        st.header('Wartość lig piłkarskich')
         liga = st.multiselect(
             "Wybierz ligę :",
-            ["Ligue 1", "Bundesliga", "Premier league", "La liga", "Serie A"],
-            default=["Premier league"],
+            ["Ligue 1", "Bundesliga", "Premier League", "La Liga", "Serie A"],
+            default=["Premier League"],
         )
         fig0 = go.Figure()
         colors = ['red', 'green', 'blue', 'purple', 'black']
-        replace_name = {'Bundesliga': 'Bundesligi', 'La liga': 'La ligi'}
+        replace_name = {'Bundesliga': 'Bundesligi', 'La Liga': 'La Ligi'}
         for i, lig in enumerate(liga):
             fig0.add_trace(
                 go.Scatter(
@@ -619,7 +623,7 @@ elif selected_tab == "Premier League":
         )
         st.plotly_chart(fig0, use_container_width=True)
         st.header('10 najlepszych lig według UEFA')
-        year_of_uefa_ranking = st.selectbox('Wybierz rok :', range(1997, 2024))
+        year_of_uefa_ranking = st.selectbox('Wybierz rok :', range(2023, 1996, -1))
         fig12 = go.Figure()
         uefa_rank = get_top_10_by_season(
             data=uefa_ranking,
@@ -677,8 +681,7 @@ elif selected_tab == "Premier League":
                 do oficjalnej strony UEFA.'
         )
         st.header(
-            'Liczba zwycięstw klubów z Premier League \
-                w Europejskich pucharach'
+            'Zwycięstwa drużyn z Premier League w pucharach europejskich'
         )
         zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
         zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
@@ -707,7 +710,7 @@ elif selected_tab == "Premier League":
         ))
 
         fig9.update_layout(
-            xaxis_title='Klub',
+            xaxis_title='Drużyna',
             hovermode='x unified',
             yaxis_title='Liczba zwycięstw',
             barmode='group',
@@ -718,7 +721,7 @@ elif selected_tab == "Premier League":
             margin=dict(l=20, r=50, t=35, b=50),
             barmode='group',
             xaxis=dict(
-                title='Klub',
+                title='Drużyna',
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=16, color='black'),
                 showline=False
@@ -752,7 +755,7 @@ elif selected_tab == "Premier League":
             ),
         )
         st.plotly_chart(fig9, use_container_width=True)
-        st.header('Liczba zagranych edycji w Europejskich pucharach przez drużyny angielskie')
+        st.header('Liczba edycji pucharów europejskich, w których wystąpiły drużyny angielskie')
         wystepy_UCL = {
             'Manchester United': 25,
             'Arsenal': 19,
@@ -815,7 +818,7 @@ elif selected_tab == "Premier League":
                         bgcolor='blue'
                     ),
                     marker_color='blue',
-                    hovertemplate="Liczba rozegranych edycji Ligi Mistrzów: <b>%{y}</b>"
+                    hovertemplate="Liczba edycji Ligi Mistrzów: <b>%{y}</b>"
                     + "<extra></extra>"
                 )
             )
@@ -827,7 +830,7 @@ elif selected_tab == "Premier League":
                     title_font=dict(size=25, color='black')
                 ),
                 yaxis=dict(
-                    title="Liczba zagranych edycji",
+                    title="Liczba edycji",
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
@@ -855,7 +858,7 @@ elif selected_tab == "Premier League":
                         font=dict(size=14, color='black'),
                         bgcolor='orange'
                     ),
-                    hovertemplate="Liczba rozegranych edycji Ligi Europy: <b>%{y}</b>"
+                    hovertemplate="Liczba edycji Ligi Europy: <b>%{y}</b>"
                     + "<extra></extra>"
                 )
             )
@@ -867,7 +870,7 @@ elif selected_tab == "Premier League":
                     title_font=dict(size=25, color='black')
                 ),
                 yaxis=dict(
-                    title="Liczba zagranych edycji",
+                    title="Liczba edycji",
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
@@ -888,19 +891,19 @@ elif selected_tab == "Premier League":
         )
     else:
         upper_limit = 550
-        st.header('Liczba zawodników w Premier League')
+        st.header('Zawodnicy Premier League')
         choose_kind_of_players = st.multiselect(
             "Wybierz :",
             [
-                'Liczba zawodników',
-                'Liczba Anglików',
-                'Liczba cudzoziemców'
+                'wszyscy',
+                'Anglicy',
+                'cudzoziemcy'
             ],
-            default='Liczba Anglików'
+            default='Anglicy'
         )
         fig16 = go.Figure()
         for category in choose_kind_of_players:
-            if category == 'Liczba Anglików':
+            if category == 'Anglicy':
                 fig16.add_trace(
                         go.Scatter(
                             x=players['season'],
@@ -908,30 +911,30 @@ elif selected_tab == "Premier League":
                             mode='lines+markers',
                             marker=dict(color='green'),
                             name='Anglicy',
-                            hovertemplate="Liczba Anglików: <b>%{y}</b>"
+                            hovertemplate="Anglicy: <b>%{y}</b>"
                             + "<extra></extra>"
                         )
                 )
-            elif category == 'Liczba cudzoziemców':
+            elif category == 'cudzoziemcy':
                 fig16.add_trace(
                     go.Scatter(
                             x=players['season'],
                             y=players['foreigners'],
                             mode='lines+markers',
                             marker=dict(color='red'),
-                            name='Cudzoziemcy',
-                            hovertemplate="Liczba cudzoziemców: <b>%{y}</b>"
+                            name='cudzoziemcy',
+                            hovertemplate="Cudzoziemcy: <b>%{y}</b>"
                             + "<extra></extra>"
                         )
                 )
-            elif category == 'Liczba zawodników':
+            elif category == 'wszyscy':
                 fig16.add_trace(
                     go.Scatter(
                             x=players['season'],
                             y=players['squad'],
                             mode='lines+markers',
                             marker=dict(color='orange'),
-                            name='Wszyscy',
+                            name='wszyscy',
                             hovertemplate="Liczba zawodników: <b>%{y}</b>"
                             + "<extra></extra>"
                         )
@@ -969,7 +972,7 @@ elif selected_tab == "Premier League":
             ),
             legend=dict(
                 title=dict(
-                    text='Rodzaj narodowości',
+                    text='Narodowości',
                     font=dict(size=25, color='black')
                 ),
                 font=dict(size=17, color='black'),
@@ -983,14 +986,12 @@ elif selected_tab == "Premier League":
         st.plotly_chart(fig16, use_container_width=True)
         st.markdown(
             """
-            Piłkarz jest kwalifikowany jako zawodnik jeśli spełnia jeden z poniższych warunków:
-            1. Jest związany kontraktem z drużyną.
-            2. Rozegrał przynajmniej jeden mecz w drużynie (np. w pucharze).
+            Piłkarz jest kwalifikowany jako zawodnik, jeśli spełnia co najmniej jeden z poniższych warunków:
+            1. jest związany kontraktem z drużyną.
+            2. rozegrał przynajmniej jeden mecz z drużyną (np. w pucharze).
             """
         )
-        st.write('Dwie uwagi: miała Pani się zastonowić czy wykres jest adekwantny (coś tam z GUSem).\
-             Sezon 22/23 wstawię po zakończeniu wszystkich rozgrywek, ale to chyba nie przeszkadza aktualnie')
-        st.header('Liczba strzelonych bramek')
+        st.header('Strzelone bramki')
         fig5 = go.Figure()
         season_goals = (
             df.groupby("Season")[["FTHG", "FTAG"]]
@@ -1049,14 +1050,13 @@ elif selected_tab == "Premier League":
             width=1400,
         )
         st.plotly_chart(fig5, use_container_width=True)
-
         st.header('Zwycięzcy Premier League')
         fig = go.Figure()
         fig.add_trace(
             go.Bar(
                 x=p_l.index,
-                y=p_l['zwyciezca'],
-                text=p_l['zwyciezca'],
+                y=p_l['count'],
+                text=p_l['count'],
                 textfont=dict(size=15, color='white'),
                 textangle=0,
                 hoverlabel=dict(
@@ -1090,7 +1090,7 @@ elif selected_tab == "Premier League":
         )
         st.plotly_chart(fig, use_container_width=True)
 
-        st.header('Podział pucharów krajowych')
+        st.header('Zdobte puchary krajowe')
         puchary = st.multiselect(
             'Wybierz puchar :', ['Fa cup', 'Carabao cup'],
             default=['Fa cup']
@@ -1102,9 +1102,9 @@ elif selected_tab == "Premier League":
                 fig1.add_trace(
                     go.Bar(
                         x=cup2.index,
-                        y=cup2['Fa_cup'],
+                        y=cup2['count'],
                         name='Fa Cup',
-                        text=cup2['Fa_cup'],
+                        text=cup2['count'],
                         # hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                         hovertemplate='Liczba tytułów FA Cup: <b>%{y}</b>'
                         + '<extra></extra>',
@@ -1116,9 +1116,9 @@ elif selected_tab == "Premier League":
                 fig1.add_trace(
                     go.Bar(
                         x=cup1.index,
-                        y=cup1['Carabao_cup'],
+                        y=cup1['count'],
                         name='Carabao Cup',
-                        text=cup1['Carabao_cup'],
+                        text=cup1['count'],
                         # hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='green'),
                         hovertemplate='Liczba tytułów Carabao Cup: <b>%{y}</b>'
                         + '<extra></extra>',
@@ -1135,6 +1135,7 @@ elif selected_tab == "Premier League":
             marker_color='green'
         )
         fig1.update_layout(
+            barmode='relative',
             margin=dict(l=50, r=50, t=35, b=50),
             hovermode='x unified',
             hoverlabel=dict(
@@ -1151,7 +1152,7 @@ elif selected_tab == "Premier League":
             yaxis=dict(
                 title='Liczba pucharów',
                 title_font=dict(size=25, color='black'),
-                range=[0, 10.5],
+                #range=[0, 10.5],
                 tickfont=dict(size=15, color='black'),
                 showgrid=True,
                 gridwidth=1,
@@ -1171,7 +1172,7 @@ elif selected_tab == "Premier League":
             )
         )
         st.plotly_chart(fig1, use_container_width=True)
-        st.header('Liczba rozegranych sezonów w Premier League według drużyn')
+        st.header('Liczba rozegranych sezonów w Premier League')
         season_dict = {
             '1992': '92/93',
             '1993': '93/94',
@@ -1236,11 +1237,11 @@ elif selected_tab == "Premier League":
         )
         if sorted_option == 'Malejąco liczebnościami':
             team_and_number_of_seasons = team_and_number_of_seasons.sort_values(
-                by='Liczba sezonów', ascending=True
+                by='count', ascending=True
             )
         elif sorted_option == 'Rosnąco liczebnościami':
             team_and_number_of_seasons = team_and_number_of_seasons.sort_values(
-                by="Liczba sezonów", ascending=False
+                by="count", ascending=False
             )
         elif sorted_option == 'Malejąco alfabetycznie':
             team_and_number_of_seasons = team_and_number_of_seasons.sort_index(
@@ -1254,7 +1255,7 @@ elif selected_tab == "Premier League":
         fig10.add_traces(
             go.Bar(
                 y=team_and_number_of_seasons.index,
-                x=team_and_number_of_seasons['Liczba sezonów'],
+                x=team_and_number_of_seasons['count'],
                 orientation='h',
                 marker=dict(color='purple'),
                 textfont=dict(size=16, color='white'),
@@ -1301,54 +1302,39 @@ elif selected_tab == "Premier League":
 
 elif selected_tab == "Porównywanie statystyk":
     st.markdown('---')
-    st.header('Porównanie liczby punktów ewoluującej w trakcie sezonu')
+    st.header('Ewolucja liczby punktów w sezonie')
     comparison_type = st.radio(
         "Co chcesz porównać?",
         ("Drużyny", "Drużynę i sezon/y")
     )
     if comparison_type == "Drużyny":
         column1, column2 = st.columns(2)
-        team1 = column1.selectbox('Wybierz pierwszą drużynę :', unique_teams)
-        team2 = column2.selectbox(
-            'Wybierz drugą drużynę :', return_opponents(df, team1)
+        selected_season = st.selectbox("Wybierz sezon :", get_seasons(df))
+        teams1 = st.multiselect(
+            "Wybierz drużyny :",
+            return_teams_for_season(selected_season, df),
+            default=['Arsenal', 'Chelsea']
         )
-        if len([team1, team2]) == 2:
-            color_line = choose_color_for_teams(team1, team2)
-            common_season = find_common_seasons(team1, team2, df)
-            selected_season = st.selectbox("Wybierz sezon :", common_season)
-            club1 = calculate_points(df, team1, selected_season)
-            club2 = calculate_points(df, team2, selected_season)
-            club0 = pd.concat([club1, club2])
-            max_value0 = club0['Punkty'].max()
-
-            fig2 = go.Figure()
+        fig2 = go.Figure()
+        max_value0 = 0
+        for team in teams1:
+            club1 = calculate_points(df, team, selected_season)
+            if club1['Punkty'].max() > max_value0:
+                max_value0 = club1['Punkty'].max()
             fig2.add_trace(
                 go.Scatter(
                     x=club1['Kolejka'],
                     y=club1['Punkty'],
                     mode='lines+markers',
-                    marker=dict(color=color_line[team1]),
-                    name=f'{team1}',
+                    #marker=dict(color=color_line[team1]),
+                    name=f'{team}',
                     hovertext=[
-                        f"Punkty drużyny {team1}: <b>{points}</b>" for points in club1['Punkty']
+                        f"Punkty drużyny {team}: <b>{points}</b>" for points in club1['Punkty']
                     ],
                     hovertemplate="%{hovertext}<extra></extra>"
                 )
             )
-            fig2.add_trace(
-                go.Scatter(
-                    x=club2['Kolejka'],
-                    y=club2['Punkty'],
-                    mode='lines+markers',
-                    name=f'{team2}',
-                    marker=dict(color=color_line[team2]),
-                    hovertext=[
-                        f"Punkty drużyny {team2}: <b>{points}</b>" for points in club2['Punkty']
-                    ],
-                    hovertemplate="%{hovertext}<extra></extra>",
-                )
-            )
-            fig2.update_layout(
+        fig2.update_layout(
                 margin=dict(l=50, r=50, t=50, b=50),
                 showlegend=True,
                 xaxis=dict(
@@ -1398,10 +1384,104 @@ elif selected_tab == "Porównywanie statystyk":
                 width=1200,
                 hovermode='x unified',
             )
-            st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True)
+
+
+        #teams = column1.multiselect()
+        # team1 = column1.selectbox('Wybierz pierwszą drużynę :', unique_teams)
+        # team2 = column2.selectbox(
+        #     'Wybierz drugą drużynę :', return_opponents(df, team1)
+        #)
+        # if len([team1, team2]) == 2:
+        #     color_line = choose_color_for_teams(team1, team2)
+        #     common_season = find_common_seasons(team1, team2, df)
+        #     selected_season = st.selectbox("Wybierz sezon :", common_season)
+        #     club1 = calculate_points(df, team1, selected_season)
+        #     club2 = calculate_points(df, team2, selected_season)
+        #     club0 = pd.concat([club1, club2])
+        #     max_value0 = club0['Punkty'].max()
+
+            # fig2 = go.Figure()
+            # fig2.add_trace(
+            #     go.Scatter(
+            #         x=club1['Kolejka'],
+            #         y=club1['Punkty'],
+            #         mode='lines+markers',
+            #         marker=dict(color=color_line[team1]),
+            #         name=f'{team1}',
+            #         hovertext=[
+            #             f"Punkty drużyny {team1}: <b>{points}</b>" for points in club1['Punkty']
+            #         ],
+            #         hovertemplate="%{hovertext}<extra></extra>"
+            #     )
+            # )
+            # fig2.add_trace(
+            #     go.Scatter(
+            #         x=club2['Kolejka'],
+            #         y=club2['Punkty'],
+            #         mode='lines+markers',
+            #         name=f'{team2}',
+            #         marker=dict(color=color_line[team2]),
+            #         hovertext=[
+            #             f"Punkty drużyny {team2}: <b>{points}</b>" for points in club2['Punkty']
+            #         ],
+            #         hovertemplate="%{hovertext}<extra></extra>",
+            #     )
+            # )
+            # fig2.update_layout(
+            #     margin=dict(l=50, r=50, t=50, b=50),
+            #     showlegend=True,
+            #     xaxis=dict(
+            #         ticks="outside",
+            #         ticklen=4,
+            #         tickcolor='black',
+            #         range=(
+            #             [-0.5, 43]
+            #             if (
+            #                 "92/93" in selected_season
+            #                 or "93/94" in selected_season
+            #                 or "94/95" in selected_season
+            #             )
+            #             else [-0.5, 39]
+            #         ),
+            #         title='Kolejka',
+            #         showline=True,
+            #         title_font=dict(size=25, color='black'),
+            #         tickfont=dict(size=17, color='black'),
+            #     ),
+            #     yaxis=dict(
+            #         title='Punkty',
+            #         range=[-2, round(max_value0, -1) + 15],
+            #         tickfont=dict(size=17, color='black'),
+            #         title_font=dict(size=25, color='black'),
+            #         showgrid=True,
+            #         gridwidth=1,
+            #         gridcolor='black',
+            #         zerolinecolor='white'
+            #     ),
+            #     hoverlabel=dict(
+            #         font=dict(
+            #             size=15,
+            #             color='black'
+            #         )
+            #     ),
+            #     legend=dict(
+            #         title=dict(
+            #             text='Drużyna',
+            #             font=dict(size=25, color='black')
+            #         ),
+            #         font=dict(size=17, color='black'),
+            #         y=0.99,
+            #         x=1.02
+            #     ),
+            #     height=500,
+            #     width=1200,
+            #     hovermode='x unified',
+            # )
+            # st.plotly_chart(fig2, use_container_width=True)
     if comparison_type == "Drużynę i sezon/y":
         c1, c2 = st.columns(2)
-        club = c1.selectbox("Wybierz klub :", unique_teams)
+        club = c1.selectbox("Wybierz Drużynę :", unique_teams)
         seasons = find_common_seasons(club, club, df)
         selected_seasons1 = c2.multiselect(
             "Wybierz sezon/y :", seasons,
@@ -1521,7 +1601,7 @@ elif selected_tab == "Porównywanie statystyk":
             y=[None],
             mode='markers',
             marker=dict(color=color[team3], size=10),
-            name=f'Ilość zwycięstw drużyny {team3}'
+            name=f'Liczba zwycięstw drużyny {team3}'
         )
     )
     fig4.add_trace(
@@ -1530,7 +1610,7 @@ elif selected_tab == "Porównywanie statystyk":
             y=[None],
             mode='markers',
             marker=dict(color='#cd7f32', size=10),
-            name='Ilość remisów'
+            name='Liczba remisów'
         )
     )
     fig4.add_trace(
@@ -1539,7 +1619,7 @@ elif selected_tab == "Porównywanie statystyk":
             y=[None],
             mode='markers',
             marker=dict(color=color[team4], size=10),
-            name=f'Ilość zwycięstw drużyny {team4}'
+            name=f'Liczba zwycięstw drużyny {team4}'
         )
     )
 
@@ -2413,14 +2493,14 @@ elif selected_tab == "Transfery":
             x=season_transfers.season,
             y=season_transfers['in'],
             mode='lines+markers',
-            hovertemplate=f"Transferowe wydatki klubów: <b>%{{y:.2f}} mln</b>"
+            hovertemplate=f"Transferowe wydatki drużyn: <b>%{{y:.2f}} mln</b>"
             + "<extra></extra>",
             marker=dict(color='red'),
             name='Wydatki'
         ),
         go.Scatter(
             x=season_transfers.season,
-            hovertemplate=f"Transferowe przychody klubów: <b>%{{y:.2f}} mln</b>"
+            hovertemplate=f"Transferowe przychody drużyn: <b>%{{y:.2f}} mln</b>"
             + "<extra></extra>",
             y=season_transfers['out'],
             mode='lines+markers',
@@ -2468,7 +2548,7 @@ elif selected_tab == "Transfery":
         ),
     )
     st.plotly_chart(fig13, use_container_width=True)
-    st.header('Liczba transferów według pozycji w sezonie')
+    st.header('Liczba transferów w sezonie według pozycji zawodników')
     col6, col7 = st.columns(2)
     choose_in_out = col6.selectbox(
         'Wybierz rodzaj transferów :',
@@ -2556,7 +2636,7 @@ elif selected_tab == "Transfery":
         )
         st.plotly_chart(fig17, use_container_width=True)
     st.write('Transfery dotyczą zarówno sprzedaży/kupna gracza jak i wypożyczeń graczy.')
-    st.header('Rekordowe transfery przychodzące/odchodzące względem pozycji')
+    st.header('Rekordowe transfery względem pozycji zawodników')
     fig18 = go.Figure()
     position_mapping = {
         'Lewy skrzydłowy': 'Left Winger',
@@ -2726,7 +2806,7 @@ elif selected_tab == "Transfery":
                 height=530,
                 width=1210,
         )
-        fig19.update_layout(xaxis={'categoryorder': 'total ascending'})
+        fig19.update_layout(xaxis={'categoryorder': 'total descending'})
         st.plotly_chart(fig19, use_container_width=True)
     elif direction == 'Transfery odchodzące':
         fig19.add_traces(
@@ -2735,7 +2815,7 @@ elif selected_tab == "Transfery":
                 y=transfer_directions['out'],
                 text=transfer_directions['out'],
                 textfont=dict(size=14.5, color='white'),
-                hovertemplate="Ilość transferów: <b>%{y}</b>"
+                hovertemplate="Liczba transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
                 hoverlabel=dict(
@@ -2753,7 +2833,7 @@ elif selected_tab == "Transfery":
                     title_font=dict(size=25, color='black')
                 ),
                 yaxis=dict(
-                    title="Ilość transferów",
+                    title="Liczba transferów",
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
@@ -2764,6 +2844,7 @@ elif selected_tab == "Transfery":
                 height=530,
                 width=1210,
         )
-        fig19.update_layout(xaxis={'categoryorder': 'total ascending'})
+        fig19.update_layout(xaxis={'categoryorder': 'total descending'})
         st.plotly_chart(fig19, use_container_width=True)
-    st.write('Naturalnym jest, że w przypadku Premier League liczba pozostaje taka sama.')
+    st.write('Naturalnym jest, że w przypadku Premier League liczba transferów \
+             odchodzących i przychodzących jest taka sama.')

@@ -1,0 +1,11 @@
+FTHG = Full Time Home Team Goals
+FTAG = Full Time Away Team Goals
+HTHG = Half Time Home Team Goals
+HTAG = Half Time Away Team Goals
+SHTAG = Second half time away team goals
+SHTHG = second Half Time Home Team goals
+
+GSTWPP - Gole stracone w pierwszej polowie.
+GSTWDP - gole stracone w drugiej połowie
+GSWPP - gole strzelone w p. połowie
+GSWDP - gole strzelone w drugiej połowie.
