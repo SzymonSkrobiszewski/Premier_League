@@ -1121,10 +1121,10 @@ elif selected_tab == "Premier League":
             elif puchar == 'Carabao cup':
                 fig1.add_trace(
                     go.Bar(
-                        x=cup2.index,
-                        y=cup2['Carabao_cup'],
+                        x=cup1.index,
+                        y=cup1['Carabao_cup'],
                         name='Carabao Cup',
-                        text=cup2['Carabao_cup'],
+                        text=cup1['Carabao_cup'],
                         # x=cup1.index,
                         # y=cup1['count'],
                         # name='Carabao Cup',
