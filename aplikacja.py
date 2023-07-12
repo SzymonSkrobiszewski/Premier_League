@@ -1124,7 +1124,7 @@ elif selected_tab == "Premier League":
                         x=cup2.index,
                         y=cup2['Carabao_cup'],
                         name='Carabao Cup',
-                        text=cup2['Carabao_Cup'],
+                        text=cup2['Carabao_cup'],
                         # x=cup1.index,
                         # y=cup1['count'],
                         # name='Carabao Cup',
