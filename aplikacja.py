@@ -504,7 +504,6 @@ selected_tab = option_menu(
 #     st.markdown(formatted_text1, unsafe_allow_html=True)
 
 if selected_tab == "Strona główna":
-    st.markdown('---')
     st.title("Statystyki Premier League")
     with open('strona_glowna.txt', 'r', encoding='utf-8') as file:
         file_content = file.read().split('\n')
@@ -1054,12 +1053,12 @@ elif selected_tab == "Premier League":
         fig = go.Figure()
         fig.add_trace(
             go.Bar(
-                # x=p_l.zwyciezca,
-                # y=p_l['count'],
-                # text=p_l['count'],
+                # x=p_l.index,
+                # y=p_l['zwyciezca'],
+                # text=p_l['zwyciezca'],
                 x=p_l.index,
-                y=p_l['zwyciezca'],
-                text=p_l['zwyciezca'],
+                y=p_l['count'],
+                text=p_l['count'],
                 textfont=dict(size=15, color='white'),
                 textangle=0,
                 hoverlabel=dict(
@@ -1105,9 +1104,13 @@ elif selected_tab == "Premier League":
                 fig1.add_trace(
                     go.Bar(
                         x=cup2.index,
-                        y=cup2['count'],
+                        y=cup2['Fa_cup'],
                         name='Fa Cup',
-                        text=cup2['count'],
+                        text=cup2['Fa_cup'],
+                        # x=cup2.index,
+                        # y=cup2['count'],
+                        # name='Fa Cup',
+                        # text=cup2['count'],
                         # hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                         hovertemplate='Liczba tytułów FA Cup: <b>%{y}</b>'
                         + '<extra></extra>',
@@ -1118,10 +1121,14 @@ elif selected_tab == "Premier League":
             elif puchar == 'Carabao cup':
                 fig1.add_trace(
                     go.Bar(
-                        x=cup1.index,
-                        y=cup1['count'],
+                        x=cup2.index,
+                        y=cup2['Carabao_cup'],
                         name='Carabao Cup',
-                        text=cup1['count'],
+                        text=cup2['Carabao_Cup'],
+                        # x=cup1.index,
+                        # y=cup1['count'],
+                        # name='Carabao Cup',
+                        # text=cup1['count'],
                         # hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='green'),
                         hovertemplate='Liczba tytułów Carabao Cup: <b>%{y}</b>'
                         + '<extra></extra>',
