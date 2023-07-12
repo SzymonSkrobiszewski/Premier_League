@@ -1265,7 +1265,9 @@ elif selected_tab == "Premier League":
         fig10.add_traces(
             go.Bar(
                 y=team_and_number_of_seasons.index,
-                x=team_and_number_of_seasons['count'],
+                x=team_and_number_of_seasons['Liczba sezonów'],
+                # y=team_and_number_of_seasons.index,
+                # x=team_and_number_of_seasons['count'],
                 orientation='h',
                 marker=dict(color='purple'),
                 textfont=dict(size=16, color='white'),
