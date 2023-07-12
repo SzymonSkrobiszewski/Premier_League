@@ -1054,7 +1054,7 @@ elif selected_tab == "Premier League":
         fig = go.Figure()
         fig.add_trace(
             go.Bar(
-                x=p_l.index,
+                x=p_l.zwyciezca,
                 y=p_l['count'],
                 text=p_l['count'],
                 textfont=dict(size=15, color='white'),
