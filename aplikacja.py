@@ -2789,7 +2789,7 @@ elif selected_tab == "Transfery":
                 y=transfer_directions['in'],
                 text=transfer_directions['in'],
                 textfont=dict(size=15, color='white'),
-                hovertemplate="Ilość transferów: <b>%{y}</b>"
+                hovertemplate="Liczba transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
                 hoverlabel=dict(
@@ -2807,7 +2807,7 @@ elif selected_tab == "Transfery":
                     title_font=dict(size=25, color='black')
                 ),
                 yaxis=dict(
-                    title="Ilość transferów",
+                    title="Liczba transferów",
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
