@@ -506,7 +506,7 @@ selected_tab = option_menu(
 #     st.markdown(formatted_text1, unsafe_allow_html=True)
 
 if selected_tab == "Strona główna":
-    st.markdown('--')
+    st.markdown('---')
     st.title("Statystyki Premier League")
     with open('strona_glowna.txt', 'r', encoding='utf-8') as file:
         file_content = file.read().split('\n')
