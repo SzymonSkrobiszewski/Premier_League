@@ -680,14 +680,13 @@ elif selected_tab == "Premier League":
                  znaczenie dla rozwoju i reputacji drużyn oraz lig.\
                  Dla zainteresowanych umieszczam \
                 [link](https://www.uefa.com/nationalassociations/uefarankings/country/about/)\
-                do oficjalnej strony UEFA.'
-        )
+                do oficjalnej strony UEFA.')
         st.header(
             'Zwycięstwa drużyn z Premier League w pucharach europejskich'
         )
-        zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea']
+        zwyciezcy_lm = ['Liverpool', 'Manchester United', 'Chelsea', 'Manchester City']
         zwyciezcy_le = ['Chelsea', 'Manchester United', 'Liverpool']
-        liczebnosci_lm = [2, 2, 2]
+        liczebnosci_lm = [2, 2, 2, 1]
         liczebnosci_le = [2, 1, 1]
         fig9 = go.Figure()
         fig9.add_trace(go.Bar(
@@ -848,7 +847,7 @@ elif selected_tab == "Premier League":
         elif tournament == 'Liga Europy':
             fig6.add_trace(
                 go.Bar(
-                    #orientation='h',
+                    # orientation='h',
                     x=list(wystepy_ul.keys()),
                     y=list(wystepy_ul.values()),
                     text=list(wystepy_ul.values()),
