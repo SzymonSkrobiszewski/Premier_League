@@ -430,7 +430,7 @@ def return_most_valuable_transfers_for_position(category, position, df):
 streamlit_style = """
 <style>
 body {
-    font-size: 25px;
+    font-size: 20px;
 }
 </style>
 """
