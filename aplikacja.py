@@ -506,6 +506,7 @@ selected_tab = option_menu(
 #     st.markdown(formatted_text1, unsafe_allow_html=True)
 
 if selected_tab == "Strona główna":
+    st.markdown('--')
     st.title("Statystyki Premier League")
     with open('strona_glowna.txt', 'r', encoding='utf-8') as file:
         file_content = file.read().split('\n')
@@ -2739,7 +2740,6 @@ elif selected_tab == "Transfery":
                     font=dict(size=14, color='white'),
                     bgcolor='blue'
                 ),
-                #name='Liga Mistrzów',
                 marker_color='blue'
             )
         )
@@ -2784,7 +2784,7 @@ elif selected_tab == "Transfery":
             )
         )
         fig17.update_layout(
-            margin=dict(l=50, r=50, t=15, b=50),
+            margin=dict(l=50, r=0, t=15, b=50),
             yaxis=dict(
                 title='Nazwa pozycji',
                 title_font=dict(size=25, color='black'),
