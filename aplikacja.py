@@ -2138,7 +2138,7 @@ elif selected_tab == "Drużyny":
                 width=1200
             )
             st.plotly_chart(fig7, use_container_width=True)
-    st.header('Porównanie zdobytych punktów u siebie i na wyjeździe')
+    st.header('Porównanie punktów zdobytych u siebie i na wyjeździe')
     comparison_type2 = st.radio(
         "Co chcesz porównać?",
         ("Drużyny", "Drużynę i sezon/y"), key='ct2'
@@ -2146,51 +2146,81 @@ elif selected_tab == "Drużyny":
     if comparison_type2 == 'Drużyny':
         fig8 = go.Figure()
         col1, col2 = st.columns(2)
-        team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
-        team2 = col2.selectbox(
-            'Wybierz drugą drużynę :',
-            return_opponents(df, team1),
-            key='punktowanie'
+        season0 = col1.selectbox(
+            'Wybierz sezon :',
+            get_seasons(df)[::-1],
+            key='porównanie_pkt'
         )
-        season1 = st.selectbox(
-            'Wybierz sezon/y: ',
-            find_common_seasons(team1, team2, df)
+        teams2 = col2.multiselect(
+            "Wybierz drużyny :",
+            return_teams_for_season(season0, df),
+            default=['Chelsea', 'Arsenal']
         )
-        data_for_graph = calculate_home_away_points(df, season1, team1)
-        data_for_graph1 = calculate_home_away_points(df, season1, team2)
-        color1 = choose_color_for_teams(team1, team2)
-        fig8.add_trace(
-            go.Bar(
-                x=list(data_for_graph.keys()),
-                y=list(data_for_graph.values()),
-                text=list(data_for_graph.values()),
-                textfont=dict(size=18, color='white'),
-                hovertemplate=[
-                    f'Punkty domowe drużyny {team1}: <b>%{{y}}</b>'
-                    + '<extra></extra>',
-                    f'Punkty wyjazdowe drużyny {team1} : <b>%{{y}}</b>'
-                    + '<extra></extra>'
-                ],
-                marker=dict(color=color1[team1]),
-                name=team1,
+        for i, team in enumerate(teams2):
+            data_for_graph = calculate_home_away_points(df, season0, team)
+            fig8.add_trace(
+                go.Bar(
+                    x=list(data_for_graph.keys()),
+                    y=list(data_for_graph.values()),
+                    text=list(data_for_graph.values()),
+                    textfont=dict(size=18, color='black'),
+                    hovertemplate=[
+                        f'Punkty domowe drużyny {team}: <b>%{{y}}</b>'
+                        + '<extra></extra>',
+                        f'Punkty wyjazdowe drużyny {team} : <b>%{{y}}</b>'
+                        + '<extra></extra>'
+                    ],
+                    name=team,
+                )
             )
-        )
-        fig8.add_trace(
-            go.Bar(
-                x=list(data_for_graph1.keys()),
-                y=list(data_for_graph1.values()),
-                text=list(data_for_graph1.values()),
-                textfont=dict(size=18, color='white'),
-                hovertemplate=[
-                    f'Punkty domowe drużyny {team2}: <b>%{{y}}</b>'
-                    + '<extra></extra>',
-                    f'Punkty wyjazdowe drużyny {team2}: <b>%{{y}}'
-                    + '</b><extra></extra>'
-                ],
-                name=team2,
-                marker=dict(color=color1[team2]),
-            )
-        )
+    # if comparison_type2 == 'Drużyny':
+    #     fig8 = go.Figure()
+    #     col1, col2 = st.columns(2)
+    #     team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
+    #     team2 = col2.selectbox(
+    #         'Wybierz drugą drużynę :',
+    #         return_opponents(df, team1),
+    #         key='punktowanie'
+    #     )
+    #     season1 = st.selectbox(
+    #         'Wybierz sezon: ',
+    #         find_common_seasons(team1, team2, df)
+    #     )
+    #     data_for_graph = calculate_home_away_points(df, season1, team1)
+    #     data_for_graph1 = calculate_home_away_points(df, season1, team2)
+    #     color1 = choose_color_for_teams(team1, team2)
+    #     fig8.add_trace(
+    #         go.Bar(
+    #             x=list(data_for_graph.keys()),
+    #             y=list(data_for_graph.values()),
+    #             text=list(data_for_graph.values()),
+    #             textfont=dict(size=18, color='white'),
+    #             hovertemplate=[
+    #                 f'Punkty domowe drużyny {team1}: <b>%{{y}}</b>'
+    #                 + '<extra></extra>',
+    #                 f'Punkty wyjazdowe drużyny {team1} : <b>%{{y}}</b>'
+    #                 + '<extra></extra>'
+    #             ],
+    #             marker=dict(color=color1[team1]),
+    #             name=team1,
+    #         )
+    #     )
+    #     fig8.add_trace(
+    #         go.Bar(
+    #             x=list(data_for_graph1.keys()),
+    #             y=list(data_for_graph1.values()),
+    #             text=list(data_for_graph1.values()),
+    #             textfont=dict(size=18, color='white'),
+    #             hovertemplate=[
+    #                 f'Punkty domowe drużyny {team2}: <b>%{{y}}</b>'
+    #                 + '<extra></extra>',
+    #                 f'Punkty wyjazdowe drużyny {team2}: <b>%{{y}}'
+    #                 + '</b><extra></extra>'
+    #             ],
+    #             name=team2,
+    #             marker=dict(color=color1[team2]),
+    #         )
+    #     )
         fig8.update_layout(
                 barmode='group',
                 hovermode='x unified',
