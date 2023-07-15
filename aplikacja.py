@@ -930,7 +930,7 @@ elif selected_tab == "Premier League":
                             mode='lines+markers',
                             marker=dict(color='red'),
                             name='cudzoziemcy',
-                            hovertemplate="Cudzoziemcy: <b>%{y}</b>"
+                            hovertemplate="cudzoziemcy: <b>%{y}</b>"
                             + "<extra></extra>"
                         )
                 )
@@ -942,7 +942,7 @@ elif selected_tab == "Premier League":
                             mode='lines+markers',
                             marker=dict(color='orange'),
                             name='wszyscy',
-                            hovertemplate="Liczba zawodników: <b>%{y}</b>"
+                            hovertemplate="wszyscy: <b>%{y}</b>"
                             + "<extra></extra>"
                         )
                 )
