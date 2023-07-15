@@ -52,6 +52,10 @@ def load_data():
         engine='openpyxl',
         index_col=False
     )
+    seasonal_league_financial = pd.read_excel(
+        io='transfer_expenditures.xlsx',
+        engine='openpyxl'
+    )
     transfers = pd.read_excel(
         io='Premier_league_transfers.xlsx',
         engine='openpyxl'
@@ -72,7 +76,8 @@ def load_data():
         transfers,
         stats,
         players,
-        transfers_direction
+        transfers_direction,
+        seasonal_league_financial
     )
 
 
@@ -90,7 +95,8 @@ def load_data():
     transfers,
     clubstats,
     players,
-    transfer_directions
+    transfer_directions,
+    seasonal_league_financial
 ) = load_data()
 
 color_dictionary = {
@@ -471,7 +477,7 @@ st.markdown(
 
 selected_tab = option_menu(
     None,
-    ["Strona główna", "Premier League", "Porównywanie statystyk", "Transfery"],
+    ["Strona główna", "Premier League", "Drużyny", "Transfery"],
     icons=["house-fill", "bar-chart-fill", "bar-chart-fill", "cash-stack"],
     menu_icon="cast",
     default_index=0,
@@ -1314,7 +1320,7 @@ elif selected_tab == "Premier League":
         )
 
 
-elif selected_tab == "Porównywanie statystyk":
+elif selected_tab == "Drużyny":
     st.markdown('---')
     st.header('Ewolucja liczby punktów w sezonie')
     comparison_type = st.radio(
@@ -2621,44 +2627,44 @@ elif selected_tab == "Porównywanie statystyk":
     st.plotly_chart(fig15, use_container_width=True)
 elif selected_tab == "Transfery":
     st.markdown('---')
-    transfers['season'] = transfers['season'].apply(
-        lambda x: '/'.join(map(lambda y: y[2:], x.split('/')))
-    )
-    season_mapping = {}
-    transfers['fee_cleaned'] = pd.to_numeric(
-        transfers['fee_cleaned'],
-        errors='coerce'
-    )
-    season_transfers = transfers.groupby('season')['fee_cleaned'].sum()
-    season_transfers = transfers.groupby(["season", "transfer_movement"])[
-        "fee_cleaned"
-    ].sum()
-    season_transfers = season_transfers.unstack().fillna(0)
+    # transfers['season'] = transfers['season'].apply(
+    #     lambda x: '/'.join(map(lambda y: y[2:], x.split('/')))
+    # )
+    # season_mapping = {}
+    # transfers['fee_cleaned'] = pd.to_numeric(
+    #     transfers['fee_cleaned'],
+    #     errors='coerce'
+    # )
+    # season_transfers = transfers.groupby('season')['fee_cleaned'].sum()
+    # season_transfers = transfers.groupby(["season", "transfer_movement"])[
+    #     "fee_cleaned"
+    # ].sum()
+    # season_transfers = season_transfers.unstack().fillna(0)
     # for season in season_transfers.index:
     #     year_parts = season.split('/')
     #     season_short = year_parts[0][-2:] + '/' + year_parts[1][-2:]
     #     season_mapping[season] = season_short
-    season_transfers.reset_index(inplace=True)
-    sorted_seasons = [
-        '92/93', '93/94', '94/95', '95/96', '96/97',
-        '97/98', '98/99', '99/00', '00/01', '01/02',
-        '02/03', '03/04', '04/05', '05/06', '06/07',
-        '07/08', '08/09', '09/10', '10/11', '11/12',
-        '12/13', '13/14', '14/15', '15/16', '16/17',
-        '17/18', '18/19', '19/20', '20/21', '21/22',
-        '22/23'
-    ]
-    season_transfers['temp_sort'] = season_transfers['season'].map(
-        dict(zip(sorted_seasons, range(len(sorted_seasons))))
-    )
-    season_transfers = season_transfers.sort_values(by='temp_sort')
-    season_transfers.drop('temp_sort', axis=1, inplace=True)
+    # season_transfers.reset_index(inplace=True)
+    # sorted_seasons = [
+    #     '92/93', '93/94', '94/95', '95/96', '96/97',
+    #     '97/98', '98/99', '99/00', '00/01', '01/02',
+    #     '02/03', '03/04', '04/05', '05/06', '06/07',
+    #     '07/08', '08/09', '09/10', '10/11', '11/12',
+    #     '12/13', '13/14', '14/15', '15/16', '16/17',
+    #     '17/18', '18/19', '19/20', '20/21', '21/22',
+    #     '22/23'
+    # ]
+    # season_transfers['temp_sort'] = season_transfers['season'].map(
+    #     dict(zip(sorted_seasons, range(len(sorted_seasons))))
+    # )
+    # season_transfers = season_transfers.sort_values(by='temp_sort')
+    # season_transfers.drop('temp_sort', axis=1, inplace=True)
     # season_transfers['season'] = season_transfers['season'].map(season_mapping)
-    st.header('Trend wydatków i przychodów transferowych')
+    st.header('Wydatki i przychody transferowe Premier League')
     fig13 = go.Figure(data=[
         go.Scatter(
-            x=season_transfers.season,
-            y=season_transfers['in'],
+            x=seasonal_league_financial.season,
+            y=seasonal_league_financial['in'],
             mode='lines+markers',
             hovertemplate=f"Transferowe wydatki drużyn: <b>%{{y:.2f}} mln</b>"
             + "<extra></extra>",
@@ -2666,10 +2672,10 @@ elif selected_tab == "Transfery":
             name='Wydatki'
         ),
         go.Scatter(
-            x=season_transfers.season,
+            x=seasonal_league_financial.season,
             hovertemplate=f"Transferowe przychody drużyn: <b>%{{y:.2f}} mln</b>"
             + "<extra></extra>",
-            y=season_transfers['out'],
+            y=seasonal_league_financial['out'],
             mode='lines+markers',
             marker=dict(color='green'),
             name='Przychody'
