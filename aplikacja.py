@@ -2767,8 +2767,8 @@ elif selected_tab == "Transfery":
                 y=positions_and_numbers.position,
                 x=positions_and_numbers['count'],
                 text=positions_and_numbers['count'].astype(str),
-                textposition='inside',
-                textfont=dict(size=13, color='white'),
+                textposition='outside',
+                textfont=dict(size=15, color='black'),
                 hovertemplate="Liczba trasnferów: <b>%{x}</b>"
                 + "<extra></extra>",
                 hoverlabel=dict(
@@ -2790,8 +2790,9 @@ elif selected_tab == "Transfery":
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=15, color='black'),
                 showgrid=True,
-                gridwidth=1,
-                gridcolor='gray',
+                gridwidth=0.5,
+                gridcolor='rgba(211, 211, 211, 1)',
+                #gridcolor='gray',
                 zeroline=False,
                 zerolinewidth=0
             ),
