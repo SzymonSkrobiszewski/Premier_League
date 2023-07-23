@@ -1100,7 +1100,7 @@ elif selected_tab == "Premier League":
         )
         st.plotly_chart(fig, use_container_width=True)
 
-        st.header('Zdobte puchary krajowe')
+        st.header('Zdobyte puchary krajowe')
         puchary = st.multiselect(
             'Wybierz puchar :', ['Fa cup', 'Carabao cup'],
             default=['Fa cup']
@@ -1505,7 +1505,7 @@ elif selected_tab == "Drużyny":
         seasons = find_common_seasons(club, club, df)
         selected_seasons1 = c2.multiselect(
             "Wybierz sezon/y :", seasons[::-1],
-            default=seasons[-1]
+            default=seasons[-2:]
         )
         fig3, max_value1 = go.Figure(), []
         for season2 in selected_seasons1:
@@ -2016,7 +2016,6 @@ elif selected_tab == "Drużyny":
             seasons1,
             #[season4 for season4 in seasons1 if season4 not in excluded_seasons1][::-1],
             default=seasons1[:2],
-            max_selections=5,
         )
         scored_or_conceded = st.selectbox(
             "Wybierz statystykę : ",
@@ -2270,7 +2269,6 @@ elif selected_tab == "Drużyny":
         selected_seasons = col2.multiselect(
             'Wybierz sezon/y :', seasons[::-1],
             default=seasons[-2:][::-1],
-            max_selections=5
         )
         for i, season in enumerate(selected_seasons):
             data_for_graph = calculate_home_away_points(df, season, team1)
@@ -2768,7 +2766,6 @@ elif selected_tab == "Drużyny":
             find_common_seasons(team13, team13, df3)[::-1],
             key='shootteam',
             default=find_common_seasons(team13, team13, df3)[-2:][::-1],
-            max_selections=5
         )
         fig14 = go.Figure()
         for i, season in enumerate(seasons13):
