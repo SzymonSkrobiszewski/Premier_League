@@ -1504,8 +1504,8 @@ elif selected_tab == "Drużyny":
         club = c1.selectbox("Wybierz Drużynę :", unique_teams)
         seasons = find_common_seasons(club, club, df)
         selected_seasons1 = c2.multiselect(
-            "Wybierz sezon/y :", seasons,
-            default=seasons[0]
+            "Wybierz sezon/y :", seasons[::-1],
+            default=seasons[-1]
         )
         fig3, max_value1 = go.Figure(), []
         for season2 in selected_seasons1:
@@ -1688,7 +1688,7 @@ elif selected_tab == "Drużyny":
         teams6 = st.multiselect(
             "Wybierz drużyny :",
             return_teams_for_season(season3, df),
-            default=['Manchester United', 'Arsenal']
+            default=['Chelsea', 'Arsenal']
         )
         fig7 = go.Figure()
         conceded_and_scored_goals = pd.DataFrame()
@@ -2009,12 +2009,13 @@ elif selected_tab == "Drużyny":
             sorted(unique_home_teams),
             key='t'
         )
-        seasons1 = find_common_seasons(club3, club3, df)
-        excluded_seasons1 = ['92/93', '93/94', '94/95']
+        seasons1 = find_common_seasons(club3, club3, filtered_df)[::-1]
+        #excluded_seasons1 = ['92/93', '93/94', '94/95']
         season3 = column7.multiselect(
             "Wybierz sezon/y :",
-            [season4 for season4 in seasons1 if season4 not in excluded_seasons1],
-            default=seasons1[-2:],
+            seasons1,
+            #[season4 for season4 in seasons1 if season4 not in excluded_seasons1][::-1],
+            default=seasons1[:2],
             max_selections=5,
         )
         scored_or_conceded = st.selectbox(
@@ -2154,7 +2155,8 @@ elif selected_tab == "Drużyny":
         teams2 = col2.multiselect(
             "Wybierz drużyny :",
             return_teams_for_season(season0, df),
-            default=['Chelsea', 'Arsenal']
+            default=['Chelsea', 'Arsenal'],
+            key='porownanie_pkt1'
         )
         for i, team in enumerate(teams2):
             data_for_graph = calculate_home_away_points(df, season0, team)
@@ -2266,8 +2268,8 @@ elif selected_tab == "Drużyny":
         team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
         seasons = find_common_seasons(team1, team1, df)
         selected_seasons = col2.multiselect(
-            'Wybierz sezon/y :', seasons,
-            default=seasons[:2],
+            'Wybierz sezon/y :', seasons[::-1],
+            default=seasons[-2:][::-1],
             max_selections=5
         )
         for i, season in enumerate(selected_seasons):
@@ -2336,97 +2338,258 @@ elif selected_tab == "Drużyny":
         '18/19', '19/20', '20/21', '21/22', '22/23'
     ]
     df2 = df[df['Season'].isin(seasons_x)]
-    team1 = c1.selectbox(
-        'Wybierz pierwszą drużynę :',
-        sorted(df2['HomeTeam'].unique().tolist()),
-        key='faule'
+    comparison_type5 = st.radio(
+        "Co chcesz porównać?",
+        ("Drużyny", "Drużynę i sezon/y"),
+        key='kartki'
     )
-    team2 = c2.selectbox(
-        'Wybierz drugą drużynę :', return_opponents(df2, team1),
-        key='faule1'
-    )
-    season = st.selectbox(
-        'Wybierz sezon :', find_common_seasons(team1, team2, df2),
-        key='faule2'
-    )
-    fauls1 = calculate_fauls_yellow_and_red_cards(season, team1, df)
-    fauls2 = calculate_fauls_yellow_and_red_cards(season, team2, df)
-    with open('legenda.txt', 'r', encoding='utf-8') as file:
-        file_content = file.read()
-    st.markdown(file_content, unsafe_allow_html=True)
-    k1, k2 = st.columns(2)
-    labels1, values1 = zip(*fauls1.items())
-    labels2, values2 = zip(*fauls2.items())
-    with k1:
-        fig11 = go.Figure(
-            go.Pie(
-                labels=labels1,
-                sort=False,
-                values=values1,
-                textinfo="value+percent",
-                marker=dict(colors=["black", "red", "yellow"]),
-                direction="clockwise",
-                hovertemplate="<b>%{label}</b><extra></extra>",
-                hoverlabel=dict(font=dict(size=15, color="black")),
-            )
+    fig11 = go.Figure()
+    if comparison_type5 == "Drużyny":
+        col0, col3 = st.columns(2)
+        season12 = col0.selectbox(
+            "Wybierz sezon :",
+            seasons_x[::-1]
         )
+        teams3 = col3.multiselect(
+            "Wybierz drużyny :",
+            return_teams_for_season(season12, df2),
+            default=['Arsenal', 'Chelsea'],
+            key='Kartki, faule'
+        )
+        for team in teams3:
+            fauls = calculate_fauls_yellow_and_red_cards(
+                season12,
+                team,
+                df
+            )
+            fig11.add_traces(
+                go.Bar(
+                    x=list(fauls.keys()),
+                    y=list(fauls.values()),
+                    text=list(fauls.values()),
+                    textfont=dict(size=18, color='black'),
+                    hovertemplate=[
+                        f'Faule bez kartki drużyny {team}: <b>%{{y}}</b>'
+                        + '<extra></extra>',
+                        f'Czerwone kartki drużyny {team} : <b>%{{y}}</b>'
+                        + '<extra></extra>',
+                        f'Żółte kartki drużyny {team} : <b>%{{y}}</b>'
+                        + '<extra></extra>'
+                    ],
+                    name=team,
+                )
+            )
         fig11.update_layout(
-            plot_bgcolor='white',
-            title=dict(
-                text=f'Drużyna - {team1}',
-                font=dict(size=22),
-                xanchor='left',
-                yanchor='top',
+            barmode='group',
+            hovermode='x unified',
+            showlegend=True,
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
             ),
-            font=dict(size=18, color='Black'),
-            separators=',',
-            margin=dict(t=80, b=0, l=20, r=0),
-            showlegend=False
+            margin=dict(l=50, r=50, t=50, b=50),
+            xaxis=dict(
+                title='Rodzaj',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black')
+            ),
+            yaxis=dict(
+                title='Liczba',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zeroline=False,
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                title=dict(
+                    text="Drużyna",
+                    font=dict(size=25, color='black')
+                ),
+                font=dict(size=17),
+                y=1.02,
+                x=1.02
+            ),
         )
         st.plotly_chart(fig11, use_container_width=True)
-    with k2:
-        fig11 = go.Figure(
-            go.Pie(
-                labels=labels2,
-                sort=False,
-                values=values2,
-                textinfo="value+percent",
-                marker=dict(colors=["black", "red", "yellow"]),
-                direction="clockwise",
-                hovertemplate="<b>%{label}</b><extra></extra>",
-                hoverlabel=dict(font=dict(size=17, color="black")),
-            )
+    else:
+        col0, col3 = st.columns(2)
+        team12 = col0.selectbox(
+            "Wybierz drużynę :",
+            sorted(df2['HomeTeam'].unique())
         )
+        seasons2 = col3.multiselect(
+            "Wybierz sezony :",
+            find_common_seasons(team12, team12, df2)[::-1],
+            default=find_common_seasons(team12, team12, df2)[-2:][::-1]
+        )
+        for season in seasons2:
+            fauls = calculate_fauls_yellow_and_red_cards(
+                season,
+                team12,
+                df
+            )
+            fig11.add_traces(
+                go.Bar(
+                    x=list(fauls.keys()),
+                    y=list(fauls.values()),
+                    text=list(fauls.values()),
+                    textfont=dict(size=18, color='black'),
+                    hovertemplate=[
+                        f'Faule bez kartki w sezonie {season}: <b>%{{y}}</b>'
+                        + '<extra></extra>',
+                        f'Czerwone kartki w sezonie {season} : <b>%{{y}}</b>'
+                        + '<extra></extra>',
+                        f'Żółte kartki w sezonie {season} : <b>%{{y}}</b>'
+                        + '<extra></extra>'
+                    ],
+                    name=season,
+                )
+            )
         fig11.update_layout(
-            plot_bgcolor='white',
-            title=dict(
-                text=f'Drużyna - {team2}',
-                font=dict(size=22),
-                xanchor='left',
-                yanchor='top',
+            barmode='group',
+            hovermode='x unified',
+            showlegend=True,
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
             ),
-            font=dict(size=18, color='Black'),
-            separators=',',
-            margin=dict(t=80, b=0, l=20, r=0),
-            showlegend=False
+            margin=dict(l=50, r=50, t=50, b=50),
+            xaxis=dict(
+                title='Rodzaj',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black')
+            ),
+            yaxis=dict(
+                title='Liczba',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='gray',
+                zeroline=False,
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                title=dict(
+                    text="Sezon",
+                    font=dict(size=25, color='black')
+                ),
+                font=dict(size=17),
+                y=1.02,
+                x=1.02
+            ),
         )
         st.plotly_chart(fig11, use_container_width=True)
-    st.markdown('''
-        Powyższy wykres przedstawia sumy rozłączne. Oznacza to, \
-        że jeśli zawodnik otrzyma drugą żółtą kartkę,\
-        co skutkuje czerwoną kartką, wartość jest dodawana \
-        tylko do **"czerwonych kartek"**.
-        Przykładowo jeśli drużyna A dostała dwie żółte kartki, \
-        po czym jeden z wcześniej ukaranych zawodników wylatuje z boiska,\
-        to bilans kartek w meczu wynosi odpowiednio dwie żółte i \
-        jedną czerwoną kartkę.
-    ''')
+    st.write('Kartki w piłce nożnej nie zawsze są \
+             wynikiem fauli, mogą zostać pokazane \
+             również za zachowania nie fair play.\
+             Do tego trzeba zwrócić uwagę, że jeśli zawodnik otrzyma\
+             drugą zółtą kartkę a co za tym idzie czerwoną, wartość\
+             jest dodawana **tylko** do czerwonych kartek.\
+            Przykładowo jeśli drużyna A dostała dwie żółte kartki, \
+            po czym jeden z wcześniej ukaranych zawodników wylatuje z boiska,\
+            to bilans kartek w meczu wynosi odpowiednio dwie żółte i \
+            jedną czerwoną kartkę.')
+    # team1 = c1.selectbox(
+    #     'Wybierz pierwszą drużynę :',
+    #     sorted(df2['HomeTeam'].unique().tolist()),
+    #     key='faule'
+    # )
+    # team2 = c2.selectbox(
+    #     'Wybierz drugą drużynę :', return_opponents(df2, team1),
+    #     key='faule1'
+    # )
+    # season = st.selectbox(
+    #     'Wybierz sezon :', find_common_seasons(team1, team2, df2),
+    #     key='faule2'
+    # )
+    # fauls1 = calculate_fauls_yellow_and_red_cards(season, team1, df)
+    # fauls2 = calculate_fauls_yellow_and_red_cards(season, team2, df)
+    # with open('legenda.txt', 'r', encoding='utf-8') as file:
+    #     file_content = file.read()
+    # st.markdown(file_content, unsafe_allow_html=True)
+    # k1, k2 = st.columns(2)
+    # labels1, values1 = zip(*fauls1.items())
+    # labels2, values2 = zip(*fauls2.items())
+    # with k1:
+    #     fig11 = go.Figure(
+    #         go.Pie(
+    #             labels=labels1,
+    #             sort=False,
+    #             values=values1,
+    #             textinfo="value+percent",
+    #             marker=dict(colors=["black", "red", "yellow"]),
+    #             direction="clockwise",
+    #             hovertemplate="<b>%{label}</b><extra></extra>",
+    #             hoverlabel=dict(font=dict(size=15, color="black")),
+    #         )
+    #     )
+    #     fig11.update_layout(
+    #         plot_bgcolor='white',
+    #         title=dict(
+    #             text=f'Drużyna - {team1}',
+    #             font=dict(size=22),
+    #             xanchor='left',
+    #             yanchor='top',
+    #         ),
+    #         font=dict(size=18, color='Black'),
+    #         separators=',',
+    #         margin=dict(t=80, b=0, l=20, r=0),
+    #         showlegend=False
+    #     )
+    #     st.plotly_chart(fig11, use_container_width=True)
+    # with k2:
+    #     fig11 = go.Figure(
+    #         go.Pie(
+    #             labels=labels2,
+    #             sort=False,
+    #             values=values2,
+    #             textinfo="value+percent",
+    #             marker=dict(colors=["black", "red", "yellow"]),
+    #             direction="clockwise",
+    #             hovertemplate="<b>%{label}</b><extra></extra>",
+    #             hoverlabel=dict(font=dict(size=17, color="black")),
+    #         )
+    #     )
+    #     fig11.update_layout(
+    #         plot_bgcolor='white',
+    #         title=dict(
+    #             text=f'Drużyna - {team2}',
+    #             font=dict(size=22),
+    #             xanchor='left',
+    #             yanchor='top',
+    #         ),
+    #         font=dict(size=18, color='Black'),
+    #         separators=',',
+    #         margin=dict(t=80, b=0, l=20, r=0),
+    #         showlegend=False
+    #     )
+    #     st.plotly_chart(fig11, use_container_width=True)
+    # st.markdown('''
+    #     Powyższy wykres przedstawia sumy rozłączne. Oznacza to, \
+    #     że jeśli zawodnik otrzyma drugą żółtą kartkę,\
+    #     co skutkuje czerwoną kartką, wartość jest dodawana \
+    #     tylko do **"czerwonych kartek"**.
+    #     Przykładowo jeśli drużyna A dostała dwie żółte kartki, \
+    #     po czym jeden z wcześniej ukaranych zawodników wylatuje z boiska,\
+    #     to bilans kartek w meczu wynosi odpowiednio dwie żółte i \
+    #     jedną czerwoną kartkę.
+    # ''')
     st.header('Porównanie efektywności strzałów')
     seasons_y = [
         '06/07', '07/08', '08/09', '09/10', '10/11', '11/12',
         '12/13', '13/14', '14/15', '15/16', '16/17', '17/18',
         '18/19', '19/20', '20/21', '21/22', '22/23'
-    ]
+    ][::-1]
     df3 = df[df['Season'].isin(seasons_y)]
     comparison_type3 = st.radio(
         "Co chcesz porównać?",
@@ -2434,58 +2597,35 @@ elif selected_tab == "Drużyny":
         key='shoot4'
     )
     if comparison_type3 == 'Drużyny':
-        col8, col9 = st.columns(2)
-        team10 = col8.selectbox(
-            'Wybierz pierwszą drużynę :',
-            sorted(df3['HomeTeam'].unique().tolist()),
-            key='shoot'
-        )
-        team11 = col9.selectbox(
-            'Wybierz drugą drużynę :',
-            return_opponents(df3, team10),
-            key='shoot1'
-        )
-        season10 = st.selectbox(
-            'Wybierz sezon :',
-            find_common_seasons(team10, team11, df3),
-            key='shoot2'
-        )
         fig14 = go.Figure()
-        shoot1 = calculate_shots_stats(season10, team10, clubstats)
-        shoot2 = calculate_shots_stats(season10, team11, clubstats)
-        color10 = choose_color_for_teams(team10, team11)
-        fig14.add_trace(
+        col8, col9 = st.columns(2)
+        season10 = col8.selectbox(
+            "Wybierz sezon :",
+            seasons_y
+        )
+        teams7 = col9.multiselect(
+            "Wybierz drużyny :",
+            return_teams_for_season(season10, df),
+            default=['Arsenal', 'Chelsea'],
+            key='efektywność'
+        )
+        for team in teams7:
+            shoot = calculate_shots_stats(season10, team, clubstats)
+            fig14.add_trace(
                 go.Bar(
-                    x=list(shoot1.keys()),
-                    y=list(shoot1.values()),
-                    text=list(shoot1.values()),
+                    x=list(shoot.keys()),
+                    y=list(shoot.values()),
+                    text=list(shoot.values()),
                     textfont=dict(size=18, color='white'),
                     hovertemplate=[
-                        f'Strzały celne drużyny {team10}: <b>%{{y}}</b>'
+                        f'Strzały celne drużyny {team}: <b>%{{y}}</b>'
                         + '<extra></extra>',
-                        f'Strzały niecelne drużyny {team10} : <b>%{{y}}</b>'
+                        f'Strzały niecelne drużyny {team} : <b>%{{y}}</b>'
                         + '<extra></extra>'
                     ],
-                    marker=dict(color=color10[team10]),
-                    name=team10,
+                    name=team,
                 )
-        )
-        fig14.add_trace(
-            go.Bar(
-                x=list(shoot2.keys()),
-                y=list(shoot2.values()),
-                text=list(shoot2.values()),
-                textfont=dict(size=18, color='white'),
-                hovertemplate=[
-                    f'Strzały celne drużyny {team11}: <b>%{{y}}</b>'
-                    + '<extra></extra>',
-                    f'Strzały niecelne drużyny {team11}: <b>%{{y}}'
-                    + '</b><extra></extra>'
-                ],
-                name=team11,
-                marker=dict(color=color10[team11]),
             )
-        )
         fig14.update_layout(
             barmode='group',
             hovermode='x unified',
@@ -2524,6 +2664,97 @@ elif selected_tab == "Drużyny":
             ),
         )
         st.plotly_chart(fig14, use_container_width=True)
+    # if comparison_type3 == 'Drużyny':
+    #     col8, col9 = st.columns(2)
+    #     team10 = col8.selectbox(
+    #         'Wybierz pierwszą drużynę :',
+    #         sorted(df3['HomeTeam'].unique().tolist()),
+    #         key='shoot'
+    #     )
+    #     team11 = col9.selectbox(
+    #         'Wybierz drugą drużynę :',
+    #         return_opponents(df3, team10),
+    #         key='shoot1'
+    #     )
+    #     season10 = st.selectbox(
+    #         'Wybierz sezon :',
+    #         find_common_seasons(team10, team11, df3),
+    #         key='shoot2'
+    #     )
+    #     fig14 = go.Figure()
+    #     shoot1 = calculate_shots_stats(season10, team10, clubstats)
+    #     shoot2 = calculate_shots_stats(season10, team11, clubstats)
+    #     color10 = choose_color_for_teams(team10, team11)
+    #     fig14.add_trace(
+    #             go.Bar(
+    #                 x=list(shoot1.keys()),
+    #                 y=list(shoot1.values()),
+    #                 text=list(shoot1.values()),
+    #                 textfont=dict(size=18, color='white'),
+    #                 hovertemplate=[
+    #                     f'Strzały celne drużyny {team10}: <b>%{{y}}</b>'
+    #                     + '<extra></extra>',
+    #                     f'Strzały niecelne drużyny {team10} : <b>%{{y}}</b>'
+    #                     + '<extra></extra>'
+    #                 ],
+    #                 marker=dict(color=color10[team10]),
+    #                 name=team10,
+    #             )
+    #     )
+    #     fig14.add_trace(
+    #         go.Bar(
+    #             x=list(shoot2.keys()),
+    #             y=list(shoot2.values()),
+    #             text=list(shoot2.values()),
+    #             textfont=dict(size=18, color='white'),
+    #             hovertemplate=[
+    #                 f'Strzały celne drużyny {team11}: <b>%{{y}}</b>'
+    #                 + '<extra></extra>',
+    #                 f'Strzały niecelne drużyny {team11}: <b>%{{y}}'
+    #                 + '</b><extra></extra>'
+    #             ],
+    #             name=team11,
+    #             marker=dict(color=color10[team11]),
+    #         )
+    #     )
+    #     fig14.update_layout(
+    #         barmode='group',
+    #         hovermode='x unified',
+    #         showlegend=True,
+    #         hoverlabel=dict(
+    #             font=dict(
+    #                 size=15,
+    #                 color='black'
+    #             )
+    #         ),
+    #         margin=dict(l=50, r=50, t=50, b=50),
+    #         xaxis=dict(
+    #             title='Rodzaj strzałów',
+    #             title_font=dict(size=25, color='black'),
+    #             tickfont=dict(size=16, color='black')
+    #         ),
+    #         yaxis=dict(
+    #             title='Liczba strzałów',
+    #             title_font=dict(size=25, color='black'),
+    #             tickfont=dict(size=16, color='black'),
+    #             showgrid=True,
+    #             gridwidth=1,
+    #             gridcolor='gray',
+    #             zeroline=False,
+    #         ),
+    #         height=500,
+    #         width=1200,
+    #         legend=dict(
+    #             title=dict(
+    #                 text="Drużyna",
+    #                 font=dict(size=25, color='black')
+    #             ),
+    #             font=dict(size=17),
+    #             y=1.05,
+    #             x=1.02
+    #         ),
+    #     )
+    #     st.plotly_chart(fig14, use_container_width=True)
     else:
         colors20 = ['#FFA500', '#FFC0CB', '#FFFF00', '#00FFFF', '#FF00FF']
         col10, col11 = st.columns(2)
@@ -2534,9 +2765,9 @@ elif selected_tab == "Drużyny":
         )
         seasons13 = col11.multiselect(
             'Wybierz sezony :',
-            find_common_seasons(team13, team13, df3),
+            find_common_seasons(team13, team13, df3)[::-1],
             key='shootteam',
-            default=find_common_seasons(team13, team13, df3)[:2],
+            default=find_common_seasons(team13, team13, df3)[-2:][::-1],
             max_selections=5
         )
         fig14 = go.Figure()
@@ -2596,65 +2827,252 @@ elif selected_tab == "Drużyny":
             ),
         )
         st.plotly_chart(fig14, use_container_width=True)
-    st.header('Rozkład bramek według rodzaju strzałów')
-    col4, col5 = st.columns(2)
-    team5 = col4.selectbox(
-        'Wybierz drużynę :',
-        sorted(set(clubstats['team'])),
-        key='rodzaj1'
+    st.header('Porównanie zdobytych bramek według rodzaju strzału')
+    comparison_type4 = st.radio(
+        "Co chcesz porównać?",
+        ("Drużyny", "Drużynę i sezon/y"),
+        key='rodzaj_bramki'
     )
-    season5 = col5.selectbox(
-        'Wybierz sezon :',
-        find_common_seasons(
-            team5,
-            team5,
-            df[df['Season'].isin(clubstats['season'].unique())]
-        ),
-        key='rodzaj2'
-    )
-    df4 = clubstats.query('team == @team5 and season == @season5')
-    labels = [
-        'Głową',
-        'Z rzutu karnego',
-        'Z rzutu wolnego',
-        'Z pola karnego',
-        'Spoza pola karnego',
-        'Z kontrataku'
-    ]
-    values_row = df4.iloc[:, 9:15].values.tolist()[0]
-    values = list(np.array(values_row).flatten())
-    fig15 = go.Figure(
-        go.Pie(
-            labels=labels,
-            values=values,
-            sort=False,
-            textinfo="value+percent",
-            marker=dict(
-                colors=[
-                    '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'
-                ]
-            ),
-            direction="clockwise",
-            hovertemplate="<b>%{label}</b><extra></extra>",
-            hoverlabel=dict(font=dict(size=15, color="black")),
+    fig15 = go.Figure()
+    if comparison_type4 == "Drużyny":
+        col4, col5 = st.columns(2)
+        season11 = col4.selectbox(
+            "Wybierz sezon :",
+            seasons_y,
+            key='rozkład'
         )
-    )
-    fig15.update_layout(
-        font=dict(size=15, color='black'),
-        margin=dict(t=50, l=200),
-        legend=dict(
-            title=dict(
-                text="Rodzaj strzelonej bramki",
-                font=dict(size=20, color='black')
+        teams8 = col5.multiselect(
+            "Wybierz drużyny :",
+            return_teams_for_season(season11, df),
+            default=['Arsenal', 'Chelsea'],
+            key='rozkład1'
+        )
+        for team in teams8:
+            df4 = clubstats.query('team == @team and season == @season11')
+            labels = [
+                'Głową',
+                'Z rzutu karnego',
+                'Z rzutu wolnego',
+                'Z pola karnego',
+                'Spoza pola karnego',
+                'Z kontrataku'
+            ]
+            values_row = df4.iloc[:, 9:15].values.tolist()[0]
+            values = list(np.array(values_row).flatten())
+            fig15.add_trace(go.Bar(
+                x=labels,
+                y=values,
+                text=values,
+                textposition='outside',
+                textfont=dict(size=18, color='black'),
+                hovertemplate=[
+                    f'Liczba bramek zdobytych głową drużyny {team}: <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte z rzutu karnego drużyny {team} : <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte z rzutu wolnego druzyny {team}: <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte z pola karnego drużyny {team} : <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte spoza pola karnego drużyny {team} : <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte z kontrataku drużyny {team} : <b>%{{y}}</b>'
+                    + '<extra></extra>'
+                ],
+                name=team,
+            ))
+        fig15.update_layout(
+            barmode='group',
+            hovermode='x unified',
+            showlegend=True,
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
             ),
-            font=dict(size=20, color='black'),
-            y=1.01,
-            x=1.02
-        ),
-        height=550,
-        width=1100
-    )
-    st.plotly_chart(fig15, use_container_width=True)
+            margin=dict(l=0, r=25, t=45, b=0),
+            xaxis=dict(
+                title='Rodzaj strzału',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black')
+            ),
+            yaxis=dict(
+                title='Liczba bramek',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showgrid=True,
+                gridwidth=0.5,
+                gridcolor='rgba(211, 211, 211, 1)',
+                # gridwidth=1,
+                # gridcolor='gray',
+                zeroline=False,
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                title=dict(
+                    text="Drużyna",
+                    font=dict(size=25, color='black')
+                ),
+                font=dict(size=17),
+                y=1.05,
+                x=1.02
+                ),
+            )
+        st.plotly_chart(fig15, use_container_width=True)
+    else:
+        col4, col5 = st.columns(2)
+        team7 = col4.selectbox(
+            "Wybierz drużynę :",
+            sorted(df3['HomeTeam'].unique().tolist()),
+            key='Rodzaj_bramki1'
+        )
+        seasons11 = col5.multiselect(
+            "Wybierz sezony :",
+            find_common_seasons(team7, team7, df3)[::-1],
+            default=find_common_seasons(team7, team7, df3)[-2:][::-1],
+            key='rozkład'
+        )
+        for season in seasons11:
+            df4 = clubstats.query('team == @team7 and season == @season')
+            labels = [
+                'Głową',
+                'Z rzutu karnego',
+                'Z rzutu wolnego',
+                'Z pola karnego',
+                'Spoza pola karnego',
+                'Z kontrataku'
+            ]
+            values_row = df4.iloc[:, 9:15].values.tolist()[0]
+            values = list(np.array(values_row).flatten())
+            fig15.add_trace(go.Bar(
+                x=labels,
+                y=values,
+                text=values,
+                textposition='outside',
+                textfont=dict(size=18, color='black'),
+                hovertemplate=[
+                    f'Liczba bramek zdobytych głową w sezonie {season}: <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte z rzutu karnego w sezonie {season} : <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte z rzutu wolnego w sezonie {season}: <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte z pola karnego w sezonie {season} : <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte spoza pola karnego w sezonie {season} : <b>%{{y}}</b>'
+                    + '<extra></extra>',
+                    f'Bramki zdobyte z kontrataku w sezonie {season} : <b>%{{y}}</b>'
+                    + '<extra></extra>'
+                ],
+                name=season,
+            ))
+        fig15.update_layout(
+            barmode='group',
+            hovermode='x unified',
+            showlegend=True,
+            hoverlabel=dict(
+                font=dict(
+                    size=15,
+                    color='black'
+                )
+            ),
+            margin=dict(l=0, r=25, t=45, b=0),
+            xaxis=dict(
+                title='Rodzaj strzału',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black')
+            ),
+            yaxis=dict(
+                title='Liczba bramek',
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=16, color='black'),
+                showgrid=True,
+                gridwidth=0.5,
+                gridcolor='rgba(211, 211, 211, 1)',
+                # gridwidth=1,
+                # gridcolor='gray',
+                zeroline=False,
+            ),
+            height=500,
+            width=1200,
+            legend=dict(
+                title=dict(
+                    text="Sezon",
+                    font=dict(size=25, color='black')
+                ),
+                font=dict(size=17),
+                y=1.05,
+                x=1.02
+            ),
+        )
+        st.plotly_chart(fig15, use_container_width=True)
+    st.write("Należy zwrócić szczególną uwagę na to, \
+             że podane liczby nie sumują się do ogólnej \
+             liczby bramek zdobytych w danym sezonie. Wynika \
+             to z faktu, że niektóre bramki, np. te \
+             zdobyte podczas kontrataków, mogą być uwzględnione \
+             zarówno jako strzały spoza pola karnego, jak i z \
+             pola karnego.")
+    # col4, col5 = st.columns(2)
+    # team5 = col4.selectbox(
+    #     'Wybierz drużynę :',
+    #     sorted(set(clubstats['team'])),
+    #     key='rodzaj1'
+    # )
+    # season5 = col5.selectbox(
+    #     'Wybierz sezon :',
+    #     find_common_seasons(
+    #         team5,
+    #         team5,
+    #         df[df['Season'].isin(clubstats['season'].unique())]
+    #     ),
+    #     key='rodzaj2'
+    # )
+    # df4 = clubstats.query('team == @team5 and season == @season5')
+    # labels = [
+    #     'Głową',
+    #     'Z rzutu karnego',
+    #     'Z rzutu wolnego',
+    #     'Z pola karnego',
+    #     'Spoza pola karnego',
+    #     'Z kontrataku'
+    # ]
+    # values_row = df4.iloc[:, 9:15].values.tolist()[0]
+    # values = list(np.array(values_row).flatten())
+    # fig15 = go.Figure(
+    #     go.Pie(
+    #         labels=labels,
+    #         values=values,
+    #         sort=False,
+    #         textinfo="value+percent",
+    #         marker=dict(
+    #             colors=[
+    #                 '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'
+    #             ]
+    #         ),
+    #         direction="clockwise",
+    #         hovertemplate="<b>%{label}</b><extra></extra>",
+    #         hoverlabel=dict(font=dict(size=15, color="black")),
+    #     )
+    # )
+    # fig15.update_layout(
+    #     font=dict(size=15, color='black'),
+    #     margin=dict(t=50, l=200),
+    #     legend=dict(
+    #         title=dict(
+    #             text="Rodzaj strzelonej bramki",
+    #             font=dict(size=20, color='black')
+    #         ),
+    #         font=dict(size=20, color='black'),
+    #         y=1.01,
+    #         x=1.02
+    #     ),
+    #     height=550,
+    #     width=1100
+    # )
+    # st.plotly_chart(fig15, use_container_width=True)
 elif selected_tab == "Transfery":
     st.markdown('---')
     transfers['season'] = transfers['season'].apply(
@@ -2808,8 +3226,8 @@ elif selected_tab == "Transfery":
                 y=positions_and_numbers.position,
                 x=positions_and_numbers['count'],
                 text=positions_and_numbers['count'].astype(str),
-                textfont=dict(size=12.5, color='white'),
-                textposition='inside',
+                textfont=dict(size=15, color='black'),
+                textposition='outside',
                 hovertemplate="Liczba trasnferów: <b>%{x}</b>"
                 + "<extra></extra>",
                 hoverlabel=dict(
@@ -2831,8 +3249,9 @@ elif selected_tab == "Transfery":
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=15, color='black'),
                 showgrid=True,
-                gridwidth=1,
-                gridcolor='gray',
+                gridwidth=0.5,
+                gridcolor='rgba(211, 211, 211, 1)',
+                #gridcolor='gray',
                 zeroline=False,
                 zerolinewidth=0
             ),
