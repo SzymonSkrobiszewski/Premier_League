@@ -1014,24 +1014,24 @@ elif selected_tab == "Premier League":
             showlegend=True,
             xaxis=dict(
                 tickangle=30,
-                #ticks="outside",
+                ticks="outside",
                 range=[-.5, 30.5],
-                # ticklen=4,
-                # tickcolor='black',
+                ticklen=4,
+                tickcolor='black',
                 title='Sezon',
-                #showline=True,
+                showline=True,
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=12, color='black'),
             ),
             yaxis=dict(
-                #range=[0, upper_limit],
+                range=[0, upper_limit],
                 title='Liczba zawodników',
                 tickfont=dict(size=17, color='black'),
                 title_font=dict(size=25, color='black'),
                 showgrid=True,
                 gridwidth=1,
                 gridcolor='black',
-                zerolinecolor='black'
+                zerolinecolor='white'
             ),
             hoverlabel=dict(
                 font=dict(
@@ -3245,7 +3245,7 @@ elif selected_tab == "Transfery":
                 text=positions_and_numbers['count'].astype(str),
                 #textposition='outside',
                 textfont=dict(size=15, color='white'),
-                hovertemplate="Liczba trasnferów: <b>%{x}</b>"
+                hovertemplate="Liczba trasnferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 hoverlabel=dict(
                     font=dict(size=14, color='white'),
@@ -3285,7 +3285,7 @@ elif selected_tab == "Transfery":
                 text=positions_and_numbers['count'].astype(str),
                 textfont=dict(size=15, color='white'),
                 #textposition='outside',
-                hovertemplate="Liczba trasnferów: <b>%{x}</b>"
+                hovertemplate="Liczba trasnferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 hoverlabel=dict(
                     font=dict(size=14, color='white'),
