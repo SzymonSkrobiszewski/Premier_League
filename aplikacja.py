@@ -264,29 +264,59 @@ def choose_color_for_teams(team1, team2):
                 }
 
 
+# def count_position(category, season, df):
+#     position_mapping = {
+#         'Left Winger': 'Lewy skrzydłowy',
+#         'defence': 'Obrońca',
+#         'Right-Back': 'Prawy obrońca',
+#         'Goalkeeper': 'Bramkarz',
+#         'Centre-Back': 'Środkowy obrońca',
+#         'Right Winger': 'Prawy skrzydłowy',
+#         'Centre-Forward': 'Środkowy napastnik',
+#         'attack': 'Napastnik',
+#         'Defensive Midfield': 'Defensywny pomocnik',
+#         'Left Midfield': 'Lewy pomocnik',
+#         'Attacking Midfield': 'Ofensywny pomocnik',
+#         'Central Midfield': 'Środkowy pomocnik',
+#         'midfield': 'Pomocnik',
+#         'Right Midfield': 'Prawy pomocnik',
+#         'Left-Back': 'Lewy obrońca',
+#         'Second Striker': 'Drugi napastnik'
+#     }
+#     position_counts = df.query("season == @season and transfer_movement == @category")[
+#         "position"
+#     ].value_counts()
+#     position_counts = position_counts.rename(position_mapping)
+#     position_df = position_counts.to_frame().reset_index()
+#     position_df.columns = ['position', 'count']
+#     return position_df
+
+
+def map_to_category(position):
+    goalkeeper_positions = ['Goalkeeper']
+    defense_positions = ['Centre-Back', 'Right-Back', 'Left-Back', 'defence']
+    offense_positions = [
+        'Centre-Forward', 'Left Winger', 'Right Winger', 'Second Striker', 
+        'Attacking Midfield', 'midfield', 'Left Midfield', 'Right Midfield',
+        'Central Midfield', 'attack', 'Defensive Midfield']
+
+    if position in goalkeeper_positions:
+        return 'Bramkarz'
+    elif position in defense_positions:
+        return 'Zawodnik defensywny'
+    elif position in offense_positions:
+        return 'Zawodnik ofensywny'
+    else:
+        return 'Inna'
+
+
 def count_position(category, season, df):
-    position_mapping = {
-        'Left Winger': 'Lewy skrzydłowy',
-        'defence': 'Obrońca',
-        'Right-Back': 'Prawy obrońca',
-        'Goalkeeper': 'Bramkarz',
-        'Centre-Back': 'Środkowy obrońca',
-        'Right Winger': 'Prawy skrzydłowy',
-        'Centre-Forward': 'Środkowy napastnik',
-        'attack': 'Napastnik',
-        'Defensive Midfield': 'Defensywny pomocnik',
-        'Left Midfield': 'Lewy pomocnik',
-        'Attacking Midfield': 'Ofensywny pomocnik',
-        'Central Midfield': 'Środkowy pomocnik',
-        'midfield': 'Pomocnik',
-        'Right Midfield': 'Prawy pomocnik',
-        'Left-Back': 'Lewy obrońca',
-        'Second Striker': 'Drugi napastnik'
-    }
-    position_counts = df.query("season == @season and transfer_movement == @category")[
-        "position"
+    df['season'] = df['season'].astype(str)
+    df['new_position'] = df['position'].map(map_to_category)
+    position_counts = df.query("season1 == @season and transfer_movement == @category")[
+        "new_position"
     ].value_counts()
-    position_counts = position_counts.rename(position_mapping)
+    print(position_counts)
     position_df = position_counts.to_frame().reset_index()
     position_df.columns = ['position', 'count']
     return position_df
@@ -3198,7 +3228,7 @@ elif selected_tab == "Transfery":
         ),
     )
     st.plotly_chart(fig13, use_container_width=True)
-    st.header('Liczba transferów w sezonie według pozycji zawodników')
+    st.header('Liczba transferów w sezonie według roli zawodników')
     col6, col7 = st.columns(2)
     choose_in_out = col6.selectbox(
         'Wybierz rodzaj transferów :',
@@ -3210,12 +3240,11 @@ elif selected_tab == "Transfery":
         positions_and_numbers = count_position('in', season6, transfers)
         fig17.add_traces(
             go.Bar(
-                orientation='h',
-                y=positions_and_numbers.position,
-                x=positions_and_numbers['count'],
+                x=positions_and_numbers.position,
+                y=positions_and_numbers['count'],
                 text=positions_and_numbers['count'].astype(str),
-                textposition='outside',
-                textfont=dict(size=15, color='black'),
+                #textposition='outside',
+                textfont=dict(size=15, color='white'),
                 hovertemplate="Liczba trasnferów: <b>%{x}</b>"
                 + "<extra></extra>",
                 hoverlabel=dict(
@@ -3227,12 +3256,12 @@ elif selected_tab == "Transfery":
         )
         fig17.update_layout(
             margin=dict(l=25, r=0, t=15, b=0),
-            yaxis=dict(
-                title='Nazwa pozycji',
+            xaxis=dict(
+                title='Rola na boisku',
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=15, color='black')
             ),
-            xaxis=dict(
+            yaxis=dict(
                 title='Liczba transferów przychodzących',
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=15, color='black'),
@@ -3251,12 +3280,11 @@ elif selected_tab == "Transfery":
         positions_and_numbers = count_position('out', season6, transfers)
         fig17.add_traces(
             go.Bar(
-                orientation='h',
-                y=positions_and_numbers.position,
-                x=positions_and_numbers['count'],
+                x=positions_and_numbers.position,
+                y=positions_and_numbers['count'],
                 text=positions_and_numbers['count'].astype(str),
-                textfont=dict(size=15, color='black'),
-                textposition='outside',
+                textfont=dict(size=15, color='white'),
+                #textposition='outside',
                 hovertemplate="Liczba trasnferów: <b>%{x}</b>"
                 + "<extra></extra>",
                 hoverlabel=dict(
@@ -3268,12 +3296,12 @@ elif selected_tab == "Transfery":
         )
         fig17.update_layout(
             margin=dict(l=50, r=0, t=15, b=50),
-            yaxis=dict(
-                title='Nazwa pozycji',
+            xaxis=dict(
+                title='Rola na boisku',
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=15, color='black')
             ),
-            xaxis=dict(
+            yaxis=dict(
                 title='Liczba transferów odchodzących',
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=15, color='black'),
