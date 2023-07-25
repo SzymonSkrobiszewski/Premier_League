@@ -947,7 +947,6 @@ elif selected_tab == "Premier League":
                             x=players['season'],
                             y=players['england'],
                             mode='lines+markers',
-                            fill='tozeroy',
                             marker=dict(color='green'),
                             name='Anglicy',
                             hovertemplate="Anglicy: <b>%{y}</b>"
@@ -973,7 +972,6 @@ elif selected_tab == "Premier League":
                             x=players['season'],
                             y=players['squad'],
                             mode='lines+markers',
-                            fill='tonexty',
                             marker=dict(color='orange'),
                             name='wszyscy',
                             hovertemplate="wszyscy: <b>%{y}</b>"
