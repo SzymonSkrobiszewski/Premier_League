@@ -62,6 +62,10 @@ def load_data():
     )
     stats = pd.read_excel(io='StatsOfClubs.xlsx', engine='openpyxl')
     players = pd.read_excel(io='players.xlsx', engine='openpyxl')
+    transfers_direction_by_season = pd.read_excel(
+        io='Transfers_directions_by_season.xlsx',
+        engine='openpyxl'
+    )
     return (
         df,
         carabao_cup,
@@ -77,7 +81,8 @@ def load_data():
         stats,
         players,
         transfers_direction,
-        seasonal_league_financial
+        seasonal_league_financial,
+        transfers_direction_by_season
     )
 
 
@@ -96,7 +101,8 @@ def load_data():
     clubstats,
     players,
     transfer_directions,
-    seasonal_league_financial
+    seasonal_league_financial,
+    transfers_by_season
 ) = load_data()
 
 color_dictionary = {
@@ -421,11 +427,16 @@ def get_top_10_by_season(data, season):
     top_10.loc[:, 'country'] = top_10['country'].map(mapping)
     return top_10
 
+
 def get_seasons(df):
     return df['Season'].unique()
 
-def return_most_valuable_transfers_for_position(category, position, df):
-    df_filtered = df.query('position == @position and transfer_movement == @category')
+
+def return_most_valuable_transfers_for_season(category, season, df):
+    df['season1'] = df['season1'].astype(str)
+    df_filtered = df.query(
+        'season1 == @season and transfer_movement == @category'
+    )
     return_10 = df_filtered[
         ['player_name', 'fee_cleaned']
     ].sort_values(by='fee_cleaned', ascending=False)
@@ -537,6 +548,26 @@ if selected_tab == "Strona główna":
         f'<div style="text-align: justify; font-size: 25px;">{formatted_text1}</div>',
         unsafe_allow_html=True
     )
+
+    transfermarkt = '1. <a href="https://www.transfermarkt.com/">Transfermarkt</a>, \
+        dane z dnia 11 kwietnia 2023.'
+    st.markdown(
+        f'<div style="text-align: justify; font-size: 25px;">{transfermarkt}</div>',
+        unsafe_allow_html=True
+    )
+    football_data = '2. <a href="https://www.football-data.co.uk/englandm.php/">football-data</a>, \
+        dane z dnia 28 maja 2023.'
+    st.markdown(
+        f'<div style="text-align: justify; font-size: 25px;">{football_data}</div>',
+        unsafe_allow_html=True
+    )
+    premier_league_website = '3. <a href="https://www.premierleague.com/">Oficjalna strona Premier League</a>, \
+        dane z dnia 28 maja 2023.'
+    st.markdown(
+        f'<div style="text-align: justify; font-size: 25px;">{premier_league_website}</div>',
+        unsafe_allow_html=True
+    )
+
 
 
 elif selected_tab == "Premier League":
@@ -916,6 +947,7 @@ elif selected_tab == "Premier League":
                             x=players['season'],
                             y=players['england'],
                             mode='lines+markers',
+                            fill='tozeroy',
                             marker=dict(color='green'),
                             name='Anglicy',
                             hovertemplate="Anglicy: <b>%{y}</b>"
@@ -928,6 +960,7 @@ elif selected_tab == "Premier League":
                             x=players['season'],
                             y=players['foreigners'],
                             mode='lines+markers',
+                            #fill='tozeroy' if "wszyscy" in choose_kind_of_players else "tonexty",
                             marker=dict(color='red'),
                             name='cudzoziemcy',
                             hovertemplate="cudzoziemcy: <b>%{y}</b>"
@@ -940,6 +973,7 @@ elif selected_tab == "Premier League":
                             x=players['season'],
                             y=players['squad'],
                             mode='lines+markers',
+                            fill='tonexty',
                             marker=dict(color='orange'),
                             name='wszyscy',
                             hovertemplate="wszyscy: <b>%{y}</b>"
@@ -952,24 +986,24 @@ elif selected_tab == "Premier League":
             showlegend=True,
             xaxis=dict(
                 tickangle=30,
-                ticks="outside",
-                range=[-0.5, 30.5],
-                ticklen=4,
-                tickcolor='black',
+                #ticks="outside",
+                range=[-.5, 30.5],
+                # ticklen=4,
+                # tickcolor='black',
                 title='Sezon',
-                showline=True,
+                #showline=True,
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=12, color='black'),
             ),
             yaxis=dict(
-                range=[0, upper_limit],
+                #range=[0, upper_limit],
                 title='Liczba zawodników',
                 tickfont=dict(size=17, color='black'),
                 title_font=dict(size=25, color='black'),
                 showgrid=True,
                 gridwidth=1,
                 gridcolor='black',
-                zerolinecolor='white'
+                zerolinecolor='black'
             ),
             hoverlabel=dict(
                 font=dict(
@@ -3257,39 +3291,39 @@ elif selected_tab == "Transfery":
         )
         st.plotly_chart(fig17, use_container_width=True)
     st.write('Transfery dotyczą zarówno sprzedaży/kupna gracza jak i wypożyczeń graczy.')
-    st.header('Rekordowe transfery względem pozycji zawodników')
+    st.header('Najdroższe transfery w sezonach')
     fig18 = go.Figure()
-    position_mapping = {
-        'Lewy skrzydłowy': 'Left Winger',
-        'Obrońca': 'defence',
-        'Prawy obrońca': 'Right-Back',
-        'Bramkarz': 'Goalkeeper',
-        'Środkowy obrońca': 'Centre-Back',
-        'Prawy skrzydłowy': 'Right Winger',
-        'Środkowy napastnik': 'Centre-Forward',
-        'Napastnik': 'attack',
-        'Defensywny pomocnik': 'Defensive Midfield',
-        'Lewy pomocnik': 'Left Midfield',
-        'Ofensywny pomocnik': 'Attacking Midfield',
-        'Środkowy pomocnik': 'Central Midfield',
-        'Pomocnik': 'midfield',
-        'Prawy pomocnik': 'Right Midfield',
-        'Lewy obrońca': 'Left-Back',
-        'Drugi napastnik': 'Second Striker'
-    }
+    # position_mapping = {
+    #     'Lewy skrzydłowy': 'Left Winger',
+    #     'Obrońca': 'defence',
+    #     'Prawy obrońca': 'Right-Back',
+    #     'Bramkarz': 'Goalkeeper',
+    #     'Środkowy obrońca': 'Centre-Back',
+    #     'Prawy skrzydłowy': 'Right Winger',
+    #     'Środkowy napastnik': 'Centre-Forward',
+    #     'Napastnik': 'attack',
+    #     'Defensywny pomocnik': 'Defensive Midfield',
+    #     'Lewy pomocnik': 'Left Midfield',
+    #     'Ofensywny pomocnik': 'Attacking Midfield',
+    #     'Środkowy pomocnik': 'Central Midfield',
+    #     'Pomocnik': 'midfield',
+    #     'Prawy pomocnik': 'Right Midfield',
+    #     'Lewy obrońca': 'Left-Back',
+    #     'Drugi napastnik': 'Second Striker'
+    # }
     col12, col13 = st.columns(2)
     choose_transfer_movement = col12.selectbox(
         'Wybierz rodzaj trasnferu :',
         ['Zawodnik przychodzący', 'Zawodnik odchodzący']
     )
-    choose_position = col13.selectbox(
+    choose_season = col13.selectbox(
         'Wybierz pozycję :',
-        list(position_mapping.keys())
+        get_seasons(df)[::-1]
     )
     if choose_transfer_movement == 'Zawodnik przychodzący':
-        data_for_transfers = return_most_valuable_transfers_for_position(
+        data_for_transfers = return_most_valuable_transfers_for_season(
             'in',
-            position_mapping[choose_position],
+            choose_season,
             transfers
         )
         fig18.add_traces(
@@ -3336,9 +3370,9 @@ elif selected_tab == "Transfery":
             )
         st.plotly_chart(fig18, use_container_width=True)
     elif choose_transfer_movement == 'Zawodnik odchodzący':
-        data_for_transfers = return_most_valuable_transfers_for_position(
+        data_for_transfers = return_most_valuable_transfers_for_season(
             'out',
-            position_mapping[choose_position],
+            choose_season,
             transfers
         )
         fig18.add_traces(
@@ -3387,17 +3421,28 @@ elif selected_tab == "Transfery":
 
     st.header('Najpopularniejsze kierunki transferowe')
     fig19 = go.Figure()
-    direction = st.selectbox(
+    transfers_by_season['season'] = transfers_by_season['season'].astype(str)
+    col14, col15 = st.columns(2)
+    direction = col14.selectbox(
         'Wybierz rodzaj transferów :',
         ['Transfery przychodzące', 'Transfery odchodzące']
     )
+    season14 = col15.selectbox(
+        'Wybierz sezon :',
+        find_common_seasons('Arsenal', 'Arsenal', df)[::-1],
+        key='kierunki_t'
+    )
     if direction == 'Transfery przychodzące':
+        df_directions = transfers_by_season.query(
+            'season == @season14 and transfer_movement == "out"'
+        )
         fig19.add_traces(
             go.Bar(
-                x=transfer_directions['liga'],
-                y=transfer_directions['in'],
-                text=transfer_directions['in'],
-                textfont=dict(size=15, color='white'),
+                x=df_directions['country'],
+                y=df_directions['count_player'],
+                text=df_directions['count_player'],
+                textposition='outside',
+                textfont=dict(size=17, color='black'),
                 hovertemplate="Liczba transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
@@ -3408,38 +3453,42 @@ elif selected_tab == "Transfery":
             )
         )
         fig19.update_layout(
-                margin=dict(l=25, r=25, t=25, b=25),
-                separators=',',
-                xaxis=dict(
-                    title='Liga',
-                    tickfont=dict(size=13, color='black'),
-                    title_font=dict(size=25, color='black')
-                ),
-                yaxis=dict(
-                    title="Liczba transferów",
-                    showgrid=True,
-                    gridwidth=1,
-                    gridcolor='gray',
-                    zeroline=False,
-                    title_font=dict(size=25, color='black'),
-                    tickfont=dict(size=15, color='black'),
-                ),
-                height=530,
-                width=1210,
+            margin=dict(l=25, r=25, t=25, b=25),
+            separators=',',
+            xaxis=dict(
+                title='Liga',
+                tickfont=dict(size=13, color='black'),
+                title_font=dict(size=25, color='black')
+            ),
+            yaxis=dict(
+                title="Liczba transferów",
+                showgrid=True,
+                gridwidth=0.5,
+                #gridcolor='gray',
+                gridcolor='rgba(211, 211, 211, 1)',
+                zeroline=False,
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=15, color='black'),
+            ),
+            height=530,
+            width=1210,
         )
         fig19.update_layout(xaxis={'categoryorder': 'total descending'})
         st.plotly_chart(fig19, use_container_width=True)
-    elif direction == 'Transfery odchodzące':
+    else:
+        df_directions = transfers_by_season.query(
+            'season == @season14 and transfer_movement == "in"'
+        )
         fig19.add_traces(
             go.Bar(
-                x=transfer_directions['liga'],
-                y=transfer_directions['out'],
-                text=transfer_directions['out'],
-                textfont=dict(size=14.5, color='white'),
+                x=df_directions['country'],
+                y=df_directions['count_player'],
+                text=df_directions['count_player'],
+                textposition='outside',
+                textfont=dict(size=17, color='black'),
                 hovertemplate="Liczba transferów: <b>%{y}</b>"
                 + "<extra></extra>",
                 marker_color='blue',
-                textposition='inside',
                 hoverlabel=dict(
                     font=dict(size=14, color='white'),
                     bgcolor='blue'
@@ -3447,26 +3496,103 @@ elif selected_tab == "Transfery":
             )
         )
         fig19.update_layout(
-                margin=dict(l=25, r=25, t=25, b=25),
-                separators=',',
-                xaxis=dict(
-                    title='Liga',
-                    tickfont=dict(size=13, color='black'),
-                    title_font=dict(size=25, color='black')
-                ),
-                yaxis=dict(
-                    title="Liczba transferów",
-                    showgrid=True,
-                    gridwidth=1,
-                    gridcolor='gray',
-                    zeroline=False,
-                    title_font=dict(size=25, color='black'),
-                    tickfont=dict(size=15, color='black'),
-                ),
-                height=530,
-                width=1210,
+            margin=dict(l=25, r=25, t=25, b=25),
+            separators=',',
+            xaxis=dict(
+                title='Liga',
+                tickfont=dict(size=13, color='black'),
+                title_font=dict(size=25, color='black')
+            ),
+            yaxis=dict(
+                title="Liczba transferów",
+                showgrid=True,
+                gridwidth=0.5,
+                #gridcolor='gray',
+                gridcolor='rgba(211, 211, 211, 1)',
+                zeroline=False,
+                title_font=dict(size=25, color='black'),
+                tickfont=dict(size=15, color='black'),
+            ),
+            height=530,
+            width=1210,
         )
         fig19.update_layout(xaxis={'categoryorder': 'total descending'})
         st.plotly_chart(fig19, use_container_width=True)
+    #     fig19.add_traces(
+    #         go.Bar(
+    #             x=transfer_directions['liga'],
+    #             y=transfer_directions['in'],
+    #             text=transfer_directions['in'],
+    #             textfont=dict(size=15, color='white'),
+    #             hovertemplate="Liczba transferów: <b>%{y}</b>"
+    #             + "<extra></extra>",
+    #             marker_color='blue',
+    #             hoverlabel=dict(
+    #                 font=dict(size=14, color='white'),
+    #                 bgcolor='blue'
+    #             )
+    #         )
+    #     )
+    #     fig19.update_layout(
+    #             margin=dict(l=25, r=25, t=25, b=25),
+    #             separators=',',
+    #             xaxis=dict(
+    #                 title='Liga',
+    #                 tickfont=dict(size=13, color='black'),
+    #                 title_font=dict(size=25, color='black')
+    #             ),
+    #             yaxis=dict(
+    #                 title="Liczba transferów",
+    #                 showgrid=True,
+    #                 gridwidth=1,
+    #                 gridcolor='gray',
+    #                 zeroline=False,
+    #                 title_font=dict(size=25, color='black'),
+    #                 tickfont=dict(size=15, color='black'),
+    #             ),
+    #             height=530,
+    #             width=1210,
+    #     )
+    #     fig19.update_layout(xaxis={'categoryorder': 'total descending'})
+    #     st.plotly_chart(fig19, use_container_width=True)
+    # elif direction == 'Transfery odchodzące':
+    #     fig19.add_traces(
+    #         go.Bar(
+    #             x=transfer_directions['liga'],
+    #             y=transfer_directions['out'],
+    #             text=transfer_directions['out'],
+    #             textfont=dict(size=14.5, color='white'),
+    #             hovertemplate="Liczba transferów: <b>%{y}</b>"
+    #             + "<extra></extra>",
+    #             marker_color='blue',
+    #             textposition='inside',
+    #             hoverlabel=dict(
+    #                 font=dict(size=14, color='white'),
+    #                 bgcolor='blue'
+    #             )
+    #         )
+    #     )
+    #     fig19.update_layout(
+    #             margin=dict(l=25, r=25, t=25, b=25),
+    #             separators=',',
+    #             xaxis=dict(
+    #                 title='Liga',
+    #                 tickfont=dict(size=13, color='black'),
+    #                 title_font=dict(size=25, color='black')
+    #             ),
+    #             yaxis=dict(
+    #                 title="Liczba transferów",
+    #                 showgrid=True,
+    #                 gridwidth=1,
+    #                 gridcolor='gray',
+    #                 zeroline=False,
+    #                 title_font=dict(size=25, color='black'),
+    #                 tickfont=dict(size=15, color='black'),
+    #             ),
+    #             height=530,
+    #             width=1210,
+    #     )
+    #     fig19.update_layout(xaxis={'categoryorder': 'total descending'})
+    #     st.plotly_chart(fig19, use_container_width=True)
     st.write('Naturalnym jest, że w przypadku Premier League liczba transferów \
              odchodzących i przychodzących jest taka sama.')
