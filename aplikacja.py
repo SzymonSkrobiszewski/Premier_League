@@ -3316,7 +3316,7 @@ elif selected_tab == "Transfery":
             width=1200,
         )
         st.plotly_chart(fig17, use_container_width=True)
-    st.write('Transfery dotyczą zarówno sprzedaży/kupna gracza jak i wypożyczeń graczy.')
+    st.write('Transfery dotyczą zarówno sprzedaży/kupna zawodnika jak i wypożyczeń zawodników.')
     st.header('Najdroższe transfery w sezonach')
     fig18 = go.Figure()
     # position_mapping = {
