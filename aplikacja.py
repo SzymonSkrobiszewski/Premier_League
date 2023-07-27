@@ -3445,7 +3445,7 @@ elif selected_tab == "Transfery":
             )
         st.plotly_chart(fig18, use_container_width=True)
 
-    st.header('Najpopularniejsze kierunki transferowe')
+    st.header('Transfery do najpopularniejszych lig piłkarskich')
     fig19 = go.Figure()
     transfers_by_season['season'] = transfers_by_season['season'].astype(str)
     col14, col15 = st.columns(2)
