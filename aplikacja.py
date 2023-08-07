@@ -351,12 +351,16 @@ def calculate_lost_goals_by_half(df, team, season):
     ].sum().get(
         team
     )
+    # total_goals_scored = first_half_goals_scored + second_half_goals_scored
+    # total_goals_conceded = first_half_goals_conceded + second_half_goals_conceded
     return pd.DataFrame(
         {
             "GSTWPP": [int(first_half_goals_conceded)],
             "GSTWDP": [int(second_half_goals_conceded)],
             "GSWPP": [int(first_half_goals_scored)],
             "GSWDP": [int(second_half_goals_scored)],
+            # "TotalGoalsScored": [total_goals_scored],
+            # "TotalGoalsConceded": [total_goals_conceded],
         }
     )
 
@@ -1759,7 +1763,8 @@ elif selected_tab == "Drużyny":
             conceded_and_scored_goals = pd.concat([conceded_and_scored_goals, df_c3])
         maksimum = max(
             conceded_and_scored_goals['GSWPP'].max(),
-            conceded_and_scored_goals['GSWDP'].max()
+            conceded_and_scored_goals['GSWDP'].max(),
+            #conceded_and_scored_goals['TotalGoalsScored'].max()
         )
         if scored_or_conceded == 'Bramki strzelone':
             for i, name in enumerate(teams6):
@@ -1769,11 +1774,13 @@ elif selected_tab == "Drużyny":
                             x=['Pierwsza', 'Druga'],
                             y=[
                                 conceded_and_scored_goals['GSWPP'].iloc[i],
-                                conceded_and_scored_goals['GSWDP'].iloc[i]
+                                conceded_and_scored_goals['GSWDP'].iloc[i],
+                                #conceded_and_scored_goals['TotalGoalsScored'].iloc[i]
                             ],
                             text=[
                                 conceded_and_scored_goals['GSWPP'].iloc[i],
-                                conceded_and_scored_goals['GSWDP'].iloc[i]
+                                conceded_and_scored_goals['GSWDP'].iloc[i],
+                                #conceded_and_scored_goals['TotalGoalsScored'].iloc[i]
                             ],
                             textfont=dict(size=18, color='white'),
                             hovertemplate=[
@@ -3343,7 +3350,7 @@ elif selected_tab == "Transfery":
         ['Zawodnik przychodzący', 'Zawodnik odchodzący']
     )
     choose_season = col13.selectbox(
-        'Wybierz pozycję :',
+        'Wybierz sezon :',
         get_seasons(df)[::-1]
     )
     if choose_transfer_movement == 'Zawodnik przychodzący':
