@@ -2076,7 +2076,7 @@ elif selected_tab == "Drużyny":
         #colors2 = ['#FFA500', '#FFC0CB', '#FFFF00', '#00FFFF', '#FF00FF']
         column6, column7 = st.columns(2)
         club3 = column6.selectbox(
-            "Wybierz drużynę:",
+            "Wybierz drużynę :",
             sorted(unique_home_teams),
             key='t'
         )
