@@ -2073,7 +2073,7 @@ elif selected_tab == "Drużyny":
         seasons_to_remove = ['92/93', '93/94', '94/95']
         filtered_df = df[~df['Season'].isin(seasons_to_remove)]
         unique_home_teams = filtered_df['HomeTeam'].unique().tolist()
-        colors2 = ['#FFA500', '#FFC0CB', '#FFFF00', '#00FFFF', '#FF00FF']
+        #colors2 = ['#FFA500', '#FFC0CB', '#FFFF00', '#00FFFF', '#FF00FF']
         column6, column7 = st.columns(2)
         club3 = column6.selectbox(
             "Wybierz drużynę:",
@@ -2108,7 +2108,7 @@ elif selected_tab == "Drużyny":
                             f'Liczba strzelonych bramek w sezonie {season}: <b>%{{y}}</b>'
                             + '<extra></extra>'
                         ],
-                        marker=dict(color=colors2[i]),
+                        #marker=dict(color=colors2[i]),
                         name=season
                     )]
                 )
@@ -2167,7 +2167,7 @@ elif selected_tab == "Drużyny":
                             + '<extra></extra>'
                         ],
                         name=season,
-                        marker=dict(color=colors2[i])
+                        #marker=dict(color=colors2[i])
                     )]
                 )
             fig7.update_layout(
@@ -2332,7 +2332,7 @@ elif selected_tab == "Drużyny":
             )
         st.plotly_chart(fig8, use_container_width=True)
     if comparison_type2 == 'Sezony':
-        kolory = ['#ea03ff', "#ADD8E6", "#90EE90", "#FFA500", "#FF0000"]
+        #kolory = ['#ea03ff', "#ADD8E6", "#90EE90", "#FFA500", "#FF0000"]
         fig8 = go.Figure()
         col1, col2 = st.columns(2)
         team1 = col1.selectbox(
@@ -2359,7 +2359,7 @@ elif selected_tab == "Drużyny":
                         + '<extra></extra>'
                     ],
                     name=season,
-                    marker=dict(color=kolory[i])
+                    #marker=dict(color=kolory[i])
                 )
             )
         fig8.update_layout(
@@ -2828,7 +2828,7 @@ elif selected_tab == "Drużyny":
     #     )
     #     st.plotly_chart(fig14, use_container_width=True)
     else:
-        colors20 = ['#FFA500', '#FFC0CB', '#FFFF00', '#00FFFF', '#FF00FF']
+        #colors20 = ['#FFA500', '#FFC0CB', '#FFFF00', '#00FFFF', '#FF00FF']
         col10, col11 = st.columns(2)
         team13 = col10.selectbox(
             'Wybierz drużynę :',
@@ -2856,7 +2856,7 @@ elif selected_tab == "Drużyny":
                         f'Strzały niecelne w sezonie {season} : <b>%{{y}}</b>'
                         + '<extra></extra>'
                     ],
-                    marker=dict(color=colors20[i]),
+                    #marker=dict(color=colors20[i]),
                     name=season,
                 )
             )
