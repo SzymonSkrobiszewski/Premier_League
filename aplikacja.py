@@ -959,7 +959,7 @@ elif selected_tab == "Premier League":
                  drużyn w turniejach przekracza liczbę sezonów, które miały miejsce \
                  od początku rozgrywek Premier League (31). \
                  Od pewnego czasu drużyny, które spadają z Ligi Mistrzów, mają \
-                 możliwość kontynuowania swojej przygody w "niższych" rozgrywkach.'
+                 możliwość kontynuowania swojej przygody w niższych rozgrywkach.'
         )
     else:
         upper_limit = 550
@@ -993,7 +993,6 @@ elif selected_tab == "Premier League":
                             x=players['season'],
                             y=players['foreigners'],
                             mode='lines+markers',
-                            #fill='tozeroy' if "wszyscy" in choose_kind_of_players else "tonexty",
                             marker=dict(color='red'),
                             name='cudzoziemcy',
                             hovertemplate="cudzoziemcy: <b>%{y}</b>"
@@ -1045,7 +1044,7 @@ elif selected_tab == "Premier League":
             ),
             legend=dict(
                 title=dict(
-                    text='Narodowości',
+                    text='Narodowość',
                     font=dict(size=25, color='black')
                 ),
                 font=dict(size=17, color='black'),
@@ -1060,7 +1059,7 @@ elif selected_tab == "Premier League":
         st.markdown(
             """
             Piłkarz jest kwalifikowany jako zawodnik, jeśli spełnia co najmniej jeden z poniższych warunków:
-            1. jest związany kontraktem z drużyną.
+            1. jest związany kontraktem z drużyną,
             2. rozegrał przynajmniej jeden mecz z drużyną (np. w pucharze).
             """
         )
@@ -1092,7 +1091,8 @@ elif selected_tab == "Premier League":
                 x=season_total_goals['Season'],
                 y=season_total_goals['liczba bramek'],
                 text=season_total_goals['liczba bramek'],
-                textfont=dict(size=11, color='white'),
+                textposition='outside',
+                textfont=dict(size=13, color='black'),
                 hoverlabel=dict(
                     font=dict(size=14, color='white'),
                     bgcolor='blue'
@@ -1103,8 +1103,9 @@ elif selected_tab == "Premier League":
             )
         )
         fig5.update_layout(
-            margin=dict(l=0, r=0, t=25, b=0),
+            margin=dict(l=25, r=0, t=25, b=0),
             xaxis=dict(
+                range=[-0.5, 30.5],
                 title='Sezon',
                 tickfont=dict(size=13, color='black'),
                 title_font=dict(size=25, color='black')
@@ -1112,11 +1113,12 @@ elif selected_tab == "Premier League":
             yaxis=dict(
                 title="Liczba strzelonych bramek",
                 title_font=dict(size=25, color='black'),
-                range=[0, 1250],
+                range=[0, 1300],
                 tickfont=dict(size=15, color='black'),
                 showgrid=True,
-                gridwidth=1,
-                gridcolor='gray',
+                gridwidth=0.5,
+                gridcolor='rgba(211, 211, 211, 1)',
+                #gridcolor='gray',
                 zeroline=False,
             ),
             height=500,
@@ -1391,7 +1393,7 @@ elif selected_tab == "Drużyny":
     st.header('Ewolucja liczby punktów w sezonie')
     comparison_type = st.radio(
         "Co chcesz porównać?",
-        ("Drużyny", "Drużynę i sezon/y")
+        ("Drużyny", "Sezony")
     )
     if comparison_type == "Drużyny":
         column1, column2 = st.columns(2)
@@ -1565,12 +1567,12 @@ elif selected_tab == "Drużyny":
             #     hovermode='x unified',
             # )
             # st.plotly_chart(fig2, use_container_width=True)
-    if comparison_type == "Drużynę i sezon/y":
+    if comparison_type == "Sezony":
         c1, c2 = st.columns(2)
-        club = c1.selectbox("Wybierz Drużynę :", unique_teams)
+        club = c1.selectbox("Wybierz drużynę :", unique_teams)
         seasons = find_common_seasons(club, club, df)
         selected_seasons1 = c2.multiselect(
-            "Wybierz sezon/y :", seasons[::-1],
+            "Wybierz sezony :", seasons[::-1],
             default=seasons[-2:]
         )
         fig3, max_value1 = go.Figure(), []
@@ -1738,12 +1740,12 @@ elif selected_tab == "Drużyny":
     st.header('Porównanie bramek strzelonych i straconych względem połowy meczu')
     comparison_type1 = st.radio(
         "Co chcesz porównać?",
-        ("Drużyny", "Drużynę i sezon/y"), key="comparison_type1"
+        ("Drużyny", "Sezony"), key="comparison_type1"
     )
     seasons_to_remove = ['92/93', '93/94', '94/95']
     if comparison_type1 == 'Drużyny':
         column3, column4 = st.columns(2)
-        scored_or_conceded = column4.selectbox(
+        scored_or_conceded = st.selectbox(
             "Wybierz statystykę : ",
             ['Bramki strzelone', 'Bramki stracone']
         )
@@ -1751,7 +1753,7 @@ elif selected_tab == "Drużyny":
             "Wybierz sezon :",
             [season5 for season5 in get_seasons(df) if season5 not in seasons_to_remove][::-1]
         )
-        teams6 = st.multiselect(
+        teams6 = column4.multiselect(
             "Wybierz drużyny :",
             return_teams_for_season(season3, df),
             default=['Chelsea', 'Arsenal']
@@ -2067,7 +2069,7 @@ elif selected_tab == "Drużyny":
     #             width=1200
     #         )
     #     st.plotly_chart(fig7, use_container_width=True)
-    if comparison_type1 == 'Drużynę i sezon/y':
+    if comparison_type1 == 'Sezony':
         seasons_to_remove = ['92/93', '93/94', '94/95']
         filtered_df = df[~df['Season'].isin(seasons_to_remove)]
         unique_home_teams = filtered_df['HomeTeam'].unique().tolist()
@@ -2081,7 +2083,7 @@ elif selected_tab == "Drużyny":
         seasons1 = find_common_seasons(club3, club3, filtered_df)[::-1]
         #excluded_seasons1 = ['92/93', '93/94', '94/95']
         season3 = column7.multiselect(
-            "Wybierz sezon/y :",
+            "Wybierz sezony :",
             seasons1,
             #[season4 for season4 in seasons1 if season4 not in excluded_seasons1][::-1],
             default=seasons1[:2],
@@ -2210,7 +2212,7 @@ elif selected_tab == "Drużyny":
     st.header('Porównanie punktów zdobytych u siebie i na wyjeździe')
     comparison_type2 = st.radio(
         "Co chcesz porównać?",
-        ("Drużyny", "Drużynę i sezon/y"), key='ct2'
+        ("Drużyny", "Sezony"), key='ct2'
     )
     if comparison_type2 == 'Drużyny':
         fig8 = go.Figure()
@@ -2329,14 +2331,17 @@ elif selected_tab == "Drużyny":
                 ),
             )
         st.plotly_chart(fig8, use_container_width=True)
-    if comparison_type2 == 'Drużynę i sezon/y':
+    if comparison_type2 == 'Sezony':
         kolory = ['#ea03ff', "#ADD8E6", "#90EE90", "#FFA500", "#FF0000"]
         fig8 = go.Figure()
         col1, col2 = st.columns(2)
-        team1 = col1.selectbox('Wybierz drużynę :', unique_teams)
+        team1 = col1.selectbox(
+            'Wybierz drużynę :',
+            unique_teams,
+            key='Porównanie_pkt_u_siebie')
         seasons = find_common_seasons(team1, team1, df)
         selected_seasons = col2.multiselect(
-            'Wybierz sezon/y :', seasons[::-1],
+            'Wybierz sezony :', seasons[::-1],
             default=seasons[-2:][::-1],
         )
         for i, season in enumerate(selected_seasons):
@@ -2407,7 +2412,7 @@ elif selected_tab == "Drużyny":
     df2 = df[df['Season'].isin(seasons_x)]
     comparison_type5 = st.radio(
         "Co chcesz porównać?",
-        ("Drużyny", "Drużynę i sezon/y"),
+        ("Drużyny", "Sezony"),
         key='kartki'
     )
     fig11 = go.Figure()
@@ -2560,7 +2565,7 @@ elif selected_tab == "Drużyny":
              wynikiem fauli, mogą zostać pokazane \
              również za zachowania nie fair play.\
              Do tego trzeba zwrócić uwagę, że jeśli zawodnik otrzyma\
-             drugą zółtą kartkę a co za tym idzie czerwoną, wartość\
+             drugą żółtą kartkę, a co za tym idzie czerwoną, wartość\
              jest dodawana **tylko** do czerwonych kartek.\
             Przykładowo jeśli drużyna A dostała dwie żółte kartki, \
             po czym jeden z wcześniej ukaranych zawodników wylatuje z boiska,\
@@ -2660,7 +2665,7 @@ elif selected_tab == "Drużyny":
     df3 = df[df['Season'].isin(seasons_y)]
     comparison_type3 = st.radio(
         "Co chcesz porównać?",
-        ("Drużyny", "Drużynę i sezon/y"),
+        ("Drużyny", "Sezony"),
         key='shoot4'
     )
     if comparison_type3 == 'Drużyny':
@@ -2896,7 +2901,7 @@ elif selected_tab == "Drużyny":
     st.header('Porównanie zdobytych bramek według rodzaju strzału')
     comparison_type4 = st.radio(
         "Co chcesz porównać?",
-        ("Drużyny", "Drużynę i sezon/y"),
+        ("Drużyny", "Sezony"),
         key='rodzaj_bramki'
     )
     fig15 = go.Figure()
@@ -3241,7 +3246,7 @@ elif selected_tab == "Transfery":
         'Wybierz rodzaj transferów :',
         ['Przychodzący', 'Odchodzący']
     )
-    season6 = col7.selectbox('Wybierz sezon', sorted_seasons[::-1])
+    season6 = col7.selectbox('Wybierz sezon :', sorted_seasons[::-1])
     fig17 = go.Figure()
     if choose_in_out == 'Przychodzący':
         positions_and_numbers = count_position('in', season6, transfers)
@@ -3351,7 +3356,8 @@ elif selected_tab == "Transfery":
     )
     choose_season = col13.selectbox(
         'Wybierz sezon :',
-        get_seasons(df)[::-1]
+        get_seasons(df)[::-1],
+        key='Najdroższe'
     )
     if choose_transfer_movement == 'Zawodnik przychodzący':
         data_for_transfers = return_most_valuable_transfers_for_season(
