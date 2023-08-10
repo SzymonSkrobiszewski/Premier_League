@@ -1259,7 +1259,7 @@ elif selected_tab == "Premier League":
         )
         st.plotly_chart(fig1, use_container_width=True)
         st.write('Powyższy wykres przedstawia zdobyte puchary od sezonu, \
-                 w którym rozpoczęły się rozgrywki Premier League."')
+                 w którym rozpoczęły się rozgrywki Premier League.')
         st.header('Liczba rozegranych sezonów w Premier League')
         season_dict = {
             '1992': '92/93',
