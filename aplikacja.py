@@ -578,7 +578,7 @@ if selected_tab == "Strona główna":
         unsafe_allow_html=True
     )
     st.markdown(" ")
-    st.markdown(
+    st.write(
         f'<div style="text-align: justify; font-size: 25px;">{formatted_text1}</div>',
         unsafe_allow_html=True
     )
@@ -962,12 +962,10 @@ elif selected_tab == "Premier League":
                  możliwość kontynuowania swojej przygody w niższych rozgrywkach.'
         )
     else:
-        upper_limit = 550
         st.header('Zawodnicy Premier League')
         choose_kind_of_players = st.multiselect(
             "Wybierz :",
             [
-                'wszyscy',
                 'Anglicy',
                 'cudzoziemcy'
             ],
@@ -980,7 +978,8 @@ elif selected_tab == "Premier League":
                         go.Scatter(
                             x=players['season'],
                             y=players['england'],
-                            mode='lines+markers',
+                            #mode='lines+markers',
+                            stackgroup='one',
                             marker=dict(color='green'),
                             name='Anglicy',
                             hovertemplate="Anglicy: <b>%{y}</b>"
@@ -992,49 +991,50 @@ elif selected_tab == "Premier League":
                     go.Scatter(
                             x=players['season'],
                             y=players['foreigners'],
-                            mode='lines+markers',
+                            #mode='lines+markers',
                             marker=dict(color='red'),
+                            stackgroup='one',
                             name='cudzoziemcy',
                             hovertemplate="cudzoziemcy: <b>%{y}</b>"
                             + "<extra></extra>"
                         )
                 )
-            elif category == 'wszyscy':
-                fig16.add_trace(
-                    go.Scatter(
-                            x=players['season'],
-                            y=players['squad'],
-                            mode='lines+markers',
-                            marker=dict(color='orange'),
-                            name='wszyscy',
-                            hovertemplate="wszyscy: <b>%{y}</b>"
-                            + "<extra></extra>"
-                        )
-                )
-                upper_limit = 850
+            # elif category == 'wszyscy':
+            #     fig16.add_trace(
+            #         go.Scatter(
+            #                 x=players['season'],
+            #                 y=players['squad'],
+            #                 mode='lines+markers',
+            #                 marker=dict(color='orange'),
+            #                 name='wszyscy',
+            #                 hovertemplate="wszyscy: <b>%{y}</b>"
+            #                 + "<extra></extra>"
+            #             )
+            #     )
+            #     upper_limit = 850
         fig16.update_layout(
             margin=dict(l=50, r=50, t=50, b=0),
             showlegend=True,
             xaxis=dict(
                 tickangle=30,
-                ticks="outside",
-                range=[-.5, 30.5],
-                ticklen=4,
-                tickcolor='black',
+                #ticks="outside",
+                range=[0, 30],
+                #ticklen=4,
+                #tickcolor='black',
                 title='Sezon',
-                showline=True,
+                #showline=True,
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=12, color='black'),
             ),
             yaxis=dict(
-                range=[0, upper_limit],
+                range=[0, 850],
                 title='Liczba zawodników',
                 tickfont=dict(size=17, color='black'),
                 title_font=dict(size=25, color='black'),
                 showgrid=True,
                 gridwidth=1,
                 gridcolor='black',
-                zerolinecolor='white'
+                zerolinecolor='black'
             ),
             hoverlabel=dict(
                 font=dict(
