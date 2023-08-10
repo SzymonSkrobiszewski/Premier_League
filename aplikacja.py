@@ -999,6 +999,19 @@ elif selected_tab == "Premier League":
                             + "<extra></extra>"
                         )
                 )
+        if len(choose_kind_of_players) == 2:
+            fig16.add_trace(
+                go.Scatter(
+                    x=players['season'],
+                    y=players['squad'],  # Suma piłkarzy
+                    mode='markers',
+                    marker=dict(color='rgba(0, 0, 0, 0)'),
+                    hovertemplate="Wszyscy: <b>%{y}</b>"
+                    + "<extra></extra>",
+                    showlegend=False,  # Wyłączanie legendy
+                    #visible='legendonly'  # Ukrycie wykresu, ale dostępne dane
+                )
+            )
             # elif category == 'wszyscy':
             #     fig16.add_trace(
             #         go.Scatter(
