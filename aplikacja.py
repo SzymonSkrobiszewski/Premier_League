@@ -972,62 +972,33 @@ elif selected_tab == "Premier League":
             default='Anglicy'
         )
         fig16 = go.Figure()
-        if len(choose_kind_of_players) == 2:
-            for category in choose_kind_of_players:
-                if category == 'Anglicy':
-                    fig16.add_trace(
-                            go.Scatter(
-                                x=players['season'],
-                                y=players['england'],
-                                #mode='lines+markers',
-                                stackgroup='one',
-                                marker=dict(color='green'),
-                                name='Anglicy',
-                                hovertemplate="Anglicy: <b>%{y}</b>"
-                                + "<extra></extra>"
-                            )
-                    )
-                elif category == 'cudzoziemcy':
-                    fig16.add_trace(
+        for category in choose_kind_of_players:
+            if category == 'Anglicy':
+                fig16.add_trace(
                         go.Scatter(
-                                x=players['season'],
-                                y=players['foreigners'],
-                                #mode='lines+markers',
-                                marker=dict(color='red'),
-                                stackgroup='one',
-                                name='cudzoziemcy',
-                                hovertemplate="cudzoziemcy: <b>%{y}</b>"
-                                + "<extra></extra>"
-                            )
-                    )
-        else:
-            for category in choose_kind_of_players:
-                if category == 'Anglicy':
-                    fig16.add_trace(
-                            go.Scatter(
-                                x=players['season'],
-                                y=players['england'],
-                                #mode='lines+markers',
-                                stackgroup='one',
-                                marker=dict(color='green'),
-                                name='Anglicy',
-                                hovertemplate="Anglicy: <b>%{y}</b>"
-                                + "<extra></extra>"
-                            )
-                    )
-                elif category == 'cudzoziemcy':
-                    fig16.add_trace(
-                        go.Scatter(
-                                x=players['season'],
-                                y=players['foreigners'],
-                                #mode='lines+markers',
-                                marker=dict(color='red'),
-                                stackgroup='one',
-                                name='cudzoziemcy',
-                                hovertemplate="cudzoziemcy: <b>%{y}</b>"
-                                + "<extra></extra>"
-                            )
-                    )
+                            x=players['season'],
+                            y=players['england'],
+                            #mode='lines+markers',
+                            stackgroup='one',
+                            marker=dict(color='green'),
+                            name='Anglicy',
+                            hovertemplate="Anglicy: <b>%{y}</b>"
+                            + "<extra></extra>"
+                        )
+                )
+            elif category == 'cudzoziemcy':
+                fig16.add_trace(
+                    go.Scatter(
+                            x=players['season'],
+                            y=players['foreigners'],
+                            #mode='lines+markers',
+                            marker=dict(color='red'),
+                            stackgroup='one',
+                            name='cudzoziemcy',
+                            hovertemplate="cudzoziemcy: <b>%{y}</b>"
+                            + "<extra></extra>"
+                        )
+                )
             # elif category == 'wszyscy':
             #     fig16.add_trace(
             #         go.Scatter(
@@ -1287,6 +1258,8 @@ elif selected_tab == "Premier League":
             )
         )
         st.plotly_chart(fig1, use_container_width=True)
+        st.write('Powyższy wykres przedstawia zdobyte puchary od sezonu, \
+                 w którym rozpoczęły się rozgrywki Premier League."')
         st.header('Liczba rozegranych sezonów w Premier League')
         season_dict = {
             '1992': '92/93',
