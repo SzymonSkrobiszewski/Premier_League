@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import re
 import numpy as np
+from collections import defaultdict
 
 # Ustawienia stylu aplikacji
 
@@ -156,6 +157,11 @@ color_dictionary = {
     'Charlton': {'red': '#d4021d', 'black': '#000000'},
     'Oldham': {'cyan': '#59777d'},
     'Sunderland': {'red': '#eb172b', 'gold': '#a68a26'}
+}
+
+new_color_dict = {
+    team: {list(colors.keys())[0]: list(colors.values())[0]}
+    for team, colors in color_dictionary.items()
 }
 
 # Funkcje przetwarzające dane
@@ -1418,18 +1424,31 @@ elif selected_tab == "Drużyny":
             return_teams_for_season(selected_season, df),
             default=['Arsenal', 'Chelsea']
         )
+        symbols = [
+            'circle', 'square',  'cross', 'x',
+            'diamond', 'star-square', 'hexagram',
+            'diamond-tall', 'star'
+        ]
         fig2 = go.Figure()
         max_value0 = 0
+        number_of_colors_used = defaultdict(int)
         for team in teams1:
             club1 = calculate_points(df, team, selected_season)
             if club1['Punkty'].max() > max_value0:
                 max_value0 = club1['Punkty'].max()
+            color, hex = [(i, j) for i, j in new_color_dict[team].items()][0]
+            number_of_colors_used[color] += 1
             fig2.add_trace(
                 go.Scatter(
                     x=club1['Kolejka'],
                     y=club1['Punkty'],
                     mode='lines+markers',
-                    #marker=dict(color=color_line[team1]),
+                    marker=dict(
+                        color=hex,
+                        symbol=symbols[number_of_colors_used[color] - 1],
+                        #size=7,
+                        line=dict(width=1.5)
+                        ),
                     name=f'{team}',
                     hovertext=[
                         f"Punkty drużyny {team}: <b>{points}</b>" for points in club1['Punkty']
@@ -1465,7 +1484,7 @@ elif selected_tab == "Drużyny":
                     title_font=dict(size=25, color='black'),
                     showgrid=True,
                     gridwidth=1,
-                    gridcolor='black',
+                    gridcolor='gray',
                     zerolinecolor='white'
                 ),
                 hoverlabel=dict(
