@@ -1479,7 +1479,7 @@ elif selected_tab == "Drużyny":
                 ),
                 yaxis=dict(
                     title='Punkty',
-                    range=[-2, round(max_value0, -1) + 15],
+                    range=[-2, round(max_value0, -1) + 7],
                     tickfont=dict(size=17, color='black'),
                     title_font=dict(size=25, color='black'),
                     showgrid=True,
@@ -1651,7 +1651,7 @@ elif selected_tab == "Drużyny":
                 yaxis=dict(
                     title='Kolejka',
                     title_font=dict(size=25, color='black'),
-                    range=[-2, round(max(max_value1, default=0), -1) + 15],
+                    range=[-2, round(max(max_value1, default=0), -1) + 7],
                     tickfont=dict(size=17, color='black'),
                     showgrid=True,
                     gridwidth=1,
@@ -1803,7 +1803,11 @@ elif selected_tab == "Drużyny":
             #conceded_and_scored_goals['TotalGoalsScored'].max()
         )
         if scored_or_conceded == 'Bramki strzelone':
+            symbols = ['', '/', '\\', 'x', '-', '|', '+', '.']
+            number_of_colors_used = defaultdict(int)
             for i, name in enumerate(teams6):
+                color, hex = [(x, j) for x, j in new_color_dict[name].items()][0]
+                number_of_colors_used[color] += 1
                 fig7.add_traces(
                     data=[
                         go.Bar(
@@ -1811,12 +1815,14 @@ elif selected_tab == "Drużyny":
                             y=[
                                 conceded_and_scored_goals['GSWPP'].iloc[i],
                                 conceded_and_scored_goals['GSWDP'].iloc[i],
-                                #conceded_and_scored_goals['TotalGoalsScored'].iloc[i]
                             ],
+                            marker=dict(
+                                color=hex,
+                                #pattern_shape=symbols[number_of_colors_used[color] - 1]
+                            ),
                             text=[
                                 conceded_and_scored_goals['GSWPP'].iloc[i],
                                 conceded_and_scored_goals['GSWDP'].iloc[i],
-                                #conceded_and_scored_goals['TotalGoalsScored'].iloc[i]
                             ],
                             textfont=dict(size=18, color='white'),
                             hovertemplate=[
@@ -1834,8 +1840,8 @@ elif selected_tab == "Drużyny":
                 hovermode="x unified",
                 hoverlabel=dict(
                     font=dict(
-                            size=15,
-                            color='black'
+                        size=15,
+                        color='black'
                     )
                 ),
                 showlegend=True,
