@@ -1603,7 +1603,7 @@ elif selected_tab == "Drużyny":
             # st.plotly_chart(fig2, use_container_width=True)
     if comparison_type == "Sezony":
         c1, c2 = st.columns(2)
-        club = c1.selectbox("Wybierz drużynę :", unique_teams)
+        club = c1.selectbox("Wybierz drużynę :", sorted(unique_teams))
         seasons = find_common_seasons(club, club, df)
         selected_seasons1 = c2.multiselect(
             "Wybierz sezony :", seasons[::-1],
@@ -1824,7 +1824,7 @@ elif selected_tab == "Drużyny":
                                 conceded_and_scored_goals['GSWPP'].iloc[i],
                                 conceded_and_scored_goals['GSWDP'].iloc[i],
                             ],
-                            textfont=dict(size=18, color='white'),
+                            textfont=dict(size=18, color='white' if number_of_colors_used[color] == 1 else 'black'),
                             hovertemplate=[
                                 f'Liczba strzelonych bramek drużyny {name}: <b>%{{y}}</b>'
                                 + '<extra></extra>',
@@ -2377,7 +2377,7 @@ elif selected_tab == "Drużyny":
         col1, col2 = st.columns(2)
         team1 = col1.selectbox(
             'Wybierz drużynę :',
-            unique_teams,
+            sorted(unique_teams),
             key='Porównanie_pkt_u_siebie')
         seasons = find_common_seasons(team1, team1, df)
         selected_seasons = col2.multiselect(
