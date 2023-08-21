@@ -1819,7 +1819,7 @@ elif selected_tab == "Drużyny":
                             marker=dict(
                                 color=color,
                                 pattern_shape=symbols[number_of_colors_used[color] - 1],
-                                pattern_bgcolor='white"
+                                pattern_bgcolor='white'
                             ),
                             text=[
                                 conceded_and_scored_goals['GSWPP'].iloc[i],
