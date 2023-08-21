@@ -1817,15 +1817,15 @@ elif selected_tab == "Drużyny":
                                 conceded_and_scored_goals['GSWDP'].iloc[i],
                             ],
                             marker=dict(
-                                color=color,
+                                color='white'
                                 pattern_shape=symbols[number_of_colors_used[color] - 1],
-                                pattern_bgcolor='white'
+                                pattern_bgcolor=hex
                             ),
                             text=[
                                 conceded_and_scored_goals['GSWPP'].iloc[i],
                                 conceded_and_scored_goals['GSWDP'].iloc[i],
                             ],
-                            textfont=dict(size=18, color='white' if number_of_colors_used[color] == 1 else 'black'),
+                            textfont=dict(size=18, color='white'),
                             hovertemplate=[
                                 f'Liczba strzelonych bramek drużyny {name}: <b>%{{y}}</b>'
                                 + '<extra></extra>',
