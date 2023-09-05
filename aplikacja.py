@@ -141,7 +141,7 @@ color_dictionary = {
     'Wolves': {'yellow': '#FDB913', 'black': '#231F20', },
     'West Brom': {'blue': '#122F67', 'green': '#149557'},
     'Wimbledon': {'blue': '#2b4690', 'yellow': '#fff200'},
-    'Wigan': {'green': '#123d0f', 'blue': '#1d59af'},
+    'Wigan': {'bgreen': '#123d0f', 'blue': '#1d59af'},
     'Norwich City': {'green': '#00A650', 'yellow': '#FFF200'},
     'Swansea': {'black': '#000000'},
     'Hull': {'orange': '#f5971d', 'black': '#101920'},
