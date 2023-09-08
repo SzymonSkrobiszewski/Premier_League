@@ -1851,7 +1851,8 @@ elif selected_tab == "Drużyny":
                     )
                 ),
                 showlegend=True,
-                margin=dict(l=50, r=50, t=50, b=50),
+                margin=dict(l=25, r=25, t=25, b=25),
+                #margin=dict(l=50, r=50, t=50, b=50),
                 xaxis=dict(
                     title='Połowa meczu',
                     title_font=dict(size=25, color='black'),
@@ -2535,7 +2536,8 @@ elif selected_tab == "Drużyny":
                     color='black'
                 )
             ),
-            margin=dict(l=0, r=25, t=45, b=0),
+            margin=dict(l=0, r=25, t=30, b=25),
+            #margin=dict(l=0, r=25, t=45, b=0),
             xaxis=dict(
                 title='Rodzaj',
                 title_font=dict(size=25, color='black'),
@@ -2608,7 +2610,8 @@ elif selected_tab == "Drużyny":
                     color='black'
                 )
             ),
-            margin=dict(l=0, r=25, t=45, b=0),
+            margin=dict(l=0, r=25, t=30, b=25),
+            #margin=dict(l=0, r=25, t=45, b=0),
             xaxis=dict(
                 title='Rodzaj',
                 title_font=dict(size=25, color='black'),
