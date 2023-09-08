@@ -2512,7 +2512,8 @@ elif selected_tab == "Drużyny":
                         pattern_bgcolor=hex4
                     ),
                     text=list(fauls.values()),
-                    textfont=dict(size=18, color="white" if "yellow" not in color4 and "orange" not in color4 else "black"),
+                    textfont=dict(size=18, color='black'),
+                    textposition='outside',
                     hovertemplate=[
                         f'Faule bez kartki drużyny {team}: <b>%{{y}}</b>'
                         + '<extra></extra>',
@@ -2534,7 +2535,7 @@ elif selected_tab == "Drużyny":
                     color='black'
                 )
             ),
-            margin=dict(l=50, r=50, t=50, b=50),
+            margin=dict(l=0, r=25, t=45, b=0),
             xaxis=dict(
                 title='Rodzaj',
                 title_font=dict(size=25, color='black'),
@@ -2545,8 +2546,8 @@ elif selected_tab == "Drużyny":
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=16, color='black'),
                 showgrid=True,
-                gridwidth=1,
-                gridcolor='gray',
+                gridwidth=0.5,
+                gridcolor='rgba(211, 211, 211, 1)',
                 zeroline=False,
             ),
             height=500,
@@ -2585,6 +2586,7 @@ elif selected_tab == "Drużyny":
                     y=list(fauls.values()),
                     text=list(fauls.values()),
                     textfont=dict(size=18, color='black'),
+                    textposition='outside',
                     hovertemplate=[
                         f'Faule bez kartki w sezonie {season}: <b>%{{y}}</b>'
                         + '<extra></extra>',
@@ -2606,7 +2608,7 @@ elif selected_tab == "Drużyny":
                     color='black'
                 )
             ),
-            margin=dict(l=50, r=50, t=50, b=50),
+            margin=dict(l=0, r=25, t=45, b=0),
             xaxis=dict(
                 title='Rodzaj',
                 title_font=dict(size=25, color='black'),
@@ -2617,8 +2619,8 @@ elif selected_tab == "Drużyny":
                 title_font=dict(size=25, color='black'),
                 tickfont=dict(size=16, color='black'),
                 showgrid=True,
-                gridwidth=1,
-                gridcolor='gray',
+                gridwidth=0.5,
+                gridcolor='rgba(211, 211, 211, 1)',
                 zeroline=False,
             ),
             height=500,
