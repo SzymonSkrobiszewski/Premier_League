@@ -107,56 +107,56 @@ def load_data():
 ) = load_data()
 
 color_dictionary = {
-    'Arsenal': {'red': '#EF0107', 'gold': '#9C824A'},
-    'Nottingham Forest': {'red': '#DD0000'},
-    'Chelsea': {'blue': '#034694', 'gold': '#DBA111'},
-    'Coventry': {'blue': '#059DD9', 'gold': '#E54724'},
-    'Crystal Palace': {'blue': '#1B458F', 'gray': '#A7A5A6', 'red': '#C4122E'},
-    'Ipswich': {'blue': '#3a64a3', 'red': '#de2c37'},
-    'Leeds': {'yellow': '#FFCD00', 'gold': '#AC944D'},
-    'Liverpool': {'red': '#C8102E', 'green': '#00B2A9'},
-    'Manchester United': {'red': '#DA291C', 'yellow': '#FBE122'},
-    'Middlesbrough': {'blue': '#004494', 'black': '#000000'},
-    'Sheffield Wednesday': {'blue': '#4681cf', 'yellow': '#e9b008'},
-    'Manchester City': {'blue': '#6CABDD', 'gold': '#D4A12A'},
+    'Arsenal': {'gred': '#EF0107', 'gold': '#9C824A'},
+    'Nottingham Forest': {'gred': '#DD0000'},
+    'Chelsea': {'zblue': '#034694', 'gold': '#DBA111'},
+    'Coventry': {'0blue': '#059DD9', 'gold': '#E54724'},
+    'Crystal Palace': {'zblue': '#1B458F', 'gray': '#A7A5A6', 'red': '#C4122E'},
+    'Ipswich': {'7blue': '#3a64a3', 'red': '#de2c37'},
+    'Leeds': {'2yellow': '#FFCD00', 'gold': '#AC944D'},
+    'Liverpool': {'zred': '#C8102E', 'green': '#00B2A9'},
+    'Manchester United': {'gred': '#DA291C', 'yellow': '#FBE122'},
+    'Middlesbrough': {'zblue': '#004494', 'black': '#000000'},
+    'Sheffield Wednesday': {'1blue': '#4681cf', 'yellow': '#e9b008'},
+    'Manchester City': {'2blue': '#6CABDD', 'gold': '#D4A12A'},
     'Southampton': {'black': '#130C0E', 'red': '#D71920'},
-    'Tottenham': {'blue': '#132257'},
-    'Aston Villa': {'claret': '#670E36', 'blue': '#95BFE5'},
+    'Tottenham': {'3blue': '#132257'},
+    'Aston Villa': {'1claret': '#670E36', 'blue': '#95BFE5'},
     'Newcastle': {'black': '#241F20', 'blue': '#41B6E6'},
-    'West Ham': {'maroon': '#7A263A', 'blue': '#1BB1E7'},
+    'West Ham': {'1maroon': '#7A263A', 'blue': '#1BB1E7'},
     'Swindon': {'gold': '#B48D00', 'red': '#DC161B'},
-    'Leicester': {'blue': '#003090', 'gold': '#FDBE11'},
-    'Brentford': {'orange': '#FFB400', 'red': '#D20000'},
-    'Barnsley': {'red': '#D71921', 'blue': '#00B8F1'},
-    'Birmingham': {'blue': '#0000FF', 'red': '#DC241F'},
+    'Leicester': {'cblue': '#003090', 'gold': '#FDBE11'},
+    'Brentford': {'zorange': '#FFB400', 'red': '#D20000'},
+    'Barnsley': {'gred': '#D71921', 'blue': '#00B8F1'},
+    'Birmingham': {'4blue': '#0000FF', 'red': '#DC241F'},
     'Blackburn Rovers': {'green': '#009036', 'blue': '#009EE0'},
-    'Blackpool': {'orange': '#F68712'},
-    'Bolton': {'blue': '#263C7E', 'red': '#88111E'},
-    'Bournemouth': {'red': '#C91318', 'black': '#000000', 'red': '#B50E12'},
-    'Brighton': {'blue': '#0057B8', 'yellow': '#FDB913'},
+    'Blackpool': {'2orange': '#F68712'},
+    'Bolton': {'cblue': '#263C7E', 'red': '#88111E'},
+    'Bournemouth': {'1red': '#B50E12', 'black': '#000000'},
+    'Brighton': {'zblue': '#0057B8', 'yellow': '#FDB913'},
     'Burnley': {'claret': '#6C1D45', 'blue': '#99D6EA'},
     'Derby': {'black': '#000000', 'blue': '#000040'},
-    'Everton': {'blue': '#003399', 'pink': '#fa9bac'},
-    'Huddersfield': {'blue': '#0E63AD', 'yellow': '#FDE43C'},
-    'Wolves': {'yellow': '#FDB913', 'black': '#231F20', },
-    'West Brom': {'blue': '#122F67', 'green': '#149557'},
-    'Wimbledon': {'blue': '#2b4690', 'yellow': '#fff200'},
-    'Wigan': {'bgreen': '#123d0f', 'blue': '#1d59af'},
+    'Everton': {'5blue': '#003399', 'pink': '#fa9bac'},
+    'Huddersfield': {'gblue': '#0E63AD', 'yellow': '#FDE43C'},
+    'Wolves': {'zorange': '#FDB913', 'black': '#231F20', },
+    'West Brom': {'6blue': '#122F67', 'green': '#149557'},
+    'Wimbledon': {'cblue': '#2b4690', 'yellow': '#fff200'},
+    'Wigan': {'green': '#123d0f', 'blue': '#1d59af'},
     'Norwich City': {'green': '#00A650', 'yellow': '#FFF200'},
     'Swansea': {'black': '#000000'},
-    'Hull': {'orange': '#f5971d', 'black': '#101920'},
+    'Hull': {'1orange': '#f5971d', 'black': '#101920'},
     'Reading': {'pink': '#dd1740 ', 'blue': '#004494'},
-    'Watford': {'yellow': '#FBEE23', 'red': '#ED2127'},
-    'Cardiff': {'blue': '#0070B5', 'red': '#D11524'},
-    'QPR': {'blue': '#1d5ba4', 'pink': '#ff33cc'},
-    'Stoke': {'red': '#E03A3E', 'blue': '#1B449C'},
-    'Bradford': {'yellow': '#FFDF00', 'black': '#000000'},
-    'Portsmouth': {'red': '#ff0000', 'black': '#000000'},
-    'Sheffield United': {'red': '#ec2227', 'yellow': '#fcee23'},
+    'Watford': {'1yellow': '#FBEE23', 'red': '#ED2127'},
+    'Cardiff': {'gblue': '#0070B5', 'red': '#D11524'},
+    'QPR': {'zblue': '#1d5ba4', 'pink': '#ff33cc'},
+    'Stoke': {'zred': '#E03A3E', 'blue': '#1B449C'},
+    'Bradford': {'1yellow': '#FFDF00', 'black': '#000000'},
+    'Portsmouth': {'2red': '#ff0000', 'black': '#000000'},
+    'Sheffield United': {'gred': '#ec2227', 'yellow': '#fcee23'},
     'Fulham': {'black': '#000000', 'red': '#CC0000'},
-    'Charlton': {'red': '#d4021d', 'black': '#000000'},
+    'Charlton': {'gred': '#d4021d', 'black': '#000000'},
     'Oldham': {'cyan': '#59777d'},
-    'Sunderland': {'red': '#eb172b', 'gold': '#a68a26'}
+    'Sunderland': {'gred': '#eb172b', 'gold': '#a68a26'}
 }
 
 new_color_dict = {
@@ -1424,28 +1424,28 @@ elif selected_tab == "Drużyny":
             return_teams_for_season(selected_season, df),
             default=['Arsenal', 'Chelsea']
         )
-        symbols = [
+        fig2 = go.Figure()
+        max_value0 = 0
+        symbols0 = [
             'circle', 'square',  'cross', 'x',
             'diamond', 'star-square', 'hexagram',
             'diamond-tall', 'star'
         ]
-        fig2 = go.Figure()
-        max_value0 = 0
-        number_of_colors_used = defaultdict(int)
+        number_of_colors_used0 = defaultdict(int)
         for team in teams1:
             club1 = calculate_points(df, team, selected_season)
             if club1['Punkty'].max() > max_value0:
                 max_value0 = club1['Punkty'].max()
-            color, hex = [(i, j) for i, j in new_color_dict[team].items()][0]
-            number_of_colors_used[color] += 1
+            color0, hex0 = [(i, j) for i, j in new_color_dict[team].items()][0]
+            number_of_colors_used0[color0] += 1
             fig2.add_trace(
                 go.Scatter(
                     x=club1['Kolejka'],
                     y=club1['Punkty'],
                     mode='lines+markers',
                     marker=dict(
-                        color=hex,
-                        symbol=symbols[number_of_colors_used[color] - 1],
+                        color=hex0,
+                        symbol=symbols0[number_of_colors_used0[color0] - 1],
                         #size=7,
                         line=dict(width=1.5)
                         ),
@@ -1803,11 +1803,11 @@ elif selected_tab == "Drużyny":
             #conceded_and_scored_goals['TotalGoalsScored'].max()
         )
         if scored_or_conceded == 'Bramki strzelone':
-            symbols = ['', '/', '\\', 'x', '-', '|', '+', '.']
-            number_of_colors_used = defaultdict(int)
+            symbols1 = ['', '/', '\\', 'x', '-', '|', '+', '.']
+            number_of_colors_used1 = defaultdict(int)
             for i, name in enumerate(teams6):
-                color, hex = [(x, j) for x, j in new_color_dict[name].items()][0]
-                number_of_colors_used[color] += 1
+                color1, hex1 = [(x, j) for x, j in new_color_dict[name].items()][0]
+                number_of_colors_used1[color1] += 1
                 fig7.add_traces(
                     data=[
                         go.Bar(
@@ -1817,15 +1817,20 @@ elif selected_tab == "Drużyny":
                                 conceded_and_scored_goals['GSWDP'].iloc[i],
                             ],
                             marker=dict(
-                                color='black' if number_of_colors_used[color] > 1 else hex,
-                                pattern_shape=symbols[number_of_colors_used[color] - 1],
-                                pattern_bgcolor=hex
+                                color='gray' if number_of_colors_used1[color1] > 1 else hex1,
+                                pattern_shape=symbols1[number_of_colors_used1[color1] - 1],
+                                pattern_bgcolor=hex1
                             ),
                             text=[
                                 conceded_and_scored_goals['GSWPP'].iloc[i],
                                 conceded_and_scored_goals['GSWDP'].iloc[i],
                             ],
-                            textfont=dict(size=18, color='white'),
+                            textfont = (
+                                dict(
+                                    size=18,
+                                    color="white" if "yellow" not in color1 and "orange" not in color1 else "black",
+                                )
+                            ),
                             hovertemplate=[
                                 f'Liczba strzelonych bramek drużyny {name}: <b>%{{y}}</b>'
                                 + '<extra></extra>',
@@ -1877,17 +1882,26 @@ elif selected_tab == "Drużyny":
             )
         if scored_or_conceded == 'Bramki stracone':
             fig7 = go.Figure()
+            symbols2 = ['', '/', '\\', 'x', '-', '|', '+', '.']
+            number_of_colors_used2 = defaultdict(int)
             for i, name in enumerate(teams6):
+                color2, hex2 = [(x, j) for x, j in new_color_dict[name].items()][0]
+                number_of_colors_used2[color2] += 1
                 fig7.add_traces(data=[
                     go.Bar(
                         x=['Pierwsza', 'Druga'],
                         y=[
                             conceded_and_scored_goals['GSTWPP'].iloc[i],
                             conceded_and_scored_goals['GSTWDP'].iloc[i]],
+                        marker=dict(
+                            color='gray' if number_of_colors_used2[color2] > 1 else hex2,
+                            pattern_shape=symbols2[number_of_colors_used2[color2] - 1],
+                            pattern_bgcolor=hex2
+                        ),
                         text=[
                             conceded_and_scored_goals['GSTWPP'].iloc[i],
                             conceded_and_scored_goals['GSTWDP'].iloc[i]],
-                        textfont=dict(size=18, color='white'),
+                        textfont=dict(size=18, color="white" if "yellow" not in color2 and "orange" not in color2 else "black",),
                         hovertemplate=[
                             f'Liczba straconych bramek drużyny {name}: <b>%{{y}}</b>'
                             + '<extra></extra>',
@@ -2269,14 +2283,23 @@ elif selected_tab == "Drużyny":
             default=['Chelsea', 'Arsenal'],
             key='porownanie_pkt1'
         )
+        symbols3 = ['', '/', '\\', 'x', '-', '|', '+', '.']
+        number_of_colors_used3 = defaultdict(int)
         for i, team in enumerate(teams2):
+            color3, hex3 = [(x, j) for x, j in new_color_dict[team].items()][0]
+            number_of_colors_used3[color3] += 1
             data_for_graph = calculate_home_away_points(df, season0, team)
             fig8.add_trace(
                 go.Bar(
                     x=list(data_for_graph.keys()),
                     y=list(data_for_graph.values()),
+                    marker=dict(
+                        color='gray' if number_of_colors_used3[color3] > 1 else hex3,
+                        pattern_shape=symbols3[number_of_colors_used3[color3] - 1],
+                        pattern_bgcolor=hex3
+                    ),
                     text=list(data_for_graph.values()),
-                    textfont=dict(size=18, color='black'),
+                    textfont=dict(size=18, color="white" if "yellow" not in color3 and "orange" not in color3 else "black",),
                     hovertemplate=[
                         f'Punkty domowe drużyny {team}: <b>%{{y}}</b>'
                         + '<extra></extra>',
@@ -2469,7 +2492,11 @@ elif selected_tab == "Drużyny":
             default=['Arsenal', 'Chelsea'],
             key='Kartki, faule'
         )
+        symbols4 = ['', '/', '\\', 'x', '-', '|', '+', '.']
+        number_of_colors_used4 = defaultdict(int)
         for team in teams3:
+            color4, hex4 = [(x, j) for x, j in new_color_dict[team].items()][0]
+            number_of_colors_used4[color4] += 1
             fauls = calculate_fauls_yellow_and_red_cards(
                 season12,
                 team,
@@ -2479,8 +2506,13 @@ elif selected_tab == "Drużyny":
                 go.Bar(
                     x=list(fauls.keys()),
                     y=list(fauls.values()),
+                    marker=dict(
+                        color='gray' if number_of_colors_used4[color4] > 1 else hex4,
+                        pattern_shape=symbols4[number_of_colors_used4[color4] - 1],
+                        pattern_bgcolor=hex4
+                    ),
                     text=list(fauls.values()),
-                    textfont=dict(size=18, color='black'),
+                    textfont=dict(size=18, color="white" if "yellow" not in color4 and "orange" not in color4 else "black"),
                     hovertemplate=[
                         f'Faule bez kartki drużyny {team}: <b>%{{y}}</b>'
                         + '<extra></extra>',
@@ -2722,14 +2754,23 @@ elif selected_tab == "Drużyny":
             default=['Arsenal', 'Chelsea'],
             key='efektywność'
         )
+        symbols5 = ['', '/', '\\', 'x', '-', '|', '+', '.']
+        number_of_colors_used5 = defaultdict(int)
         for team in teams7:
+            color5, hex5 = [(x, j) for x, j in new_color_dict[team].items()][0]
+            number_of_colors_used5[color5] += 1
             shoot = calculate_shots_stats(season10, team, clubstats)
             fig14.add_trace(
                 go.Bar(
                     x=list(shoot.keys()),
                     y=list(shoot.values()),
+                    marker=dict(
+                        color='gray' if number_of_colors_used5[color5] > 1 else hex5,
+                        pattern_shape=symbols5[number_of_colors_used5[color5] - 1],
+                        pattern_bgcolor=hex5
+                    ),
                     text=list(shoot.values()),
-                    textfont=dict(size=18, color='white'),
+                    textfont=dict(size=18, color="white" if "yellow" not in color5 and "orange" not in color5 else "black"),
                     hovertemplate=[
                         f'Strzały celne drużyny {team}: <b>%{{y}}</b>'
                         + '<extra></extra>',
@@ -2959,7 +3000,11 @@ elif selected_tab == "Drużyny":
             default=['Arsenal', 'Chelsea'],
             key='rozkład1'
         )
+        symbols6 = ['', '/', '\\', 'x', '-', '|', '+', '.']
+        number_of_colors_used6 = defaultdict(int)
         for team in teams8:
+            color6, hex6 = [(x, j) for x, j in new_color_dict[team].items()][0]
+            number_of_colors_used6[color6] += 1
             df4 = clubstats.query('team == @team and season == @season11')
             labels = [
                 'Głową',
@@ -2974,6 +3019,11 @@ elif selected_tab == "Drużyny":
             fig15.add_trace(go.Bar(
                 x=labels,
                 y=values,
+                marker=dict(
+                    color='gray' if number_of_colors_used6[color6] > 1 else hex6,
+                    pattern_shape=symbols6[number_of_colors_used6[color6] - 1],
+                    pattern_bgcolor=hex6
+                ),
                 text=values,
                 textposition='outside',
                 textfont=dict(size=18, color='black'),
