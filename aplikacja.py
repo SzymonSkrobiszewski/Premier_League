@@ -2173,7 +2173,7 @@ elif selected_tab == "Drużyny":
                 hoverlabel=dict(
                     font=dict(
                         size=15,
-                        color='black'
+                        color='white'
                     )
                 ),
                 showlegend=True,
@@ -2231,7 +2231,7 @@ elif selected_tab == "Drużyny":
                 hoverlabel=dict(
                     font=dict(
                         size=15,
-                        color='black'
+                        color='white'
                         )
                 ),
                 showlegend=True,
@@ -2433,7 +2433,7 @@ elif selected_tab == "Drużyny":
                 hoverlabel=dict(
                     font=dict(
                         size=15,
-                        color='black'
+                        color='white'
                     )
                 ),
                 margin=dict(l=50, r=50, t=50, b=50),
