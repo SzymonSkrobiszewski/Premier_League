@@ -1755,10 +1755,10 @@ elif selected_tab == "Drużyny":
         yaxis=dict(
             title="Liczba rezultatów",
             title_font=dict(size=25, color='black'),
-            range=[
-                0,
-                int(max(result['count'])) + (2 if max(result['count']) > 7 else 0)
-            ],
+            # range=[
+            #     0,
+            #     int(max(result['count'])) + (2 if max(result['count']) > 7 else 0)
+            # ],
             tickfont=dict(size=16, color='black'),
             showgrid=True,
             gridwidth=1,
