@@ -1474,7 +1474,7 @@ elif selected_tab == "Drużyny":
         seasons = find_common_seasons(club, club, df)
         selected_seasons1 = c2.multiselect(
             "Wybierz sezony :", seasons[::-1],
-            default=seasons[-2:]
+            default=seasons[-2:][::-1]
         )
         fig3, max_value1 = go.Figure(), []
         for season2 in selected_seasons1:
