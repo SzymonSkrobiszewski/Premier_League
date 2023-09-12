@@ -300,11 +300,11 @@ def choose_color_for_teams(team1, team2):
 
 def map_to_category(position):
     goalkeeper_positions = ['Goalkeeper']
-    defense_positions = ['Centre-Back', 'Right-Back', 'Left-Back', 'defence']
+    defense_positions = ['Centre-Back', 'Right-Back', 'Left-Back', 'defence', 'Defensive Midfield']
     offense_positions = [
         'Centre-Forward', 'Left Winger', 'Right Winger', 'Second Striker', 
         'Attacking Midfield', 'midfield', 'Left Midfield', 'Right Midfield',
-        'Central Midfield', 'attack', 'Defensive Midfield']
+        'Central Midfield', 'attack']
 
     if position in goalkeeper_positions:
         return 'Bramkarz'
@@ -1507,7 +1507,8 @@ elif selected_tab == "Drużyny":
                 hovermode='x unified',
             )
         st.plotly_chart(fig2, use_container_width=True)
-
+        st.write('Mecze w piłce nożnej czasem są przekładane ze względu na m.in inne rozgrywki (pucharowe).\
+                 W tym celu u nas kolejka oznacza **numer meczu w sezonie** w celu zachowania ciągłości.')
 
         #teams = column1.multiselect()
         # team1 = column1.selectbox('Wybierz pierwszą drużynę :', unique_teams)
@@ -3424,7 +3425,15 @@ elif selected_tab == "Transfery":
             width=1200,
         )
         st.plotly_chart(fig17, use_container_width=True)
-    st.write('Transfery dotyczą zarówno sprzedaży/kupna zawodnika jak i wypożyczeń zawodników.')
+    st.write('Transfery dotyczą zarówno sprzedaży/kupna zawodnika jak i wypożyczeń zawodników. Podział ról jest następujący')
+    st.markdown(
+            """
+            Klasyfikacja roli piłkarza następuje według poniższego wzorca:
+            1. **Zawodnik defensywny** - jeśli zawodnik jest obrońcą, bądź pomocnikiem defensywnym,
+            2. **Bramkarz** - jeśli zawodnik jest bramkarzem,
+            3. **Zawodnik ofensywny** - w pozostałych przypadkach.
+            """
+        )
     st.header('Najdroższe transfery w sezonach')
     fig18 = go.Figure()
     # position_mapping = {
@@ -3731,3 +3740,4 @@ elif selected_tab == "Transfery":
     #     st.plotly_chart(fig19, use_container_width=True)
     st.write('Naturalnym jest, że w przypadku Premier League liczba transferów \
              odchodzących i przychodzących jest taka sama.')
+    st.write('Dane dotyczące Championship zaczynają się począwszy od sezonu 2004/05.')
