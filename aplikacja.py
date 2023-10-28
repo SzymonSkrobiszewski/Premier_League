@@ -1108,10 +1108,10 @@ elif selected_tab == "Premier League":
             go.Bar(
                 #x=p_l.index,
                 #y=p_l['zwyciezca'],
-                text=p_l['zwyciezca'],
+                #text=p_l['zwyciezca'],
                 x=p_l.index,
                 y=p_l['count'],
-                # text=p_l['count'],
+                text=p_l['count'],
                 textfont=dict(size=15, color='white'),
                 textangle=0,
                 hoverlabel=dict(
@@ -1156,14 +1156,14 @@ elif selected_tab == "Premier League":
             if puchar == 'Fa cup':
                 fig1.add_trace(
                     go.Bar(
+                        #x=cup2.index,
+                        #y=cup2['Fa_cup'],
+                        #name='Fa Cup',
+                        #text=cup2['Fa_cup'],
                         x=cup2.index,
-                        y=cup2['Fa_cup'],
+                        y=cup2['count'],
                         name='Fa Cup',
-                        text=cup2['Fa_cup'],
-                        # x=cup2.index,
-                        # y=cup2['count'],
-                        # name='Fa Cup',
-                        # text=cup2['count'],
+                        text=cup2['count'],
                         # hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='red'),
                         hovertemplate='Liczba tytułów FA Cup: <b>%{y}</b>'
                         + '<extra></extra>',
