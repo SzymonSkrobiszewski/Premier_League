@@ -1,5 +1,5 @@
-pandas==1.4.4
-streamlit==1.24.1
+pandas==2.1.2
+streamlit==1.28.0
 streamlit-option-menu==0.3.2
 plotly==5.14.1
 category-encoders==2.5.1.post0
