@@ -1174,14 +1174,14 @@ elif selected_tab == "Premier League":
             elif puchar == 'Carabao cup':
                 fig1.add_trace(
                     go.Bar(
+                        #x=cup1.index,
+                        #y=cup1['Carabao_cup'],
+                        #name='Carabao Cup',
+                        #text=cup1['Carabao_cup'],
                         x=cup1.index,
-                        y=cup1['Carabao_cup'],
+                        y=cup1['count'],
                         name='Carabao Cup',
-                        text=cup1['Carabao_cup'],
-                        # x=cup1.index,
-                        # y=cup1['count'],
-                        # name='Carabao Cup',
-                        # text=cup1['count'],
+                        text=cup1['count'],
                         # hoverlabel=dict(font=dict(size=14, color='white'), bgcolor='green'),
                         hovertemplate='Liczba tytułów Carabao Cup: <b>%{y}</b>'
                         + '<extra></extra>',
