@@ -1301,11 +1301,11 @@ elif selected_tab == "Premier League":
         )
         if sorted_option == 'Malejąco liczebnościami':
             team_and_number_of_seasons = team_and_number_of_seasons.sort_values(
-                by='Liczba sezonów', ascending=True
+                by='count', ascending=True
             )
         elif sorted_option == 'Rosnąco liczebnościami':
             team_and_number_of_seasons = team_and_number_of_seasons.sort_values(
-                by="Liczba sezonów", ascending=False
+                by="count", ascending=False
             )
         elif sorted_option == 'Malejąco alfabetycznie':
             team_and_number_of_seasons = team_and_number_of_seasons.sort_index(
