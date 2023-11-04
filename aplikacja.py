@@ -2801,7 +2801,7 @@ elif selected_tab == "Transfery":
             width=1200,
         )
         st.plotly_chart(fig17, use_container_width=True)
-    st.write('Transfery dotyczą zarówno sprzedaży/kupna zawodnika jak i wypożyczeń zawodników. Podział ról jest następujący')
+    st.write('Transfery dotyczą zarówno sprzedaży/kupna zawodnika jak i wypożyczeń zawodników.')
     st.markdown(
             """
             Klasyfikacja roli piłkarza następuje według poniższego wzorca:
