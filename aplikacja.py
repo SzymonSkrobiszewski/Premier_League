@@ -842,11 +842,11 @@ elif selected_tab == "Premier League":
             'Leicester': 4,
             'Manchester City': 4,
             'Fulham': 3,
-            'West Ham': 3,
+            'West Ham': 3, #2, dwa razy w barazach odpadli.
             'Bolton': 2,
-            'Ipswich': 2,
+            'Ipswich': 1, #nie było ich raz w PL.
             'Middlesbrough': 2,
-            'Southampton': 2,
+            'Southampton': 1, #było 2, ale raz byli w finale baraży.
             #'Birmingham': 1,
             #'Millwall': 1,
             'Norwich City': 1,
@@ -855,7 +855,7 @@ elif selected_tab == "Premier League":
             'Sheffield Wednesday': 1,
             'Stoke': 1,
             'Swansea': 1,
-            'Wigan': 1,
+            #'Wigan': 1,
             'Wolves': 1,
         }
         fig6 = go.Figure()
@@ -962,7 +962,7 @@ elif selected_tab == "Premier League":
                 fig16.add_trace(
                     go.Scatter(
                         x=players['season'],
-                        y=players['england'],
+                        y=players['english'],
                         stackgroup='one',
                         marker=dict(color='green'),
                         name='Anglicy',
