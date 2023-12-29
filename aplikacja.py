@@ -24,17 +24,17 @@ def load_data():
         engine='openpyxl'
     )
     carabao_cup = pd.read_excel(
-        io='puchary.xlsx',
+        io='cups.xlsx',
         engine='openpyxl',
         sheet_name='Carabao_cup'
     )
     fa_cup = pd.read_excel(
-        io='puchary.xlsx',
+        io='cups.xlsx',
         engine='openpyxl',
         sheet_name='Fa_cup'
     )
     premier_league = pd.read_excel(
-        io='puchary.xlsx',
+        io='cups.xlsx',
         engine='openpyxl',
         sheet_name='Premier_league'
     )
@@ -42,7 +42,7 @@ def load_data():
         io='transfers_directions.xlsx',
         engine='openpyxl'
     )
-    wartosci = pd.read_excel(io='wartosci_pieciu_lig.xlsx', engine='openpyxl')
+    value_leagues = pd.read_excel(io='wartosci_pieciu_lig.xlsx', engine='openpyxl')
     cup1 = pd.DataFrame(carabao_cup['Carabao_cup'].value_counts())
     cup2 = pd.DataFrame(fa_cup['Fa_cup'].value_counts())
     p_l = pd.DataFrame(premier_league['zwyciezca'].value_counts())
@@ -71,7 +71,7 @@ def load_data():
         carabao_cup,
         fa_cup,
         premier_league,
-        wartosci,
+        value_leagues,
         cup1,
         cup2,
         p_l,
@@ -91,7 +91,7 @@ def load_data():
     carabao_cup,
     fa_cup,
     premier_league,
-    wartosci,
+    value_leagues,
     cup1,
     cup2,
     p_l,
@@ -321,7 +321,6 @@ def count_position(category, season, df):
     position_counts = df.query("season1 == @season and transfer_movement == @category")[
         "new_position"
     ].value_counts()
-    print(position_counts)
     position_df = position_counts.to_frame().reset_index()
     position_df.columns = ['position', 'count']
     return position_df
@@ -632,8 +631,8 @@ elif selected_tab == "Premier League":
         for i, lig in enumerate(liga):
             fig0.add_trace(
                 go.Scatter(
-                    x=wartosci['sezon'],
-                    y=wartosci[lig]/1000,
+                    x=value_leagues['sezon'],
+                    y=value_leagues[lig]/1000,
                     name=lig,
                     mode='lines+markers',
                     hovertemplate=f"Wartość {replace_name.get(lig, lig)}: <b>%{{y:.2f}} mld</b>"
