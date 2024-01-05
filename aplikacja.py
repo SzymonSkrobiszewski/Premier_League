@@ -1722,7 +1722,7 @@ elif selected_tab == "Drużyny":
                     tickfont=dict(size=17, color='black')
                 ),
                 yaxis=dict(
-                    range=[0, maksimum + 6],
+                    #range=[0, maksimum + 6],
                     title='Liczba bramek strzelonych',
                     title_font=dict(size=25, color='black'),
                     tickfont=dict(size=17, color='black'),
@@ -1846,7 +1846,7 @@ elif selected_tab == "Drużyny":
                         x=['Pierwsza', 'Druga'],
                         y=[df_c3['GSWPP'].iloc[0], df_c3['GSWDP'].iloc[0]],
                         text=[df_c3['GSWPP'].iloc[0], df_c3['GSWDP'].iloc[0]],
-                        textfont=dict(size=18, color='black'),
+                        textfont=dict(size=18, color='white'),
                         hovertemplate=[
                             f'Liczba strzelonych bramek w sezonie {season}: <b>%{{y}}</b>'
                             + '<extra></extra>',
@@ -1904,7 +1904,7 @@ elif selected_tab == "Drużyny":
                         x=['Pierwsza', 'Druga'],
                         y=[df_c3['GSTWPP'].iloc[0], df_c3['GSTWDP'].iloc[0]],
                         text=[df_c3['GSTWPP'].iloc[0], df_c3['GSTWDP'].iloc[0]],
-                        textfont=dict(size=18, color='black'),
+                        textfont=dict(size=18, color='white'),
                         hovertemplate=[
                             f'Liczba straconych bramek w sezonie {season}: <b>%{{y}}</b>'
                             + '<extra></extra>',
@@ -2057,7 +2057,7 @@ elif selected_tab == "Drużyny":
                     x=list(data_for_graph.keys()),
                     y=list(data_for_graph.values()),
                     text=list(data_for_graph.values()),
-                    textfont=dict(size=18, color='black'),
+                    textfont=dict(size=18, color='white'),
                     hovertemplate=[
                         f'Punkty domowe w sezonie {season}: <b>%{{y}}</b>'
                         + '<extra></extra>',
