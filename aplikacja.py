@@ -2048,6 +2048,7 @@ elif selected_tab == "Drużyny":
         selected_seasons = col2.multiselect(
             'Wybierz sezony :', seasons[::-1],
             default=seasons[-2:][::-1],
+            key='porownanie_pkt_zdobytych'
         )
         for i, season in enumerate(selected_seasons):
             data_for_graph = calculate_home_away_points(df, season, team1)
