@@ -946,7 +946,7 @@ elif selected_tab == "Premier League":
                  możliwość kontynuowania swojej przygody w niższych rozgrywkach.'
         )
     else:
-        st.header('Zawodnicy grającyc w drużynach Premier League')
+        st.header('Zawodnicy grający w drużynach Premier League')
         choose_kind_of_players = st.multiselect(
             "Wybierz :",
             [
