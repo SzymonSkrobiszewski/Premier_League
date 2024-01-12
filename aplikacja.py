@@ -1646,11 +1646,11 @@ elif selected_tab == "Drużyny":
             "Wybierz statystykę : ",
             ['Bramki strzelone', 'Bramki stracone']
         )
-        season3 = column3.selectbox(
+        season3 = column4.selectbox(
             "Wybierz sezon :",
             [season5 for season5 in get_seasons(df) if season5 not in seasons_to_remove][::-1]
         )
-        teams6 = column4.multiselect(
+        teams6 = column3.multiselect(
             "Wybierz drużyny :",
             return_teams_for_season(season3, df),
             default=['Chelsea', 'Arsenal']
