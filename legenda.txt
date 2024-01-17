@@ -1,5 +1,0 @@
-<div style="display: flex; align-items: center; background-color:#F0F0F0; padding:10px; border-radius:5px;">
-    <div style="flex-grow: 1;"><span style="color:black;"><b>&#9632;</b></span> Liczba fauli bez kartki</div>
-    <div style="flex-grow: 1;"><span style="color:red;"><b>&#9632;</b></span> Liczba fauli ukaranych czerwoną kartką</div>
-    <div style="flex-grow: 1;"><span style="color:yellow;"><b>&#9632;</b></span> Liczba fauli ukaranych żółtą kartką</div>
-</div>
