@@ -2,9 +2,8 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
 import plotly.graph_objects as go
-import re
-import numpy as np
 from collections import defaultdict
+
 
 # Ustawienia stylu aplikacji
 
@@ -268,35 +267,6 @@ def choose_color_for_teams(team1, team2):
                     .get(color2),
                 }
 
-
-# def count_position(category, season, df):
-#     position_mapping = {
-#         'Left Winger': 'Lewy skrzydłowy',
-#         'defence': 'Obrońca',
-#         'Right-Back': 'Prawy obrońca',
-#         'Goalkeeper': 'Bramkarz',
-#         'Centre-Back': 'Środkowy obrońca',
-#         'Right Winger': 'Prawy skrzydłowy',
-#         'Centre-Forward': 'Środkowy napastnik',
-#         'attack': 'Napastnik',
-#         'Defensive Midfield': 'Defensywny pomocnik',
-#         'Left Midfield': 'Lewy pomocnik',
-#         'Attacking Midfield': 'Ofensywny pomocnik',
-#         'Central Midfield': 'Środkowy pomocnik',
-#         'midfield': 'Pomocnik',
-#         'Right Midfield': 'Prawy pomocnik',
-#         'Left-Back': 'Lewy obrońca',
-#         'Second Striker': 'Drugi napastnik'
-#     }
-#     position_counts = df.query("season == @season and transfer_movement == @category")[
-#         "position"
-#     ].value_counts()
-#     position_counts = position_counts.rename(position_mapping)
-#     position_df = position_counts.to_frame().reset_index()
-#     position_df.columns = ['position', 'count']
-#     return position_df
-
-
 def map_to_category(position):
     goalkeeper_positions = ['Goalkeeper']
     defense_positions = ['Centre-Back', 'Right-Back', 'Left-Back', 'defence', 'Defensive Midfield']
@@ -355,16 +325,12 @@ def calculate_lost_goals_by_half(df, team, season):
     ].sum().get(
         team
     )
-    # total_goals_scored = first_half_goals_scored + second_half_goals_scored
-    # total_goals_conceded = first_half_goals_conceded + second_half_goals_conceded
     return pd.DataFrame(
         {
             "GSTWPP": [int(first_half_goals_conceded)],
             "GSTWDP": [int(second_half_goals_conceded)],
             "GSWPP": [int(first_half_goals_scored)],
             "GSWDP": [int(second_half_goals_scored)],
-            # "TotalGoalsScored": [total_goals_scored],
-            # "TotalGoalsConceded": [total_goals_conceded],
         }
     )
 
@@ -409,23 +375,6 @@ def calculate_fauls_yellow_and_red_cards(season, team, df):
     return result
 
 
-# def calculate_shots_stats(season, team, df):
-#     filtered_df = df.query(
-#         "Season == @season and (HomeTeam == @team or AwayTeam == @team)"
-#     )
-#     home_shots = filtered_df.query('HomeTeam == @team')['HS'].sum()
-#     away_shots = filtered_df.query('AwayTeam == @team')['AS'].sum()
-#     shots = home_shots + away_shots
-#     home_shots_on_target = filtered_df.query('HomeTeam == @team')['HST'].sum()
-#     away_shots_on_target = filtered_df.query('AwayTeam == @team')['AST'].sum()
-#     shots_on_target = home_shots_on_target + away_shots_on_target
-#     shots_off_target = shots - shots_on_target
-#     result = {
-#         'Strzały celne': int(shots_on_target),
-#         'Strzały niecelne': int(shots_off_target)
-#     }
-#     return result
-
 def calculate_shots_stats(season, team, df):
     filtered_df = df.query("season == @season and team == @team")
     on_target_shots = filtered_df['ontarget_scoring_att'].sum()
@@ -460,7 +409,6 @@ def get_top_10_by_season(data, season):
         'Scotland': 'Szkocka',
         'Netherlands': 'Holenderska'
     }
-    # Wybierz top 10 wyników
     top_10 = sorted_data.head(10).reset_index(drop=True)
     top_10.loc[:, 'country'] = top_10['country'].map(mapping)
     return top_10
@@ -1618,10 +1566,6 @@ elif selected_tab == "Drużyny":
         yaxis=dict(
             title="Liczba rezultatów",
             title_font=dict(size=25, color='black'),
-            # range=[
-            #     0,
-            #     int(max(result['count'])) + (2 if max(result['count']) > 7 else 0)
-            # ],
             tickfont=dict(size=16, color='black'),
             showgrid=True,
             gridwidth=1,
