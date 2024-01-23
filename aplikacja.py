@@ -39,10 +39,6 @@ def load_data():
         engine='openpyxl',
         sheet_name='Premier_league'
     )
-    transfers_direction = pd.read_excel(
-        io='transfers_directions.xlsx',
-        engine='openpyxl'
-    )
     value_leagues = pd.read_excel(io='wartosci_pieciu_lig.xlsx', engine='openpyxl')
     cup1 = pd.DataFrame(carabao_cup['Carabao_cup'].value_counts())
     cup2 = pd.DataFrame(fa_cup['Fa_cup'].value_counts())
@@ -81,11 +77,9 @@ def load_data():
         transfers,
         stats,
         players,
-        transfers_direction,
         seasonal_league_financial,
         transfers_direction_by_season
     )
-
 
 (
     df,
@@ -101,7 +95,6 @@ def load_data():
     transfers,
     clubstats,
     players,
-    transfer_directions,
     seasonal_league_financial,
     transfers_by_season
 ) = load_data()
