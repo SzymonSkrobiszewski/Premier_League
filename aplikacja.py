@@ -793,18 +793,18 @@ elif selected_tab == "Premier League":
             'Fulham': 3,
             'West Ham': 3, #2, dwa razy w barazach odpadli.
             'Bolton': 2,
-            'Ipswich': 1, #nie było ich raz w PL.
             'Middlesbrough': 2,
-            'Southampton': 1, #było 2, ale raz byli w finale baraży.
-            #'Birmingham': 1,
-            #'Millwall': 1,
+            'Southampton': 2, #było 3, ale raz byli w finale baraży.
+            #'Birmingham': 1, #Nie było w PL
+            #'Millwall': 1,  #Nie było w PL.
+            'Ipswich': 1, #było 2, ale, nie było ich raz w PL.
             'Norwich City': 1,
             'Nottingham Forest': 1,
             'Portsmouth': 1,
             'Sheffield Wednesday': 1,
             'Stoke': 1,
             'Swansea': 1,
-            #'Wigan': 1,
+            #'Wigan': 1, #Nie było w PL.
             'Wolves': 1,
         }
         fig6 = go.Figure()
@@ -2641,7 +2641,7 @@ elif selected_tab == "Transfery":
         ),
         yaxis=dict(
             range=[0, 3150],
-            title='Bilans transferowy (mln)',
+            title='Bilans transferowy (mln euro)',
             title_font=dict(size=25, color='black'),
             tickfont=dict(size=16, color='black'),
             showgrid=True,
@@ -2805,7 +2805,7 @@ elif selected_tab == "Transfery":
                     title_font=dict(size=25, color='black')
                 ),
                 yaxis=dict(
-                    title="Wartość transferu (mln)",
+                    title="Wartość transferu (mln euro)",
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
@@ -2854,7 +2854,7 @@ elif selected_tab == "Transfery":
                     title_font=dict(size=25, color='black')
                 ),
                 yaxis=dict(
-                    title="Wartość transferu (mln)",
+                    title="Wartość transferu (mln euro)",
                     showgrid=True,
                     gridwidth=1,
                     gridcolor='gray',
